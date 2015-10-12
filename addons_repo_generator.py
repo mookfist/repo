@@ -72,7 +72,7 @@ class Generator:
 
             for path, subdirs, files in os.walk(addon):
               for name in files:
-                zipTarget = os.path.join(path.replace(addon, ""), name)[1:]
+                zipTarget = os.path.join(path.replace(addon, ""), name)
                 zipObj.write(os.path.join(path, name), zipTarget)
             
     def _generate_addons_file( self ):
