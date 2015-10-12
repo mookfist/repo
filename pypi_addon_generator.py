@@ -6,7 +6,14 @@
 ###
 import os
 import sys
-import urllib2
+
+try:
+  from urllib.request import Request
+  from urllib.request import urlopen
+except ImportError:
+  from urllib2 import Request
+  from urllib2 import urlopen
+
 import tarfile
 import json
 import shutil
@@ -48,10 +55,10 @@ if not os.path.exists(tmp_dir):
 
 os.chdir(tmp_dir)
 
-print "Getting metadata from %s" % metadata_url
-req = urllib2.Request(metadata_url)
-res = urllib2.urlopen(req)
-metadata = json.loads(res.read())
+print("Getting metadata from %s" % metadata_url)
+req = Request(metadata_url)
+res = urlopen(req)
+metadata = json.loads(res.read().decode("utf-8"))
 
 ver = metadata['info']['version']
 
@@ -62,16 +69,16 @@ url = release['url']
 ext = url.split('.')[-1]
 filename = os.path.basename(url)
 
-print "Downloading %s" % (url)
+print("Downloading %s" % (url))
 
-req = urllib2.Request(url)
-res = urllib2.urlopen(req)
+req = Request(url)
+res = urlopen(req)
 
-f = open(filename, 'w')
+f = open(filename, 'wb')
 f.write(res.read())
 f.close()
 
-print "Unpacking"
+print("Unpacking")
 
 if ext == "whl" or ext == "egg":
   archive = zipfile.ZipFile(filename)
