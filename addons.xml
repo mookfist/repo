@@ -1,10 +1,49 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
-<addon id="repository.mookfist" name="Mookfist Repo" version="1.0" provider-name="Mookfist">
+<addon id="script.module.python-requests" version="2.7.0" name="python-requests" provider-name="Mookfist">
+  <requires>
+    <import addon="xbmc.python" version="2.14.0" />
+  </requires>
+  <extension point="xbmc.python.module" library="lib" />
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">python-requests in Kodi Form</summary>
+    <description lang="en">This addon will expose the Requests python library for other addons to use. For more information visit https://github.com/kennethreitz/requests</description>
+    <disclaimer lang="en">Making HTTP requests without this library has been known to cause nervous breakdowns in even the most patient programmers</disclaimer>
+    <language>en</language>
+    <platform>all</platform>
+    <license>Apache2</license>
+    <source>https://github.com/mookfist/repo/tree/master/script.module.python-requests</source>
+    <email>mookfist@gmail.com</email>
+    <website>https://github.com/kennethreitz/requests</website>
+  </extension>
+</addon>
+
+<addon id="script.qbittorent" version="0.0.1" name="QBittorrent" provider-name="Mookfist">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0" />
+  </requires>
+  <extension point="xbmc.python.script" library="default.py">
+    <provides>Programs</provides>
+    <res width="1920" height="1080" aspect="16:9" default="true" folder="1080i" />
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">QBittorent interface</summary>
+    <description lang="en">Provides access to QBittorrent, allowing you to list torrents, or turn on or off individual torrents.</description>
+    <disclaimer lang="en">Using this plugin while chanting certain incantations will make your neighbors call the police.</disclaimer>
+    <language>en</language>
+    <platform>all</platform>
+    <license>MIT</license>
+    <source>https://github.com/mookfist/repo/tree/master/plugin.qbittorent</source>
+    <email>mookfist@gmail.com</email>
+    <website>https://github.com/mookfist/repo</website>
+  </extension>
+</addon>
+
+<addon id="repository.mookfist" name="Mookfist Repo" version="1.1" provider-name="Mookfist">
     <extension point="xbmc.addon.repository" name="Official PseudoTV Live Repository">
-        <info compressed="false">http://raw.github.com/mookfist/repo/master/addons.xml</info>
-        <checksum>http://raw.github.com/mookfirst/repo/master/addons.xml.md5</checksum>
-        <datadir zip="true">http://raw.github.com/mookfist/repo/master/zips</datadir>
+        <info compressed="false">https://raw.githubusercontent.com/mookfist/repo/master/addons.xml</info>
+        <checksum>https://raw.githubusercontent.com/mookfist/repo/master/addons.xml.md5</checksum>
+        <datadir zip="true">https://raw.githubusercontent.com/mookfist/repo/master/zips</datadir>
     </extension>
     <extension point="xbmc.addon.metadata">
         <summary></summary>

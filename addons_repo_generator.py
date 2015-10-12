@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # *
+# *  Copyright (C) 2015      Mookfist
 # *  Copyright (C) 2012-2013 Garrett Brown
 # *  Copyright (C) 2010      j48antialias
 # *
@@ -18,13 +19,18 @@
 # *  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 # *  http://www.gnu.org/copyleft/gpl.html
 # *
-# *  Based on code by j48antialias:
+# *  Based on the addons_xml_generator script by Garret Brown
+# *  which was based on code by j48antialias:
 # *  https://anarchintosh-projects.googlecode.com/files/addons_xml_generator.py
+# *
+# *  Modified to generate zip files of plugins
  
 """ addons.xml generator """
  
 import os
 import sys
+import zipfile
+import xml.etree.ElementTree
  
 # Compatibility with 3.0, 3.1 and 3.2 not supporting u"" literals
 if sys.version < '3':
@@ -45,9 +51,30 @@ class Generator:
         # generate files
         self._generate_addons_file()
         self._generate_md5_file()
+        self._generate_zips()
         # notify user
         print("Finished updating addons xml and md5 files")
  
+
+    def _generate_zips( self ):
+        addons = os.listdir(".")
+
+        if not os.path.exists("zips"):
+          os.mkdir("zips")
+
+        for addon in addons:
+          addonFile = os.path.join(addon, "addon.xml")
+          if os.path.exists(addonFile):
+            version = xml.etree.ElementTree.parse(addonFile).getroot().attrib['version']
+            addonZipName = addon + "-" + version
+
+            zipObj = zipfile.ZipFile("zips/" + addonZipName + ".zip", mode='w')
+
+            for path, subdirs, files in os.walk(addon):
+              for name in files:
+                zipTarget = os.path.join(path.replace(addon, ""), name)[1:]
+                zipObj.write(os.path.join(path, name), zipTarget)
+            
     def _generate_addons_file( self ):
         # addon list
         addons = os.listdir( "." )
