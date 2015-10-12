@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<addon id="script.qbittorent" version="0.0.1" name="QBittorrent" provider-name="Mookfist">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0" />
+  </requires>
+  <extension point="xbmc.python.script" library="default.py">
+    <provides>Programs</provides>
+    <res width="1920" height="1080" aspect="16:9" default="true" folder="1080i" />
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">QBittorent interface</summary>
+    <description lang="en">Provides access to QBittorrent, allowing you to list torrents, or turn on or off individual torrents.</description>
+    <disclaimer lang="en">Using this plugin while chanting certain incantations will make your neighbors call the police.</disclaimer>
+    <language>en</language>
+    <platform>all</platform>
+    <license>MIT</license>
+    <source>https://github.com/mookfist/repo/tree/master/plugin.qbittorent</source>
+    <email>mookfist@gmail.com</email>
+    <website>https://github.com/mookfist/repo</website>
+  </extension>
+</addon>
