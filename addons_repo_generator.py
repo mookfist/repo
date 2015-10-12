@@ -59,16 +59,23 @@ class Generator:
     def _generate_zips( self ):
         addons = os.listdir(".")
 
-        if not os.path.exists("zips"):
+        if not os.path.exists("zips/"):
           os.mkdir("zips")
 
         for addon in addons:
+          
           addonFile = os.path.join(addon, "addon.xml")
+
           if os.path.exists(addonFile):
+
+            addonZipDir = "zips/%s" % addon
+            if not os.path.exists(addonZipDir):
+              os.makedirs(addonZipDir)
+
             version = xml.etree.ElementTree.parse(addonFile).getroot().attrib['version']
             addonZipName = addon + "-" + version
 
-            zipObj = zipfile.ZipFile("zips/" + addonZipName + ".zip", mode='w')
+            zipObj = zipfile.ZipFile(addonZipDir + "/" + addonZipName + ".zip", mode='w')
 
             for path, subdirs, files in os.walk(addon):
               for name in files:
