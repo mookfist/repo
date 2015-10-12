@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon id="script.qbittorrent" version="0.0.1" name="QBittorrent" provider-name="Mookfist">
+<addon id="script.qbittorrent" version="0.0.2" name="QBittorrent" provider-name="Mookfist">
   <requires>
     <import addon="xbmc.python" version="2.1.0" />
     <import addon="script.module.python-requests" version="2.8.0" />
@@ -16,7 +16,7 @@
     <language>en</language>
     <platform>all</platform>
     <license>MIT</license>
-    <source>https://github.com/mookfist/repo/tree/master/plugin.qbittorent</source>
+    <source>https://github.com/mookfist/repo/tree/master/plugin.qbittorrent</source>
     <email>mookfist@gmail.com</email>
     <website>https://github.com/mookfist/repo</website>
   </extension>
