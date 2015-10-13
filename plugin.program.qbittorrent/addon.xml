@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon id="plugin.program.qbittorrent" version="0.0.6" name="QBittorrent" provider-name="Mookfist">
+<addon id="plugin.program.qbittorrent" version="0.0.7" name="QBittorrent" provider-name="Mookfist">
   <requires>
     <import addon="xbmc.python" version="2.1.0" />
     <import addon="script.module.python-requests" version="2.8.0" />
-    <import addon="script.module.python-qbittorrent" version="0.1.4" />
+    <import addon="script.module.python-qbittorrent" version="0.1.5" />
   </requires>
   <extension point="xbmc.python.pluginsource" library="default.py">
     <provides>executable</provides>

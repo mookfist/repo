@@ -111,8 +111,10 @@ os.chdir(BASE_PATH)
 
 plugin_dir = 'script.module.python-%s' % mod
 
-if not os.path.exists(plugin_dir + "/lib"):
-  os.makedirs(plugin_dir + "/lib")
+if os.path.exists(plugin_dir):
+  shutil.rmtree(plugin_dir)
+
+os.makedirs(plugin_dir + "/lib")
 
 shutil.copyfile('python-icon.png', plugin_dir + '/icon.png')
 shutil.move(src_dir, plugin_dir + "/lib")

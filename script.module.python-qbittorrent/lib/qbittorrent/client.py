@@ -54,8 +54,12 @@ class Client(object):
       raise InvalidRequest('Invalid HTTP command: %s' % httpverb)
 
     r.raise_for_status()
+
+    json = json.loads(r.text)
+
+    r.close()
     
-    return r.json()
+    return json
 
   def close(self):
     s = self._getSession()
