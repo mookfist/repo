@@ -1,5 +1,6 @@
 import requests
 import logging
+import json
 
 try:
   basestring
@@ -55,11 +56,11 @@ class Client(object):
 
     r.raise_for_status()
 
-    json = json.loads(r.text)
+    obj = json.loads(r.text)
 
     r.close()
     
-    return json
+    return obj
 
   def close(self):
     s = self._getSession()
