@@ -28,6 +28,9 @@ class Client(object):
   def _getSession(self):
     if self._session == None:
       self._session = requests.Session()
+      self._session.headers.update({'Accept': 'application/json'})
+      self._session.headers.update({'X-Request': 'JSON'})
+      self._session.headers.update({'X-Requeted-With': 'XMLHttpRequest'})
     return self._session
 
   def _get(self, url, params=None):
