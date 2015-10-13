@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<window>
+  <allowoverlay>yes</allowoverlay>
+  <zorder>1</zorder>
+  <controls>
+    <control type="group" id="1">
+      <description>My First Group</description>
+      <posx>80</posx>
+      <posy>80</posy>
+      <width>250</width>
+      <height>250</height>
+      <defaultcontrol>2</defaultcontrol>
+      <visible>true</visible>
+      <onup>2</onup>
+      <ondown>3</ondown>
+      <onleft>1</onleft>
+      <onright>1</onright>
+      <control type="label">
+        <description>Label</description>
+        <left>170</left>
+        <top>265</top>
+        <height>25</height>
+        <width>1000</width>
+        <label>hi</label>
+      </control>
+        <control type="button" id="866">
+            <description>Close Window button</description>
+            <posx>520</posx>
+            <posy>15</posy>
+            <width>64</width>
+            <height>32</height>
+            <label>-</label>
+            <font>-</font>
+            <onclick>PreviousMenu</onclick>
+            <texturefocus>DialogCloseButton-focus.png</texturefocus>
+            <texturenofocus>DialogCloseButton.png</texturenofocus>
+            <onleft>10</onleft>
+            <onright>10</onright>
+            <onup>10</onup>
+            <ondown>10</ondown>
+            <visible>system.getbool(input.enablemouse)</visible>
+        </control>
+    </control>
+</controls>
+</window>
+      
