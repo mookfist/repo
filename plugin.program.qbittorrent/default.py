@@ -1,4 +1,5 @@
-import os, sys
+import os, sys, time
+from urlparse import urlparse
 import xbmc, xbmcaddon, xbmcgui, xbmcplugin
 
 from qbittorrent.client import Client
@@ -13,25 +14,76 @@ __language__   = __settings__.getLocalizedString
 
 HANDLE = int(sys.argv[1])
 
-class QBittorrentList(xbmcgui.WindowXMLDialog):
-  def __init__(self, *args, **kwargs):
-    xbmc.log('initting dialog')
-    xbmcgui.WindowXMLDialog.__init__(self, *args, **kwargs)
-    xbmc.log('yup!')
+def get_params():
+  param=[]
+  paramstring=sys.argv[2]
+  if len(paramstring)>=2:
+    params=sys.argv[2]
+    cleanedparams=params.replace('?','')
+    if (params[len(params)-1]=='/'):
+      params=params[0:len(params)-2]
+    pairsofparams=cleanedparams.split('&')
+    param={}
+    for i in range(len(pairsofparams)):
+      splitparams={}
+      splitparams=pairsofparams[i].split('=')
+      if (len(splitparams))==2:
+        param[splitparams[0]]=splitparams[1]
+  xbmc.log(str(param))
+  return param
+
+
+def filterDownloading(torrents):
+  return [torrent for torrent in torrents if torrent['state'] == 'downloading']
+
+def filterCompleted(torrents):
+  return [torrent for torrent in torrents if torrent['progress'] == 1]
+
+def filterQueued(torrents):
+  return [torrent for torrent in torrents if torrent['state'] == 'queuedUP' or torrent['state'] == 'queuedDL']
+
+
+def listTorrents(qb, torrentFilter=None):
+  torrents = qb.torrents()
+
+  if torrentFilter != None:
+    torrents = torrentFilter(torrents)
+
+  xbmc.log(str(torrents))
+
+  mode = 1
+
+  for torrent in torrents:
+    xbmc.log('Found torrent: %s' % torrent['name'])
+
+    progress = str(torrent['progress'] * 100) + '%'
+
+    name = torrent['name']
+    name += " [COLOR FFFF0000]" + __language__(30004) + "[/COLOR] " + str(progress)
+    
+    li = xbmcgui.ListItem(name)
+    ok = xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url='foobar',listitem=li,isFolder=False)  
+
+  xbmcplugin.endOfDirectory(handle=int(sys.argv[1]), cacheToDisc=False)
+
+  xbmc.log('closing connection')
+
+  time.sleep(1)
+
+def listFolders():
   
-  def onAction(self, act):
-    xbmc.log('Action ID: %s' % str(act.getId()))
+  folders = ['Downloading','Completed','Queued','All']
 
-    xbmc.log(str(act.getButtonCode()))
+  for folder in folders:
+    li = xbmcgui.ListItem(folder)
+
+    url = sys.argv[0] + "?mode=%s" % folder
+
+    xbmcplugin.addDirectoryItem(handle=int(sys.argv[1]), url=url, listitem=li, isFolder=True)
+
+  xbmcplugin.endOfDirectory(handle=int(sys.argv[1]), cacheToDisc=False)
   
-  def onClick(self, controlId):
 
-    if controlId == 866:
-      self.close()
-
-    xbmc.log('onClick ' + str(controlId))
-
-xbmc.log('imported the client properly!')
 
 username = __settings__.getSetting('username')
 password = __settings__.getSetting('password')
@@ -40,28 +92,31 @@ url = __settings__.getSetting('url')
 qb = Client(url=url)
 qb.login(username, password)
 
-xbmc.log('displaying my dialog?')
-
 for arg in sys.argv:
   xbmc.log('arg: %s' % arg)
 
+params = get_params()
 
-# xbmcplugin.setContent(addon_handle, 'programs')
+for param in params:
+  xbmc.log('param: %s' % param)
 
-def listTorrents():
-  torrents = qb.torrents()
+mode = 0
 
-  mode = 1
+try:
+  mode = params['mode']
+except:
+  pass
 
-  for torrent in torrents:
+if mode == 0:
+  listFolders()
+elif mode == "Downloading":
+  listTorrents(qb, filterDownloading)
+elif mode == "Completed":
+  listTorrents(qb, filterCompleted)
+elif mode == "Queued":
+  listTorrents(qb, filterQueued)
+elif mode == "All":
+  listTorrents(qb)
 
-    name = torrent['name']
-    name += " [COLOR FFFF0000]" + __language__(30010) + "[/COLOR]" + str(torrent['progress'])
-    
-    li = xbmcgui.ListItem(name)
-    ok = xbmcplugin.addDirectoryItem(handle=HANDLE, url='foobar',listitem=li,isFolder=False)  
-    xbmcplugin.endOfDirectory(handle=HANDLE)
-
-listTorrents()
-
+qb.close()
 xbmc.log('done')
