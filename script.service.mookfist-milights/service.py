@@ -23,7 +23,7 @@ if __name__ == "__main__":
   l.group = 1
 
   monitor = xbmc.Monitor()
-  player = MyPlayer(l)
+  player = MyPlayer(lights=l)
 
   while not monitor.abortRequested():
     if monitor.waitForAbort(10):
