@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<addon id="script.module.python-milight" version="0.6" name="python-milight" provider-name="McSwindler">
+  <requires>
+    <import addon="xbmc.python" version="2.14.0" />
+  </requires>
+  <extension point="xbmc.python.module" library="lib" />
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">Controller for milight/limitlessled Wi-Fi LEDs</summary>
+    <description lang="en">Visit GitHub for more information: https://github.com/McSwindler/python-milight</description>
+    <disclaimer>This addon is just a wrapper around the original module found at PyPI</disclaimer>
+    <language>en</language>
+    <platform>all</platform> 
+    <source>http://pypi.python.org/pypi/milight</source>
+    <email>wilingua@gmail.com</email>
+    <website>http://pypi.python.org/pypi/milight</website>
+  </extension>
+</addon>

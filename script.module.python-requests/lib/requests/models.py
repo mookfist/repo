@@ -319,7 +319,7 @@ class PreparedRequest(RequestEncodingMixin, RequestHooksMixin):
         """Prepares the given HTTP method."""
         self.method = method
         if self.method is not None:
-            self.method = self.method.upper()
+            self.method = to_native_string(self.method.upper())
 
     def prepare_url(self, url, params):
         """Prepares the given HTTP URL."""
@@ -414,7 +414,7 @@ class PreparedRequest(RequestEncodingMixin, RequestHooksMixin):
         content_type = None
         length = None
 
-        if data == {} and json is not None:
+        if not data and json is not None:
             content_type = 'application/json'
             body = complexjson.dumps(json)
 

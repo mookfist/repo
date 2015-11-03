@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
-<addon id="script.module.python-requests" version="2.8.0" name="python-requests" provider-name="Kenneth Reitz">
+<addon id="script.module.python-requests" version="2.8.1" name="python-requests" provider-name="Kenneth Reitz">
   <requires>
     <import addon="xbmc.python" version="2.14.0" />
   </requires>
@@ -99,6 +99,20 @@ Contribute
 
 Release History
 ---------------
+
+2.8.1 (2015-10-13)
+++++++++++++++++++
+
+**Bugfixes**
+
+- Update certificate bundle to match ``certifi`` 2015.9.6.2's weak certificate
+  bundle.
+- Fix a bug in 2.8.0 where requests would raise ``ConnectTimeout`` instead of
+  ``ConnectionError``
+- When using the PreparedRequest flow, requests will now correctly respect the
+  ``json`` parameter. Broken in 2.8.0.
+- When using the PreparedRequest flow, requests will now correctly handle a
+  Unicode-string method name on Python 2. Broken in 2.8.0.
 
 2.8.0 (2015-10-05)
 ++++++++++++++++++
@@ -1190,6 +1204,23 @@ This is not a backwards compatible change.
     <source>https://github.com/mookfist/repo/tree/master/plugin.qbittorrent</source>
     <email>mookfist@gmail.com</email>
     <website>https://github.com/mookfist/repo</website>
+  </extension>
+</addon>
+
+<addon id="script.module.python-milight" version="0.6" name="python-milight" provider-name="McSwindler">
+  <requires>
+    <import addon="xbmc.python" version="2.14.0" />
+  </requires>
+  <extension point="xbmc.python.module" library="lib" />
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">Controller for milight/limitlessled Wi-Fi LEDs</summary>
+    <description lang="en">Visit GitHub for more information: https://github.com/McSwindler/python-milight</description>
+    <disclaimer>This addon is just a wrapper around the original module found at PyPI</disclaimer>
+    <language>en</language>
+    <platform>all</platform>
+    <source>http://pypi.python.org/pypi/milight</source>
+    <email>wilingua@gmail.com</email>
+    <website>http://pypi.python.org/pypi/milight</website>
   </extension>
 </addon>
 

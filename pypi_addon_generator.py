@@ -6,6 +6,7 @@
 ###
 import os
 import sys
+import pprint
 
 try:
   from urllib.request import Request
@@ -20,6 +21,9 @@ import shutil
 import zipfile
 from xml.sax.saxutils import escape
 # https://pypi.python.org/packages/source/p/pybuilder-nose/pybuilder-nose-0.0.5.tar.gz#md5=f8794d709967d109c3e1ffb86096196b
+
+
+pp = pprint.PrettyPrinter(indent=2)
 
 PROVIDER_NAME = "Mookfist"
 XBMC_PYTHON_VER = "2.14.0"
@@ -62,7 +66,9 @@ metadata = json.loads(res.read().decode("utf-8"))
 
 ver = metadata['info']['version']
 
-release = metadata['releases'][ver][0]
+for release in metadata['releases'][ver]:
+  if release['packagetype'] == 'sdist':
+    break
 
 url = release['url']
 
@@ -80,10 +86,13 @@ f.close()
 
 print("Unpacking")
 
-if ext == "whl" or ext == "egg":
+if ext == "whl" or ext == "egg" or ext == "zip":
   archive = zipfile.ZipFile(filename)
 elif ext == "gz" or ext == "tar" or ext == "tgz":
   archive = tarfile.open(filename)
+else:
+  print("Extension unknown: %s" % ext)
+  sys.exit(1)
 
 archive.extractall()
 archive.close()
