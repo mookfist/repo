@@ -1,5 +1,5 @@
 from light import Lights
-import xbmc, xmbcplugin, xbmcaddon
+import xbmc, xbmcaddon
 import time
 
 __scriptname__ = "Mookfist Milights"
@@ -16,19 +16,17 @@ class MyPlayer(xbmc.Player):
     self.lights = lights
   
   def onPlayBackStarted(self):
-    l.fadeOff()    
-    xbmc.log('*********SOMETHING STARTED PLAYING', level=xbmc.LOGWARNING)
+    self.lights.fadeOff()    
 
   def onPlayBackStopped(self):
-    xbmc.log('*********SOMETHING STOPPED PLAYING', level=xbmc.LOGWARNING)
-    l.fadeOn()
+    self.lights.fadeOn()
        
         
 
 if __name__ == "__main__":
 
   l = Lights(__settings__.getSetting('light_host'))
-  l.group = __settings__.getSetting('light_group')
+  l.group = int(__settings__.getSetting('light_group'))
 
   monitor = xbmc.Monitor()
   player = MyPlayer(lights=l)
