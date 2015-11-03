@@ -11,10 +11,5 @@ Goto your Addons screen in Kodi, check Install From Zip, and select the zip file
 What's available:
 
 QBittorrent - A plugin to monitor and control QBittorrent
-python-requests - A plugin to add the great requests python library for use with other plugins
-
-Stuff I want:
-
-Add files to Movies to TV Shows - I envision this plugin to allow me to select a file, select whether it's a movie or a tv show, and have the file copied to any source folder that can accomodate it.
-
+mookfist-milights - A plugin that will control milights based on what's happening in Kodi
 

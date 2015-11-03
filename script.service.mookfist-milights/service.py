@@ -1,6 +1,14 @@
 from light import Lights
-import xbmc
+iimport xbmc, xmbcplugin, xbmcaddon
 import time
+
+__scriptname__ = "Mookfist Milights"
+__author__     = "Mookfist"
+__url__        = "https://github.com/mookfist/repo"
+__settings__   = xbmcaddon.Addon(id='script.service.mookfist-milights')
+__version__    = __settings__.getAddonInfo('version')
+__language__   = __settings__.getLocalizedString
+
 
 class MyPlayer(xbmc.Player):
   def __init__(self, lights):
@@ -19,8 +27,8 @@ class MyPlayer(xbmc.Player):
 
 if __name__ == "__main__":
 
-  l = Lights('192.168.1.167')
-  l.group = 1
+  l = Lights(__settings__.getSetting('light_host'))
+  l.group = __settings__.getSetting('light_group')
 
   monitor = xbmc.Monitor()
   player = MyPlayer(lights=l)

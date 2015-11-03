@@ -6,7 +6,6 @@ class Lights(object):
   STATE_OFF = 1
   STATE_ON  = 2
 
-
   def __init__(self, host, port=8899, bulbtype='rgb'):
     self.host = host
     self.port = 8899
@@ -46,19 +45,16 @@ class Lights(object):
 
     self.light_state = Lights.STATE_OFF
     
-
   def fadeOn(self):
-    self.controller.send(self.light.on(self.group))
-    self.controller.send(self.light.fade_up(self.group))
-    #self.controller.send(self.light.brightness(100,self.group))
+    for i in range(1,100):
+      self.controller.send(self.light.brightness(i, self.group))
+
     self.light_state = Lights.STATE_ON
 
   def fadeOff(self):
-    #for i in range(100,1,-1):
-    #  self.controller.send(self.light.brightness(i,self.group))
-    self.controller.send(self.light.fade_down(self.group))
-    # self.controller.send(self.light.brightness(1,self.group))
-    self.controller.send(self.light.off(self.group))
+    for i in range(100,1,-1):
+      self.controller.send(self.light.brightness(i,self.group))
+   
     self.light_state = Lights.STATE_OFF
    
   def isOn(self):
@@ -70,5 +66,4 @@ class Lights(object):
     if self.light_state == Lights.STATE_ON:
       return False
     return True
-
 
