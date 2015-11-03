@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<addon id="service.mookfist-milights" version="0.0.1" name="Mookfist Milights" provider-name="Mookfist">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0" />
+    <import addon="script.module.python-milight" version="0.6" />
+  </requires>
+  <extension point="xbmc.service" library="service.py" start="login" />
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">Mookfist Milights</summary>
+    <description lang="en">Controls the wifi bridge of Limitless LED-compatible products, such as Milights</description>
+    <disclaimer lang="en">May contain soy products</disclaimer>
+    <language>en</language>
+    <platform>all</platform>
+    <license>MIT</license>
+    <source>https://github.com/mookfist/repo/tree/master/service.mookfist-milights</source>
+    <email>mookfist@gmail.com</email>
+    <website>https://github.com/mookfist/repo</website>
+  </extension>
+</addon>
