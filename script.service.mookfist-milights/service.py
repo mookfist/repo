@@ -1,5 +1,5 @@
 from light import Lights
-iimport xbmc, xmbcplugin, xbmcaddon
+import xbmc, xmbcplugin, xbmcaddon
 import time
 
 __scriptname__ = "Mookfist Milights"
