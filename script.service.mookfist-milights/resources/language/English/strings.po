@@ -35,3 +35,55 @@ msgstr ""
 msgctxt "#30004"
 msgid "Minimum brightness"
 msgstr ""
+
+msgctxt "#30005"
+msgid "Movies"
+msgstr ""
+
+msgctxt "#30006"
+msgid "TV"
+msgstr ""
+
+msgctxt "#30007"
+msgid "Enabled"
+msgstr ""
+
+msgctxt "#30008"
+msgid "Enable Color Correction"
+msgstr ""
+
+msgctxt "#30009"
+msgid "Red Value"
+msgstr ""
+
+msgctxt "#30010"
+msgid "Green Value"
+msgstr ""
+
+msgctxt "#30011"
+msgid "Blue Value"
+msgstr ""
+
+msgctxt "#30012"
+msgid "Set Brightness at Start"
+msgstr ""
+
+msgctxt "#30013"
+msgid "Starting Brightness"
+msgstr ""
+
+msgctxt "#30014"
+msgid "Fading Speed"
+msgstr ""
+
+msgctxt "#30015"
+msgid "Slow"
+msgstr ""
+
+msgctxt "#30016"
+msgid "Medium"
+msgstr ""
+
+msgctxt "#30017"
+msgid "Fast"
+msgstr ""

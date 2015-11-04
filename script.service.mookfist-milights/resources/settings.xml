@@ -5,5 +5,18 @@
     <setting label="30002" type="number" id="light_port" default="8899" />
     <setting label="30003" type="number" id="light_group" default="0" />
     <setting label="30004" type="slider" id="min_brightness" default="10" range="0,100" />
+    <setting label="30008" type="bool" id="enable_color_correction" />
+    <setting label="30009" type="slider" id="red_value" range="0,255" />
+    <setting label="30010" type="slider" id="green_value" range="0,255" />
+    <setting label="30011" type="slider" id="blue_value" range="0,255" />
+    <setting label="30012" type="bool" id="reset_brightness" />
+    <setting label="30013" type="slider" id="start_brightness" range="0,100" />
+    <setting label="30014" type="select" id="fade_speed" values="slow|medium|fast" lvalues="30015|30016|30017" />
+  </category>
+  <category label="30005">
+    <setting label="30007" type="bool" id="movie_enabled" />
+  </category>
+  <category label="30006">
+    <setting label="30007" type="bool" id="tv_enabled" />
   </category>
 </settings>
