@@ -7,7 +7,7 @@ Welcome to the Mookfist Kodi repository. Here you will find various addons for t
 
 To install the repository, you must manually download and install the repository addon.
 
-1. Download https://github.com/mookfist/repo/raw/master/zips/repository.mookfist.zip
+1. Download https://github.com/mookfist/repo/raw/master/zips/repository.mookfist-2.0.zip
 2. Goto your Addons screen in Kodi
 3. Select "Install from Zip" and select the repository.mookfist.zip file you downloaded
 
