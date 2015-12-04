@@ -1,1 +1,6 @@
-Stuff got fixed, improved, yadda yadda yadda
+Version 0.0.8
+
+ - Revamped configuration
+ - Speed configuration respected
+ - Ability to control multiple groups at once
+ - Fading done in a separate thread

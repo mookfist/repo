@@ -1299,7 +1299,7 @@ is not maintained, and should only be used as a last resort.
     </extension>
 </addon>
 
-<addon id="script.service.mookfist-milights" version="0.0.7" name="Mookfist Milights" provider-name="Mookfist">
+<addon id="script.service.mookfist-milights" version="0.0.8" name="Mookfist Milights" provider-name="Mookfist">
   <requires>
     <import addon="xbmc.python" version="2.1.0" />
     <import addon="script.module.python-milight" version="0.6" />
