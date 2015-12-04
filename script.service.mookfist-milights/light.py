@@ -1,65 +1,72 @@
 import milight
 import time
 
+SPEED_SLOW = 1
+SPEED_MEDIUM = 5
+SPEED_FAST = 10
+
 class Lights(object):
 
   def __init__(self, host, port=8899, bulbtype='rgb'):
     self.host = host
-    self.port = 8899
-    self.bulbtype = 'rgbw'
+    self.port = port
+    self.bulbtype = bulbtype
 
-    self.group = None
+    self._groupStates = [{
+        'brightness': 100,
+        'on': True,
+    },{
+        'brightness': 100,
+        'on': True
+    },{
+        'brightness': 100,
+        'on': True
+    },{
+        'brightness': 100,
+        'on': True
+    }]
 
-    self.r = 255
-    self.g = 80
-    self.b = 0
-
-    self.controller = milight.MiLight({'host': self.host})
+    self.controller = milight.MiLight({'host': self.host, 'port': self.port})
     self.light = milight.LightBulb(self.bulbtype)
 
     self._brightness = None
-    self._interrupt = False
 
 
   def interrupt(self):
     self._interrupt = True
 
 
-  def fadeOn(self):
-    if self._brightness == None:
-      minRange = 1
-    else:
-      minRange = self._brightness
-
-    for i in range(minRange,100):
-      if self._interrupt == False:
-        self._brightness = i
-        self.controller.send(self.light.brightness(i, self.group))
-      else:
-        break
-
-    self._interrupt = False
+  def brightness(self, brightness, group=1):
+    self.controller.send(self.light.brightness(brightness, group))
+    self._groupStates[group-1]['brightness'] = brightness
 
 
-  def fadeOff(self):
-    if self._brightness == None:
-      minRange = 100
-    else:
-      minRange = self._brightness
+  def off(self, group=1):
+    self.light.off(group)
+    self._groupStates[group-1]['on'] = False
 
-    for i in range(minRange,1,-1):
-      if self._interrupt == False:
-        self._brightness = i
-        self.controller.send(self.light.brightness(i,self.group))
-      else:
-        break
-    self._interrupt = False   
 
-  def setBrightness(self, brightness):
-    self.controller.send(self.light.brightness(brightness, self.group))
-    self._brightness = brightness
+  def on(self, group=1):
+    self.light.on(group)
+    self._groupStates[group-1]['on'] = True
 
-  def setColor(self, r, g, b):
-    self.controller.send(self.light.color(milight.color_from_rgb(r,g,b), self.group))
 
-   
+  def fade(self, target, step=1, group=1):
+      startingBrightness = self._groupStates[group-1]
+
+      for i in range(startingBrightness, target, step):
+          self.brightness(i, group)
+
+
+  def fadeOn(self, speed=10, group=1):
+    self.fade(100, group, speed)
+
+
+  def fadeOff(self, speed=10, group=1):
+    self.fade(1, group, speed*-1)
+
+
+  def color(self, r, g, b, group=1):
+    mr = milight.color_from_rgb(r,g,b)
+    self.controller.send(self.light.color(mr, group))
+
