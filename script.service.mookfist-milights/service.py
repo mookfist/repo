@@ -1,4 +1,5 @@
-from light import Lights
+from light import Lights, LightFadeThread
+
 import xbmc, xbmcaddon
 import time
 import simplejson as json
@@ -44,12 +45,15 @@ class MyMonitor(xbmc.Monitor):
 
     self.log('TV Enabled: %s -- Movie Enabled: %s -- Player Type: %s' % (tvEnabled, movieEnabled, playerType))
 
-    if playerType == 'tv' and tvEnabled == 'true':
-      self.log('TV show has started playing, time to fade out the lights')
-#      self.lights.fadeOff()
-    elif playerType == 'movie' and movieEnabled == 'true':
-      self.log('Movie has started playing, time to fade out the lights')
-      self.lights.fadeOff()
+    if (playerType == 'tv' and tvEnabled == 'true') or (playerType == 'movie' and movieEnabled == 'true'):
+      self.log('-- Video has started playing')
+      for i in range(1,4):
+        if groupEnabled(i):
+          stepSpeed = getStepSpeed(i)
+          if stepSpeed == None:
+            self.lights.brightness(i)
+          else:
+            self.lights.fadeOut(stepSpeed, i)
 
 
   def _onStop(self, data):
@@ -59,12 +63,15 @@ class MyMonitor(xbmc.Monitor):
       self.log('Coult not determine player type: %s' % data, xbmc.LOGWARNING)
       return
 
-    if playerType == 'tv' and __settings__.getSetting('tv_enabled') == 'true':
-      self.log('TV show has stopped playing, time to fade on the lights')
-#      self.lights.fadeOn()
-    elif playerType == 'movie' and __settings__.getSetting('movie_enabled') == 'true':
-      self.log('Movie show has stopped playing, time to fade on the lights')
-#      self.lights.fadeOn()
+    if (playerType == 'tv' and __settings__.getSetting('tv_enabled') == 'true') or (playerType == 'movie' and __settings__.getSetting('movie_enabled') == 'true'):
+
+      for i in range(1,4):
+        if groupEnabled(i):
+          stepSpeed = getStepSpeed(i)
+          if stepSpeed == None:
+            self.lights.brightness(100, i)
+          else:
+            self.lights.fadeIn(stepSpeed, group=i)
 
 
   def onNotification(self, sender, method, data):
@@ -92,13 +99,13 @@ def doInitColor(group):
     return True
 
 def getRedColor(group):
-  return __settings__.getSetting('global_red_value')
+  return int(__settings__.getSetting('global_red_value'))
 
 def getGreenColor(group):
-  return __settings__.getSetting('global_green_value')
+  return int(__settings__.getSetting('global_green_value'))
 
 def getBlueColor(group):
-  return __settings__.getSetting('global_blue_value')
+  return int(__settings__.getSetting('global_blue_value'))
 
 def getMaxBrightness(group):
   return int(__settings__.getSetting('global_max_brightness'))
@@ -115,6 +122,23 @@ def getBulbType(group):
     return 'rgbw'
   else:
     return 'rgb'
+
+
+def getStepSpeed(group):
+  speed = int(__settings__.getSetting('global_fade_speed'))
+
+
+  if speed == 0:
+    step = 1
+  elif speed == 1:
+    step = 5
+  elif speed == 2:
+    step = 10
+  else:
+    step = None
+
+  return step
+
 
 def log(msg):
   xbmc.log('[mookfist-milights] %s' % msg)
@@ -155,6 +179,7 @@ if __name__ == "__main__":
 
   while not monitor.abortRequested():
     if monitor.waitForAbort(10):
+      l.stopFadeThread()
       break
 
 

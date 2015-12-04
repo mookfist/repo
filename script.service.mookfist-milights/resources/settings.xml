@@ -3,7 +3,7 @@
   <category label="30000">
     <setting label="30001" type="text" id="light_host" default="192.168.1.167" />
     <setting label="30002" type="number" id="light_port" default="8899" />
-    <setting label="30024" type="select" id="global_bulb_type" lvalues="30025|30026|30027" default="rgbw" />
+    <setting label="30024" type="select" id="global_bulb_type" lvalues="30025|30026|30027" default="1" />
     <!-- white, rgbw, rgb -->   
 
     <setting type="sep" />
@@ -15,7 +15,10 @@
   <category label="30018">
     <setting type="sep"/>
     <setting label="30012" type="bool" id="global_set_brightness_at_start" />
-    <setting label="30014" type="select" id="global_fade_speed" values="slow|medium|fast|immediate" lvalues="30015|30016|30017|30019" />
+    
+    <setting label="30014" type="select" id="global_fade_speed" lvalues="30015|30016|30017|30019" default="1" />
+    <!-- slow, medium, fast, immediate -->
+
     <setting label="30013" type="slider" id="global_max_brightness" range="0,1,100" default="100" option="int" />
     <setting label="30004" type="slider" id="global_min_brightness" range="0,1,100" default="10" option="int" />
     <setting type="sep"/> 
