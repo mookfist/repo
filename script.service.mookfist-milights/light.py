@@ -23,20 +23,43 @@ class LightFadeThread(threading.Thread):
   def stop(self):
     self.running = False
 
+  def stopDimming(self, group):
+    for queuePos, queueCmd in enumerate(self._queue):
+      if queueCmd[0] == group:
+        self._queue = [ q for q in self._queue if q[0] != group ]
+
 
   def fade(self, brightness, step=1, group=1):
     startingBrightness = self.light.getBrightness(group)
 
+    groupQueue = []
+    for i in range(startingBrightness, brightness + step, step):
+      groupQueue.append((group, i))
+
+
+    if len(self._queue) > 0:
+      newQueue = []
+      for queuePos, queueValue in enumerate(self._queue):
+        newQueue.append(queueValue)
+        if len(groupQueue) > 0:
+          newQueue.append(groupQueue.pop(0))
+      self._queue = newQueue
+    else:
+      self._queue = groupQueue
+
+    '''
     for i in range(startingBrightness, brightness + step, step):
       self._queue.append((group, i))
+    '''
+
 
   def run(self):
 
     while self.running == True:
       if len(self._queue) > 0:
         task = self._queue.pop(0)
+        print 'Setting brightness for Group #%s to %s%%' % (task[0], task[1])
         self.light.brightness(task[1], task[0])
-      time.sleep(0.1)
 
 
 class Lights(object):
@@ -96,6 +119,7 @@ class Lights(object):
     if self._currentWorkingThread == None:
       self.startFadeThread()
 
+    self._currentWorkingThread.stopDimming(group)
     self._currentWorkingThread.fade(target, step, group)
 
 
