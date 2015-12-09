@@ -123,3 +123,7 @@ msgstr ""
 msgctxt "#30027"
 msgid "RGB"
 msgstr ""
+
+msgctxt "#30028"
+msgid "Command Delay"
+msgstr ""

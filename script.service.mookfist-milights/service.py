@@ -149,10 +149,11 @@ if __name__ == "__main__":
   host = __settings__.getSetting('light_host')
   port = int(__settings__.getSetting('light_port'))
   bulbType = getBulbType(1)
+  wait_duration = float(int(__settings__.getSetting('command_delay'))) / 1000.0
 
   log('Bulb Type: %s' % bulbType)
 
-  l = Lights(host, port, bulbType)
+  l = Lights(host, port, bulbType, wait_duration)
 
   monitor = MyMonitor(lights=l)
 

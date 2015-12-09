@@ -64,7 +64,7 @@ class LightFadeThread(threading.Thread):
 
 class Lights(object):
 
-  def __init__(self, host, port=8899, bulbtype='rgb'):
+  def __init__(self, host, port=8899, bulbtype='rgb', wait_duration=0.025):
     self.host = host
     self.port = port
     self.bulbtype = bulbtype
@@ -85,7 +85,7 @@ class Lights(object):
 
     self._currentWorkingThread = None
 
-    self.controller = milight.MiLight({'host': self.host, 'port': self.port})
+    self.controller = milight.MiLight({'host': self.host, 'port': self.port}, wait_duration=wait_duration)
     self.light = milight.LightBulb(self.bulbtype)
 
   def startFadeThread(self):

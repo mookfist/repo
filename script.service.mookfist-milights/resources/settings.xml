@@ -4,7 +4,8 @@
     <setting label="30001" type="text" id="light_host" default="192.168.1.167" />
     <setting label="30002" type="number" id="light_port" default="8899" />
     <setting label="30024" type="select" id="global_bulb_type" lvalues="30025|30026|30027" default="1" />
-    <!-- white, rgbw, rgb -->   
+    <setting label="30028" type="number" id="command_delay" default="25" />
+    <!-- white, rgbw, rgb -->
 
     <setting type="sep" />
     <setting label="30020" type="bool" id="enable_group1" default="true" />
@@ -15,13 +16,13 @@
   <category label="30018">
     <setting type="sep"/>
     <setting label="30012" type="bool" id="global_set_brightness_at_start" />
-    
+
     <setting label="30014" type="select" id="global_fade_speed" lvalues="30015|30016|30017|30019" default="1" />
     <!-- slow, medium, fast, immediate -->
 
     <setting label="30013" type="slider" id="global_max_brightness" range="0,1,100" default="100" option="int" />
     <setting label="30004" type="slider" id="global_min_brightness" range="0,1,100" default="10" option="int" />
-    <setting type="sep"/> 
+    <setting type="sep"/>
     <setting label="30008" type="bool" id="global_enable_color" />
     <setting label="30009" type="slider" id="global_red_value" range="0,1,255" default="255" option="int" />
     <setting label="30010" type="slider" id="global_green_value" range="0,1,255" default="255" option="int"/>
@@ -29,12 +30,12 @@
 
 
   </category>
-    
+
   <category label="30005">
     <setting label="30007" type="bool" id="movie_enabled" />
   </category>
   <category label="30006">
     <setting label="30007" type="bool" id="tv_enabled" />
   </category>
-  
+
 </settings>
