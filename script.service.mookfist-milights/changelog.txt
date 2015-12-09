@@ -1,3 +1,9 @@
+Version 0.0.9
+ - Multiple light groups will fade out simultaneously
+ - If lights are in the middle of fading out, and they receive a fade in
+ command, they will fade in immediately now, instead of waiting for the fade
+ out to finish (and vice versa).
+
 Version 0.0.8
 
  - Revamped configuration
