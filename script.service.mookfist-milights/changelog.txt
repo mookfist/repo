@@ -1,3 +1,7 @@
+version 0.0.10
+ - Add a "Command Delay" setting to change the the delay amount (in
+ milliseconds) between commands sent to the light bulbs
+
 Version 0.0.9
  - Multiple light groups will fade out simultaneously
  - If lights are in the middle of fading out, and they receive a fade in
