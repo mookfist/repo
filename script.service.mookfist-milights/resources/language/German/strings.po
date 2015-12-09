@@ -1,0 +1,129 @@
+# Kodi Media Center language file
+# Addon Name: Mookfist Milights
+# Addon id: script.service.mookfist-milights
+# Addon Provider: Mookfist
+msgid ""
+msgstr ""
+"Project-Id-Version: service.mookfist-milights\n"
+"Report-Msgid-Bugs-To: mookfist@gmail.com\n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: no one knows\n"
+"Language-Team: Mookfist)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: de\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgctxt "#30000"
+msgid "General"
+msgstr "Grundeinstellungen"
+
+msgctxt "#30001"
+msgid "Host/ip of the wifi bridge"
+msgstr "Host/IP des WLAN Steuermodul(Bridge)"
+
+msgctxt "#30002"
+msgid "Port number of the wifi bridge"
+msgstr "Port des WLAN Steuermodul(Bridge)"
+
+msgctxt "#30004"
+msgid "Minimum brightness"
+msgstr "Niedrigste Helligkeit"
+
+msgctxt "#30005"
+msgid "Movies"
+msgstr "Filme"
+
+msgctxt "#30006"
+msgid "TV"
+msgstr "Serien"
+
+msgctxt "#30007"
+msgid "Enabled"
+msgstr "Aktiviert"
+
+msgctxt "#30008"
+msgid "Enable Color"
+msgstr "Aktiviere benutzerdefinierte Farbe"
+
+msgctxt "#30009"
+msgid "Red Value"
+msgstr "Rot Wert"
+
+msgctxt "#30010"
+msgid "Green Value"
+msgstr "Grün Wert"
+
+msgctxt "#30011"
+msgid "Blue Value"
+msgstr "Blau Wert"
+
+msgctxt "#30012"
+msgid "Set Brightness at Startup"
+msgstr "Starthelligkeit festlegen [-> Höchste Helligkeit]"
+
+msgctxt "#30013"
+msgid "Maximum Brightness"
+msgstr "Höchste Helligkeit"
+
+msgctxt "#30014"
+msgid "Fading Speed"
+msgstr "Geschwindigkeit des Helligkeitswechsel"
+
+msgctxt "#30015"
+msgid "Slow"
+msgstr "Langsam"
+
+msgctxt "#30016"
+msgid "Medium"
+msgstr "Mittel"
+
+msgctxt "#30017"
+msgid "Fast"
+msgstr "Schnell"
+
+msgctxt "#30018"
+msgid "Global Settings"
+msgstr "Allgemein"
+
+msgctxt "#30019"
+msgid "Immediate"
+msgstr "Sofort"
+
+msgctxt "#30020"
+msgid "Enable Group 1"
+msgstr "Aktiviere Gruppe/Zone 1"
+
+msgctxt "#30021"
+msgid "Enable Group 2"
+msgstr "Aktiviere Gruppe/Zone 2"
+
+msgctxt "#30022"
+msgid "Enable Group 3"
+msgstr "Aktiviere Gruppe/Zone 3"
+
+msgctxt "#30023"
+msgid "Enable Group 4"
+msgstr "Aktiviere Gruppe/Zone 4"
+
+msgctxt "#30024"
+msgid "Bulb Type"
+msgstr "Lampentyp"
+
+msgctxt "#30025"
+msgid "White"
+msgstr "Weiß"
+
+msgctxt "#30026"
+msgid "RGB + White"
+msgstr "RGB + Weiß"
+
+msgctxt "#30027"
+msgid "RGB"
+msgstr "RGB"
+
+msgctxt "#30028"
+msgid "Command Delay"
+msgstr "Verzögerung der Befehle [ms]"
