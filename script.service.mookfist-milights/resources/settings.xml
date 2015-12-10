@@ -24,9 +24,9 @@
     <setting label="30004" type="slider" id="global_min_brightness" range="0,1,100" default="10" option="int" />
     <setting type="sep"/>
     <setting label="30008" type="bool" id="global_enable_color" />
-    <setting label="30009" type="slider" id="global_red_value" range="0,1,255" default="255" option="int" />
-    <setting label="30010" type="slider" id="global_green_value" range="0,1,255" default="255" option="int"/>
-    <setting label="30011" type="slider" id="global_blue_value" range="0,1,255" default="255" option="int"/>
+    <setting label="30009" visible="eq(-1,true)" type="slider" id="global_red_value" range="0,1,255" default="255" option="int" />
+    <setting label="30010" visible="eq(-2,true)" type="slider" id="global_green_value" range="0,1,255" default="255" option="int"/>
+    <setting label="30011" visible="eq(-3,true)" type="slider" id="global_blue_value" range="0,1,255" default="255" option="int"/>
 
 
   </category>
