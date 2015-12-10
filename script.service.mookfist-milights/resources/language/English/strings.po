@@ -127,3 +127,7 @@ msgstr ""
 msgctxt "#30028"
 msgid "Command Delay"
 msgstr ""
+
+msgctxt "#30029"
+msgid "Enable Logging"
+msgstr ""
