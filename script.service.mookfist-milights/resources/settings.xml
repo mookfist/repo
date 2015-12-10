@@ -5,6 +5,7 @@
     <setting label="30002" type="number" id="light_port" default="8899" />
     <setting label="30024" type="select" id="global_bulb_type" lvalues="30025|30026|30027" default="1" />
     <setting label="30028" type="number" id="command_delay" default="25" />
+    <setting label="30029" type="bool" id="enable_logging" default="false" />
     <!-- white, rgbw, rgb -->
 
     <setting type="sep" />

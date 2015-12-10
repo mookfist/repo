@@ -7,6 +7,9 @@ __settings__   = xbmcaddon.Addon(id='script.service.mookfist-milights')
 __version__    = __settings__.getAddonInfo('version')
 __language__   = __settings__.getLocalizedString
 
+def loggingEnabled():
+  return __settings__.getSetting('enable_logging') == 'true'
+
 def groupEnabled(group):
   return __settings__.getSetting('enable_group%s' % group) == 'true'
 
@@ -64,7 +67,8 @@ def getStepSpeed(group):
 
 
 def log(msg):
-  xbmc.log('[mookfist-milights] %s' % msg)
+  if loggingEnabled():
+    xbmc.log('[mookfist-milights] %s' % msg)
 
 
 def initializeLights():
