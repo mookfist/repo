@@ -9,7 +9,7 @@
   <extension point="xbmc.addon.metadata">
     <summary lang="en">Mookfist Milights</summary>
     <description lang="en">Controls the wifi bridge of Limitless LED-compatible products, such as Milights</description>
-    <description lang="de">Steuert LimitlessLED kompatible Produkte (Milight / LimitlessLED / Easybulb / AppLamp / iLight) mithilfe des WLAN Steuermoduls (Bridge)</description>
+    <description lang="de">Steuert LimitlessLED kompatible Produkte (Milight / LimitlessLED / Easybulb / AppLamp / iLight) mithilfe des WLAN Steuermoduls (Bridge)[CR][CR][B]Erste Schritte[/B][CR]1. Unter "Grundeinstellungen", IP Adresse und Port eintragen.[CR]2. Lampentyp auswählen und die Gruppen/Zonen aktivieren, die gesteuert werden sollen.[CR]3. Im Reiter "Filme" sowie "Serien" an-/ausschalten, um das Addon beim jeweiligen Abspielen zu aktivieren.[CR]4. Film/Serie abspielen.[CR][CR][COLOR red]ACHTUNG:[/COLOR][CR]-Die Lampen/Controller müssen mit der Bridge bereits gepaired sein![CR]-Gebe deiner Bridge eine feste IP-Adresse![CR]Mehr Informationen: Mookfist Github Kodi Repo http://git.io/vRjKL</description>
 	<disclaimer lang="en">May contain soy products</disclaimer>
     <disclaimer lang="de">Kann Spuren von Soja enthalten</disclaimer>
 	<language>en</language>
