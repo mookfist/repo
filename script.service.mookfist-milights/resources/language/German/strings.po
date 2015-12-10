@@ -127,3 +127,7 @@ msgstr "RGB"
 msgctxt "#30028"
 msgid "Command Delay"
 msgstr "Verzögerung der Befehle [ms]"
+
+msgctxt "#30029"
+msgid "Enable Logging"
+msgstr "Aktiviere das Logging"
