@@ -1,13 +1,19 @@
 import milight
 import time
 import threading
+from utils import *
 
 SPEED_SLOW = 1
 SPEED_MEDIUM = 5
 SPEED_FAST = 10
 
 class LightFadeThread(threading.Thread):
+  '''Managed fade queues
 
+  Fading works by sending a brightness commands
+  This thread manages a queue of brightness adjustment commands
+  to get from the current brightness to a target globalMinBrightness
+  '''
   def __init__(self, light):
     threading.Thread.__init__(self)
     self.light = light
@@ -30,7 +36,7 @@ class LightFadeThread(threading.Thread):
 
 
   def fade(self, brightness, step=1, group=1):
-    startingBrightness = self.light.getBrightness(group)
+    startingBrightness = self.light.brightness(group)
 
     groupQueue = []
     for i in range(startingBrightness, brightness + step, step):
@@ -47,46 +53,78 @@ class LightFadeThread(threading.Thread):
     else:
       self._queue = groupQueue
 
-    '''
-    for i in range(startingBrightness, brightness + step, step):
-      self._queue.append((group, i))
-    '''
-
 
   def run(self):
-
     while self.running == True:
       if len(self._queue) > 0:
         task = self._queue.pop(0)
-        print 'Setting brightness for Group #%s to %s%%' % (task[0], task[1])
-        self.light.brightness(task[1], task[0])
+        self.light.brightness(task[0], task[1])
+
+
+class Light(object):
+  '''Represents a Light
+
+  Technically, this represents a group.
+  '''
+  def __init__(self, milight, group=1, maxBrightness=100, minBrightness=0, color=(255,255,255)):
+    self.maxBrightness = maxBrightness
+    self.minBrightness = minBrightness
+    self._currentColor = color
+    self.group = group
+
+    self._controller = milight[0]
+    self._lightbulb  = milight[1]
+    self._currentBrightness = None
+    self._currnetColor = None
+
+    self._on = False
+
+  def on(self):
+    self._lightbulb.on(self.group)
+    self._on = True
+
+  def brightness(self, brightness=None):
+    if brightness != None:
+      self._controller.send(self._lightbulb.brightness(brightness, self.group))
+      self._currentBrightness = brightness
+    return self._currentBrightness
+
+  def color(self, color=None):
+    if color != None:
+      rgb = milight.color_from_rgb(color[0], color[1], color[2])
+      self._controller.send(self._lightbulb.color(rgb, self.group))
+      self._currentColor = color
+    return self._currentColor
 
 
 class Lights(object):
 
-  def __init__(self, host, port=8899, bulbtype='rgb', wait_duration=0.025):
-    self.host = host
-    self.port = port
-    self.bulbtype = bulbtype
-
-    self._groupStates = [{
-        'brightness': 100,
-        'on': True,
-    },{
-        'brightness': 100,
-        'on': True
-    },{
-        'brightness': 100,
-        'on': True
-    },{
-        'brightness': 100,
-        'on': True
-    }]
+  def __init__(self, host, port=8899, bulbtype='rgbw', wait_duration=25):
+    self._host = host
+    self._port = port
+    self._bulbtype = bulbtype
 
     self._currentWorkingThread = None
 
-    self.controller = milight.MiLight({'host': self.host, 'port': self.port}, wait_duration=wait_duration)
-    self.light = milight.LightBulb(self.bulbtype)
+    self._controller = milight.MiLight({'host': self._host, 'port': self._port}, wait_duration=wait_duration / 1000.0)
+    self._light = milight.LightBulb(self._bulbtype)
+
+    self._lights = [None, None, None, None] # four groups maximum
+
+
+  def setGroupLight(self, group, maxBrightness=100, minBrightness=1, color=(255,255,255)):
+    self._lights[group-1] = Light((self._controller, self._light), group, maxBrightness, minBrightness, color)
+
+  def removeGroupLight(self, group):
+    self._lights[group-1] = None
+
+  def setHost(self, host, port=8899):
+    self.host = host
+    self.port = int(port)
+    self.controller._hosts = ({'host': host, 'port': port})
+
+  def setWaitDuration(self, wait_duration):
+    self._controller._wait = max(wait_duration / 1000, 0)
 
   def startFadeThread(self):
     self._currentWorkingThread = LightFadeThread(light=self)
@@ -97,42 +135,27 @@ class Lights(object):
       self._currentWorkingThread.stop()
       self._currentWorkingThread = None
 
-  def brightness(self, brightness, group=1):
-    self.controller.send(self.light.brightness(brightness, group))
-    self._groupStates[group-1]['brightness'] = brightness
+  def brightness(self, group, brightness):
+    if self._lights[group-1] != None:
+      return self._lights[group-1].brightness(brightness)
 
+  def off(self, group):
+    if self._lights[group-1] != None:
+      self._lights[group-1].off()
 
-  def off(self, group=1):
-    self.light.off(group)
-    self._groupStates[group-1]['on'] = False
+  def on(self, group):
+    if self._lights[group-1] != None:
+      self._lights[group-1].on()
 
+  def fade(self, group, target, step=1):
+    if self._lights[group-1] != None:
+      if self._currentWorkingThread == None:
+        self.startFadeThread()
 
-  def on(self, group=1):
-    self.light.on(group)
-    self._groupStates[group-1]['on'] = True
+      self._currentWorkingThread.stopDimming(group)
+      self._currentWorkingThread.fade(target, step, group)
 
-  def getBrightness(self, group=1):
-    return self._groupStates[group-1]['brightness']
-
-
-  def fade(self, target, step=1, group=1):
-    if self._currentWorkingThread == None:
-      self.startFadeThread()
-
-    self._currentWorkingThread.stopDimming(group)
-    self._currentWorkingThread.fade(target, step, group)
-
-
-  def fadeIn(self, speed=10, group=1):
-    self.fade(100, step=speed, group=group)
-
-
-  def fadeOut(self, speed=10, group=1):
-    speed = speed * -1
-    self.fade(1, step=speed, group=group)
-
-
-  def color(self, r, g, b, group=1):
-    mr = milight.color_from_rgb(r,g,b)
-    self.controller.send(self.light.color(mr, group))
+  def color(self, group, rgb=None):
+    if self._lights[group-1] != None:
+      return self._lights[group-1].color(rgb)
 

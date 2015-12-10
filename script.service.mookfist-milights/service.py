@@ -1,4 +1,5 @@
 from light import Lights, LightFadeThread
+from utils import *
 
 import xbmc, xbmcaddon
 import time
@@ -14,15 +15,13 @@ __language__   = __settings__.getLocalizedString
 
 class MyMonitor(xbmc.Monitor):
 
-  def __init__(self, lights):
+  def __init__(self):
     xbmc.Monitor.__init__(self)
-    self.lights = lights
-
+    self.lights = None
 
   def log(self, msg, lvl=xbmc.LOGNOTICE):
     msg = "[milights] - [%s] %s" % (lvl, msg)
     xbmc.log(msg, level=lvl)
-
 
   def _getPlayerType(self, data):
     if data['item']['type'] == 'episode':
@@ -51,9 +50,9 @@ class MyMonitor(xbmc.Monitor):
         if groupEnabled(i):
           stepSpeed = getStepSpeed(i)
           if stepSpeed == None:
-            self.lights.brightness(i)
+            self.lights.brightness(getMinBrightness(i))
           else:
-            self.lights.fadeOut(stepSpeed, i)
+            self.lights.fade(getMinBrightness(i), stepSpeed, i)
 
 
   def _onStop(self, data):
@@ -71,7 +70,47 @@ class MyMonitor(xbmc.Monitor):
           if stepSpeed == None:
             self.lights.brightness(100, i)
           else:
-            self.lights.fadeIn(stepSpeed, group=i)
+            self.lights.fade(getMaxBrightness(i), stepSpeed, i)
+
+
+  def onSettingsChanged(self):
+    if self.lights != None:
+      self.lights.stopFadeThread()
+
+    self.log(__settings__.getSetting('port'))
+    host = __settings__.getSetting('light_host')
+    port = __settings__.getSetting('light_port')
+
+    if port == None:
+      port = 8899
+    else:
+      try:
+        port = int(port)
+      except ValueError:
+        port = 8899
+
+    # @TODO This needs to change so different groups can have different bulb types
+    bulbtype = getBulbType(1)
+    wait_duration = int(__settings__.getSetting('command_delay'))
+
+    self.lights = Lights(host, port, bulbtype, wait_duration)
+
+    for i in [0,1,2,3]:
+      group = i + 1
+
+      if groupEnabled(group):
+        self.log('setGroupLight()')
+        self.lights.setGroupLight(group, maxBrightness=getMaxBrightness(group), minBrightness=getMinBrightness(group), color=getRgbColor(group))
+
+        if doInitBrightness(group):
+          self.log('doInitBrightness - %s - %s' % (getMaxBrightness(group), group))
+          self.lights.brightness(group, getMaxBrightness(group))
+
+        if doInitColor(group):
+          self.log('doInitColor')
+          self.lights.color(group, getRgbColor(group))
+      else:
+        self.lights.removeGroupLight(group)
 
 
   def onNotification(self, sender, method, data):
@@ -87,100 +126,15 @@ class MyMonitor(xbmc.Monitor):
       self.log("XBMC Player ends")
       self._onStop(data)
 
-def groupEnabled(group):
-  return __settings__.getSetting('enable_group%s' % group) == 'true'
-
-def doInitBrightness(group):
-  if __settings__.getSetting('global_set_brightness_at_start') == 'true':
-    return True
-
-def doInitColor(group):
-  if __settings__.getSetting('global_enable_color') == 'true':
-    return True
-
-def getRedColor(group):
-  return int(__settings__.getSetting('global_red_value'))
-
-def getGreenColor(group):
-  return int(__settings__.getSetting('global_green_value'))
-
-def getBlueColor(group):
-  return int(__settings__.getSetting('global_blue_value'))
-
-def getMaxBrightness(group):
-  return int(__settings__.getSetting('global_max_brightness'))
-
-def getMinBrightness(group):
-  return int(__settings__.getSetting('global_min_brightness'))
-
-def getBulbType(group):
-  typeNumber = int(__settings__.getSetting('global_bulb_type'))
-
-  if typeNumber == 0:
-    return 'white'
-  elif typeNumber == 1:
-    return 'rgbw'
-  else:
-    return 'rgb'
-
-
-def getStepSpeed(group):
-  speed = int(__settings__.getSetting('global_fade_speed'))
-
-
-  if speed == 0:
-    step = 1
-  elif speed == 1:
-    step = 5
-  elif speed == 2:
-    step = 10
-  else:
-    step = None
-
-  return step
-
-
-def log(msg):
-  xbmc.log('[mookfist-milights] %s' % msg)
-
 
 if __name__ == "__main__":
 
-  host = __settings__.getSetting('light_host')
-  port = int(__settings__.getSetting('light_port'))
-  bulbType = getBulbType(1)
-  wait_duration = float(int(__settings__.getSetting('command_delay'))) / 1000.0
-
-  log('Bulb Type: %s' % bulbType)
-
-  l = Lights(host, port, bulbType, wait_duration)
-
-  monitor = MyMonitor(lights=l)
-
-  for i in range(1,4):
-    if groupEnabled(i) == False:
-      continue
-
-    l.on(i)
-
-    if doInitBrightness(i):
-      targetBrightness = getMaxBrightness(i)
-
-      log('Setting initial brightness to %s for group %s' % (targetBrightness, i))
-      l.brightness(targetBrightness, i)
-
-    if doInitColor(i):
-      r = int(getRedColor(i))
-      g = int(getGreenColor(i))
-      b = int(getBlueColor(i))
-
-      log('Setting initial color to rgb(%s, %s, %s) for group %s' % (r,g,b,i))
-
-      l.color(r,g,b,group=i)
+  monitor = MyMonitor()
+  monitor.onSettingsChanged()
 
   while not monitor.abortRequested():
     if monitor.waitForAbort(10):
-      l.stopFadeThread()
+      if monitor.lights:
+        monitor.lights.stopFadeThread()
       break
-
 
