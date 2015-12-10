@@ -1299,7 +1299,7 @@ is not maintained, and should only be used as a last resort.
     </extension>
 </addon>
 
-<addon id="script.service.mookfist-milights" version="0.0.10" name="Mookfist Milights" provider-name="Mookfist">
+<addon id="script.service.mookfist-milights" version="0.0.11" name="Mookfist Milights" provider-name="Mookfist">
   <requires>
     <import addon="xbmc.python" version="2.1.0" />
     <import addon="script.module.python-milight" version="0.6" />
@@ -1308,9 +1308,11 @@ is not maintained, and should only be used as a last resort.
   <extension point="xbmc.service" library="service.py" start="login" />
   <extension point="xbmc.addon.metadata">
     <summary lang="en">Mookfist Milights</summary>
-    <description lang="en">Controls the wifi bridge of Limitless LED-compatible products, such as Milights</description>
-    <disclaimer lang="en">May contain soy products</disclaimer>
-    <language>en</language>
+    <description lang="en">Controls the wifi bridge of Limitless LED-compatible products, such as Milights, LimitlessLED, Easybulb, AppLamp, iLight.[CR][CR][B]First steps[/B][CR]1. In the "General" tab fill in the ip adress and port.[CR]2. Choose your bulb type and activate the groups you want to operate.[CR]3. In the "Movies" and "TV" tab, activate it whenever the plugin should be active.[CR]4. Play a movie or TV Show.[CR][CR][COLOR red]WARNING:[/COLOR][CR]-Please pair your controller/bulbs with the bridge before you use this plugin![CR]-Use a static ip adress for the bridge![CR]More information: Mookfist Github Kodi Repo http://git.io/vRjKL</description>
+    <description lang="de">Steuert LimitlessLED kompatible Produkte (Milight, LimitlessLED, Easybulb, AppLamp, iLight) mithilfe des WLAN Steuermoduls (Bridge)[CR][CR][B]Erste Schritte[/B][CR]1. Unter "Grundeinstellungen", IP Adresse und Port eintragen.[CR]2. Lampentyp auswählen und die Gruppen/Zonen aktivieren, die gesteuert werden sollen.[CR]3. Im Reiter "Filme" sowie "Serien" an-/ausschalten, um das Addon beim jeweiligen Abspielen zu aktivieren.[CR]4. Film/Serie abspielen.[CR][CR][COLOR red]ACHTUNG:[/COLOR][CR]-Die Lampen/Controller müssen mit der Bridge bereits gepaired sein![CR]-Gebe deiner Bridge eine feste IP-Adresse![CR]Mehr Informationen: Mookfist Github Kodi Repo http://git.io/vRjKL</description>
+	<disclaimer lang="en">May contain soy products</disclaimer>
+    <disclaimer lang="de">Kann Spuren von Soja enthalten</disclaimer>
+	<language>en</language>
     <platform>all</platform>
     <license>MIT</license>
     <source>https://github.com/mookfist/repo/tree/master/script.service.mookfist-milights</source>

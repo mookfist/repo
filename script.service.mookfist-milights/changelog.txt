@@ -1,3 +1,10 @@
+version 0.0.11
+ - Refactoring of internals
+ - Added ability to turn logging on or off
+ - Respects minimum and maximum brightness settings (issue #15)
+ - Updates configuration without having to restart service (issue #16)
+ - German translation (thanks to brindosch)
+
 version 0.0.10
  - Add a "Command Delay" setting to change the the delay amount (in
  milliseconds) between commands sent to the light bulbs
@@ -9,7 +16,6 @@ Version 0.0.9
  out to finish (and vice versa).
 
 Version 0.0.8
-
  - Revamped configuration
  - Speed configuration respected
  - Ability to control multiple groups at once
