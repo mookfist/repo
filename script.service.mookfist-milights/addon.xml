@@ -9,8 +9,10 @@
   <extension point="xbmc.addon.metadata">
     <summary lang="en">Mookfist Milights</summary>
     <description lang="en">Controls the wifi bridge of Limitless LED-compatible products, such as Milights</description>
-    <disclaimer lang="en">May contain soy products</disclaimer>
-    <language>en</language>
+    <description lang="de">Steuert LimitlessLED kompatible Produkte (Milight / LimitlessLED / Easybulb / AppLamp / iLight) mithilfe des WLAN Steuermoduls (Bridge)</description>
+	<disclaimer lang="en">May contain soy products</disclaimer>
+    <disclaimer lang="de">Kann Spuren von Soja enthalten</disclaimer>
+	<language>en</language>
     <platform>all</platform>
     <license>MIT</license>
     <source>https://github.com/mookfist/repo/tree/master/script.service.mookfist-milights</source>
