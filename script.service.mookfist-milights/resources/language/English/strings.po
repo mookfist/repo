@@ -131,3 +131,11 @@ msgstr ""
 msgctxt "#30029"
 msgid "Enable Logging"
 msgstr ""
+
+msgctxt "#30030"
+msgid "Enable Custom Pause Settings"
+msgstr ""
+
+msgctxt "#30031"
+msgid "Pause Delay"
+msgstr ""

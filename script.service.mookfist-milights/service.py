@@ -18,6 +18,7 @@ class MyMonitor(xbmc.Monitor):
   def __init__(self):
     xbmc.Monitor.__init__(self)
     self.lights = None
+    self.paused = None
 
   def _getPlayerType(self, data):
     if data['item']['type'] == 'episode':
@@ -31,6 +32,13 @@ class MyMonitor(xbmc.Monitor):
   def _onPlay(self, data):
     playerType = self._getPlayerType(data)
 
+    useCustomPauseSpeed = __settings__.getSetting('global_enable_pause_speed')
+
+    if self.paused == False:
+      useCustomPauseSpeed = False
+
+    self.paused = False
+
     if playerType == None:
       log('Could not determine player type: %s' % data)
       return
@@ -40,8 +48,12 @@ class MyMonitor(xbmc.Monitor):
 
     if (playerType == 'tv' and tvEnabled == 'true') or (playerType == 'movie' and movieEnabled == 'true'):
 
-      for i in range(1,4):
-        stepSpeed = getStepSpeed(i)
+      for i in range(1,5):
+        if (useCustomPauseSpeed == True or useCustomPauseSpeed == "true"):
+          stepSpeed = getPauseStepSpeed(i)
+        else:
+          stepSpeed = getMainStepSpeed(i)
+
         if stepSpeed == None or self.lights.brightness(i) == None:
           self.lights.brightness(i, getMinBrightness(i))
         else:
@@ -50,6 +62,7 @@ class MyMonitor(xbmc.Monitor):
 
   def _onStop(self, data):
     playerType = self._getPlayerType(data)
+    self.paused = False
 
     if playerType == None:
       log('Coult not determine player type: %s' % data, xbmc.LOGWARNING)
@@ -57,12 +70,31 @@ class MyMonitor(xbmc.Monitor):
 
     if (playerType == 'tv' and __settings__.getSetting('tv_enabled') == 'true') or (playerType == 'movie' and __settings__.getSetting('movie_enabled') == 'true'):
 
-      for i in range(1,4):
-        stepSpeed = getStepSpeed(i)
+      for i in range(1,5):
+        stepSpeed = getMainStepSpeed(i)
         if stepSpeed == None or self.lights.brightness(i) == None:
           self.lights.brightness(i, getMaxBrightness(i))
         else:
           self.lights.fade(i, getMaxBrightness(i), stepSpeed)
+
+
+  def _onPause(self, data):
+
+    self.paused = True
+
+    useCustomPauseSpeed = __settings__.getSetting('global_enable_pause_speed')
+    log('_onPause() - pause speed enabled: %s' % useCustomPauseSpeed)
+
+    for i in range(1,5):
+      if useCustomPauseSpeed == True or useCustomPauseSpeed == "true":
+        stepSpeed = getPauseStepSpeed(i)
+      else:
+        stepSpeed = getMainStepSpeed(i)
+
+      if stepSpeed == None or self.lights.brightness(i) == None:
+        self.lights.brightness(i, getMaxBrightness(i))
+      else:
+        self.lights.fade(i, getMaxBrightness(i), stepSpeed)
 
 
   def onSettingsChanged(self):
@@ -87,8 +119,7 @@ class MyMonitor(xbmc.Monitor):
       self.lights.setWaitDuration(wait_duration)
 
 
-    for i in [0,1,2,3]:
-      group = i + 1
+    for group in range(1,5):
 
       if groupEnabled(group):
         self.lights.setGroupLight(group, maxBrightness=getMaxBrightness(group), minBrightness=getMinBrightness(group), color=getRgbColor(group))
@@ -112,6 +143,8 @@ class MyMonitor(xbmc.Monitor):
       self._onPlay(data)
     elif str(sender) == "xbmc" and str(method) == "Player.OnStop":
       self._onStop(data)
+    elif str(sender) == "xbmc" and str(method) == "Player.OnPause":
+      self._onPause(data)
 
 
 if __name__ == "__main__":

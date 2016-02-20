@@ -66,6 +66,32 @@ def getStepSpeed(group):
   return step
 
 
+def getStepSpeed(speed):
+
+  if speed == 0:
+    step = 1
+  elif speed == 1:
+    step = 5
+  elif speed == 2:
+    step = 10
+  else:
+    step = None
+
+  return step
+
+
+def getMainStepSpeed(group):
+  speed = int(__settings__.getSetting('global_fade_speed'))
+  return getStepSpeed(speed)
+
+
+def getPauseStepSpeed(group):
+  speed = int(__settings__.getSetting('global_pause_fade_speed'))
+  log('getPauseStepSpeed(%s) - speed: %s' % (group, speed))
+
+  return getStepSpeed(speed)
+
+
 def log(msg):
   if loggingEnabled():
     xbmc.log('[mookfist-milights] %s' % msg)
