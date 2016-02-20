@@ -29,7 +29,7 @@
     <setting label="30010" visible="eq(-2,true)" type="slider" id="global_green_value" range="0,1,255" default="255" option="int"/>
     <setting label="30011" visible="eq(-3,true)" type="slider" id="global_blue_value" range="0,1,255" default="255" option="int"/>
     <setting type="lsep" label="Pause Settings" />
-    <setting label="30030 Custom Pause Fade Speed" type="bool" id="global_enable_pause_speed" default="false" />
+    <setting label="30030" type="bool" id="global_enable_pause_speed" default="false" />
     <setting label="30014" type="select" id="global_pause_fade_speed" lvalues="30015|30016|30017|30019" default="1" />
     <setting label="30031" type="slider" id="global_pause_delay" range="0,1,10" default="0" option="int" />
 
