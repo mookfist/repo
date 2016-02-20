@@ -4,6 +4,7 @@ from utils import *
 import xbmc, xbmcaddon
 import time
 import simplejson as json
+import threading
 
 __scriptname__ = "Mookfist Milights"
 __author__     = "Mookfist"
@@ -18,7 +19,7 @@ class MyMonitor(xbmc.Monitor):
   def __init__(self):
     xbmc.Monitor.__init__(self)
     self.lights = None
-    self.paused = None
+    self.paused = False
 
   def _getPlayerType(self, data):
     if data['item']['type'] == 'episode':
@@ -83,18 +84,36 @@ class MyMonitor(xbmc.Monitor):
     self.paused = True
 
     useCustomPauseSpeed = __settings__.getSetting('global_enable_pause_speed')
+    pauseDelay          = int(__settings__.getSetting('global_pause_delay'))
+
     log('_onPause() - pause speed enabled: %s' % useCustomPauseSpeed)
 
     for i in range(1,5):
+      # we need to spread out pauseDelay because otherwise
+      # it seems not all groups will be affected
       if useCustomPauseSpeed == True or useCustomPauseSpeed == "true":
         stepSpeed = getPauseStepSpeed(i)
       else:
         stepSpeed = getMainStepSpeed(i)
 
       if stepSpeed == None or self.lights.brightness(i) == None:
-        self.lights.brightness(i, getMaxBrightness(i))
+
+        if pauseDelay > 0:
+          t = threading.Timer(pauseDelay, self.lights.brightness, [i, getMaxBrightness(i)], {})
+          t.start()
+        else:
+          self.lights.brightness(i, getMaxBrightness(i))
       else:
-        self.lights.fade(i, getMaxBrightness(i), stepSpeed)
+        if pauseDelay > 0:
+          t = threading.Timer(pauseDelay, self.lights.fade, [i, getMaxBrightness(i), stepSpeed], {})
+          t.start()
+        else:
+          self.lights.fade(i, getMaxBrightness(i), stepSpeed)
+
+      # we need to spread out pauseDelay because otherwise
+      # it seems not all groups will be affected
+      pauseDelay = pauseDelay + 0.25
+
 
 
   def onSettingsChanged(self):
