@@ -1,3 +1,7 @@
+version 0.0.12
+ - Added settings to control how lights behave when pausing
+ - Fixed issue with group no. 4 not working
+
 version 0.0.11
  - Refactoring of internals
  - Added ability to turn logging on or off
