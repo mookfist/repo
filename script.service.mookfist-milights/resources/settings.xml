@@ -3,7 +3,7 @@
   <category label="30000">
     <setting label="30001" type="text" id="light_host" />
     <setting label="30002" type="number" id="light_port" />
-    <setting label="30032" type="action" action="RunScript(special://home/addons/script.service.mookfist-milights/cmd.py)"/>
+    <setting label="30032" type="action" action="RunScript(special://home/addons/script.service.mookfist-milights/cmd.py, scan)"/>
     <setting label="30024" type="select" id="global_bulb_type" lvalues="30025|30026|30027" default="1" />
     <setting label="30028" type="number" id="command_delay" default="25" />
     <setting label="30029" type="bool" id="enable_logging" default="false" />
@@ -35,6 +35,11 @@
     <setting label="30014" type="select" id="global_pause_fade_speed" lvalues="30015|30016|30017|30019" default="1" />
     <setting label="30031" type="slider" id="global_pause_delay" range="0,1,10" default="0" option="int" />
 
+  </category>
+
+  <category label="30034">
+    <setting label="30035" type="action" action="RunScript(special://home/addons/script.service.mookfist-milights/cmd.py, fade_out)"/>
+    <setting label="30036" type="action" action="RunScript(special://home/addons/script.service.mookfist-milights/cmd.py, fade_in)" />
   </category>
 
   <category label="30005">

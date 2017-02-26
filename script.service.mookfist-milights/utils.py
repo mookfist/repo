@@ -94,7 +94,7 @@ def getPauseStepSpeed(group):
 
 def log(msg):
   if loggingEnabled():
-    xbmc.log('[mookfist-milights] %s' % msg)
+    xbmc.log('[mookfist-milights] %s' % msg, xbmc.LOGNOTICE)
 
 
 def initializeLights():

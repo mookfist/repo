@@ -143,3 +143,19 @@ msgstr ""
 msgctxt "#30032"
 msgid "Scan for Wifi Bridge"
 msgstr ""
+
+msgctxt "#30033"
+msgid "Fade out all lights"
+msgstr ""
+
+msgctxt "#30034"
+msgid "Testing"
+msgstr ""
+
+msgctxt "#30035"
+msgid "Fade Out"
+msgstr ""
+
+msgctxt "#30036"
+msgid "Fade In"
+msgstr ""
