@@ -139,3 +139,7 @@ msgstr ""
 msgctxt "#30031"
 msgid "Pause Delay"
 msgstr ""
+
+msgctxt "#30032"
+msgid "Scan for Wifi Bridge"
+msgstr ""

@@ -154,7 +154,7 @@ class MyMonitor(xbmc.Monitor):
 
   def onNotification(self, sender, method, data):
 
-    # log("SENDER: %s --- METHOD %s --- DATA %s" % (sender, method, data))
+    log("SENDER: %s --- METHOD %s --- DATA %s" % (sender, method, data))
 
     data = json.loads(data)
 

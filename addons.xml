@@ -1,5 +1,40 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
+<addon id="repository.mookfist" name="Mookfist Repo" version="2.0" provider-name="Mookfist">
+    <extension point="xbmc.addon.repository" name="Mookfist Repository">
+        <info compressed="false">https://raw.githubusercontent.com/mookfist/repo/master/addons.xml</info>
+        <checksum>https://raw.githubusercontent.com/mookfist/repo/master/addons.xml.md5</checksum>
+        <datadir zip="true">https://github.com/mookfist/repo/raw/master/zips</datadir>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary></summary>
+        <description></description>
+        <platform>all</platform>
+    </extension>
+</addon>
+
+<addon id="plugin.program.qbittorrent" version="0.0.9" name="QBittorrent" provider-name="Mookfist">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0" />
+    <import addon="script.module.python-requests" version="2.8.0" />
+    <import addon="script.module.python-qbittorrent" version="0.1.6" />
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">QBittorent interface</summary>
+    <description lang="en">Provides access to QBittorrent, allowing you to list torrents, or turn on or off individual torrents.</description>
+    <disclaimer lang="en">Using this plugin while chanting certain incantations will make your neighbors call the police.</disclaimer>
+    <language>en</language>
+    <platform>all</platform>
+    <license>MIT</license>
+    <source>https://github.com/mookfist/repo/tree/master/plugin.qbittorrent</source>
+    <email>mookfist@gmail.com</email>
+    <website>https://github.com/mookfist/repo</website>
+  </extension>
+</addon>
+
 <addon id="script.module.python-requests" version="2.8.1" name="python-requests" provider-name="Kenneth Reitz">
   <requires>
     <import addon="xbmc.python" version="2.14.0" />
@@ -1185,25 +1220,20 @@ This is not a backwards compatible change.
   </extension>
 </addon>
 
-<addon id="plugin.program.qbittorrent" version="0.0.9" name="QBittorrent" provider-name="Mookfist">
+<addon id="script.module.python-milight" version="0.6" name="python-milight" provider-name="McSwindler">
   <requires>
-    <import addon="xbmc.python" version="2.1.0" />
-    <import addon="script.module.python-requests" version="2.8.0" />
-    <import addon="script.module.python-qbittorrent" version="0.1.6" />
+    <import addon="xbmc.python" version="2.14.0" />
   </requires>
-  <extension point="xbmc.python.pluginsource" library="default.py">
-    <provides>executable</provides>
-  </extension>
+  <extension point="xbmc.python.module" library="lib" />
   <extension point="xbmc.addon.metadata">
-    <summary lang="en">QBittorent interface</summary>
-    <description lang="en">Provides access to QBittorrent, allowing you to list torrents, or turn on or off individual torrents.</description>
-    <disclaimer lang="en">Using this plugin while chanting certain incantations will make your neighbors call the police.</disclaimer>
+    <summary lang="en">Controller for milight/limitlessled Wi-Fi LEDs</summary>
+    <description lang="en">Visit GitHub for more information: https://github.com/McSwindler/python-milight</description>
+    <disclaimer>This addon is just a wrapper around the original module found at PyPI</disclaimer>
     <language>en</language>
     <platform>all</platform>
-    <license>MIT</license>
-    <source>https://github.com/mookfist/repo/tree/master/plugin.qbittorrent</source>
-    <email>mookfist@gmail.com</email>
-    <website>https://github.com/mookfist/repo</website>
+    <source>http://pypi.python.org/pypi/milight</source>
+    <email>wilingua@gmail.com</email>
+    <website>http://pypi.python.org/pypi/milight</website>
   </extension>
 </addon>
 
@@ -1252,54 +1282,7 @@ is not maintained, and should only be used as a last resort.
   </extension>
 </addon>
 
-<addon id="script.module.python-milight" version="0.6" name="python-milight" provider-name="McSwindler">
-  <requires>
-    <import addon="xbmc.python" version="2.14.0" />
-  </requires>
-  <extension point="xbmc.python.module" library="lib" />
-  <extension point="xbmc.addon.metadata">
-    <summary lang="en">Controller for milight/limitlessled Wi-Fi LEDs</summary>
-    <description lang="en">Visit GitHub for more information: https://github.com/McSwindler/python-milight</description>
-    <disclaimer>This addon is just a wrapper around the original module found at PyPI</disclaimer>
-    <language>en</language>
-    <platform>all</platform>
-    <source>http://pypi.python.org/pypi/milight</source>
-    <email>wilingua@gmail.com</email>
-    <website>http://pypi.python.org/pypi/milight</website>
-  </extension>
-</addon>
-
-<addon id="script.module.python-qbittorrent" version="0.1.6" name="python-qbittorrent" provider-name="Mookfist">
-  <requires>
-    <import addon="xbmc.python" version="2.14.0" />
-  </requires>
-  <extension point="xbmc.python.module" library="lib" />
-  <extension point="xbmc.addon.metadata">
-    <summary lang="en">Python wrapper for the QBittorrent web api v3.1.x</summary>
-    <description lang="en">Python wrapper for QBittorrent web api v3.1.x</description>
-    <disclaimer>This addon is just a wrapper around the original module found at PyPI</disclaimer>
-    <language>en</language>
-    <platform>all</platform>
-    <source>http://pypi.python.org/pypi/qbittorrent</source>
-    <email>mookfist@gmail.com</email>
-    <website>http://pypi.python.org/pypi/qbittorrent</website>
-  </extension>
-</addon>
-
-<addon id="repository.mookfist" name="Mookfist Repo" version="2.0" provider-name="Mookfist">
-    <extension point="xbmc.addon.repository" name="Mookfist Repository">
-        <info compressed="false">https://raw.githubusercontent.com/mookfist/repo/master/addons.xml</info>
-        <checksum>https://raw.githubusercontent.com/mookfist/repo/master/addons.xml.md5</checksum>
-        <datadir zip="true">https://github.com/mookfist/repo/raw/master/zips</datadir>
-    </extension>
-    <extension point="xbmc.addon.metadata">
-        <summary></summary>
-        <description></description>
-        <platform>all</platform>
-    </extension>
-</addon>
-
-<addon id="script.service.mookfist-milights" version="0.0.12" name="Mookfist Milights" provider-name="Mookfist">
+<addon id="script.service.mookfist-milights" version="0.0.13" name="Mookfist Milights" provider-name="Mookfist">
   <requires>
     <import addon="xbmc.python" version="2.1.0" />
     <import addon="script.module.python-milight" version="0.6" />
@@ -1318,6 +1301,23 @@ is not maintained, and should only be used as a last resort.
     <source>https://github.com/mookfist/repo/tree/master/script.service.mookfist-milights</source>
     <email>mookfist@gmail.com</email>
     <website>https://github.com/mookfist/repo</website>
+  </extension>
+</addon>
+
+<addon id="script.module.python-qbittorrent" version="0.1.6" name="python-qbittorrent" provider-name="Mookfist">
+  <requires>
+    <import addon="xbmc.python" version="2.14.0" />
+  </requires>
+  <extension point="xbmc.python.module" library="lib" />
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">Python wrapper for the QBittorrent web api v3.1.x</summary>
+    <description lang="en">Python wrapper for QBittorrent web api v3.1.x</description>
+    <disclaimer>This addon is just a wrapper around the original module found at PyPI</disclaimer>
+    <language>en</language>
+    <platform>all</platform>
+    <source>http://pypi.python.org/pypi/qbittorrent</source>
+    <email>mookfist@gmail.com</email>
+    <website>http://pypi.python.org/pypi/qbittorrent</website>
   </extension>
 </addon>
 </addons>

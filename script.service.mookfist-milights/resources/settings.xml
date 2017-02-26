@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <settings>
   <category label="30000">
-    <setting label="30001" type="text" id="light_host" default="192.168.1.167" />
-    <setting label="30002" type="number" id="light_port" default="8899" />
+    <setting label="30001" type="text" id="light_host" />
+    <setting label="30002" type="number" id="light_port" />
+    <setting label="30032" type="action" action="RunScript(special://home/addons/script.service.mookfist-milights/cmd.py)"/>
     <setting label="30024" type="select" id="global_bulb_type" lvalues="30025|30026|30027" default="1" />
     <setting label="30028" type="number" id="command_delay" default="25" />
     <setting label="30029" type="bool" id="enable_logging" default="false" />
+
     <!-- white, rgbw, rgb -->
 
     <setting type="sep" />
