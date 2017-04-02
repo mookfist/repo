@@ -151,14 +151,52 @@ class MyMonitor(xbmc.Monitor):
       else:
         self.lights.removeGroupLight(group)
 
+  def onFadeOut(self, data):
+
+    log('data: %s' % data)
+
+    group = data['group']
+    if group == 'all':
+      groups = range(1, 5)
+    else:
+      groups = [group]
+
+    if data['brightness'] > -1:
+      brightness = data['brightness']
+    else:
+      brightness = getMinBrightness(group)
+
+    for group in groups:
+      self.lights.fade(group, brightness, getMainStepSpeed(group))
+
+  def onFadeIn(self, data):
+    group = data['group']
+    if group == 'all':
+      groups = range(1,5)
+    else:
+      groups[group]
+
+    for group in groups:
+      self.lights.fade(group, getMaxBrightness(group), getMainStepSpeed(group))
+
+
+
+
+
 
   def onNotification(self, sender, method, data):
 
-    # log("SENDER: %s --- METHOD %s --- DATA %s" % (sender, method, data))
+    log("SENDER: %s --- METHOD %s --- DATA %s" % (sender, method, data))
 
     data = json.loads(data)
 
-    if str(sender) == "xbmc" and str(method) == "Player.OnPlay":
+    if str(sender) == 'mookfist-milights':
+        if str(method) == 'Other.fade_out':
+          self.onFadeOut(data)
+        elif str(method) == 'Other.fade_in':
+          self.onFadeIn(data)
+
+    elif str(sender) == "xbmc" and str(method) == "Player.OnPlay":
       self._onPlay(data)
     elif str(sender) == "xbmc" and str(method) == "Player.OnStop":
       self._onStop(data)

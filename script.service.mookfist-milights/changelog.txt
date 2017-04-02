@@ -1,3 +1,7 @@
+version 0.0.13
+ - Now has the option to scan for existing wifi bridges. Only supports a
+ single bridge
+
 version 0.0.12
  - Added settings to control how lights behave when pausing
  - Fixed issue with group no. 4 not working
