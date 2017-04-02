@@ -1,40 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
-<addon id="repository.mookfist" name="Mookfist Repo" version="2.0" provider-name="Mookfist">
-    <extension point="xbmc.addon.repository" name="Mookfist Repository">
-        <info compressed="false">https://raw.githubusercontent.com/mookfist/repo/master/addons.xml</info>
-        <checksum>https://raw.githubusercontent.com/mookfist/repo/master/addons.xml.md5</checksum>
-        <datadir zip="true">https://github.com/mookfist/repo/raw/master/zips</datadir>
-    </extension>
-    <extension point="xbmc.addon.metadata">
-        <summary></summary>
-        <description></description>
-        <platform>all</platform>
-    </extension>
-</addon>
-
-<addon id="plugin.program.qbittorrent" version="0.0.9" name="QBittorrent" provider-name="Mookfist">
-  <requires>
-    <import addon="xbmc.python" version="2.1.0" />
-    <import addon="script.module.python-requests" version="2.8.0" />
-    <import addon="script.module.python-qbittorrent" version="0.1.6" />
-  </requires>
-  <extension point="xbmc.python.pluginsource" library="default.py">
-    <provides>executable</provides>
-  </extension>
-  <extension point="xbmc.addon.metadata">
-    <summary lang="en">QBittorent interface</summary>
-    <description lang="en">Provides access to QBittorrent, allowing you to list torrents, or turn on or off individual torrents.</description>
-    <disclaimer lang="en">Using this plugin while chanting certain incantations will make your neighbors call the police.</disclaimer>
-    <language>en</language>
-    <platform>all</platform>
-    <license>MIT</license>
-    <source>https://github.com/mookfist/repo/tree/master/plugin.qbittorrent</source>
-    <email>mookfist@gmail.com</email>
-    <website>https://github.com/mookfist/repo</website>
-  </extension>
-</addon>
-
 <addon id="script.module.python-requests" version="2.8.1" name="python-requests" provider-name="Kenneth Reitz">
   <requires>
     <import addon="xbmc.python" version="2.14.0" />
@@ -1220,20 +1185,181 @@ This is not a backwards compatible change.
   </extension>
 </addon>
 
-<addon id="script.module.python-milight" version="0.6" name="python-milight" provider-name="McSwindler">
+<addon id="plugin.program.qbittorrent" version="0.0.9" name="QBittorrent" provider-name="Mookfist">
+  <requires>
+    <import addon="xbmc.python" version="2.1.0" />
+    <import addon="script.module.python-requests" version="2.8.0" />
+    <import addon="script.module.python-qbittorrent" version="0.1.6" />
+  </requires>
+  <extension point="xbmc.python.pluginsource" library="default.py">
+    <provides>executable</provides>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">QBittorent interface</summary>
+    <description lang="en">Provides access to QBittorrent, allowing you to list torrents, or turn on or off individual torrents.</description>
+    <disclaimer lang="en">Using this plugin while chanting certain incantations will make your neighbors call the police.</disclaimer>
+    <language>en</language>
+    <platform>all</platform>
+    <license>MIT</license>
+    <source>https://github.com/mookfist/repo/tree/master/plugin.qbittorrent</source>
+    <email>mookfist@gmail.com</email>
+    <website>https://github.com/mookfist/repo</website>
+  </extension>
+</addon>
+
+<addon id="script.module.python-mookfist-lled-controller" version="0.0.4" name="python-mookfist-lled-controller" provider-name="mookfist">
   <requires>
     <import addon="xbmc.python" version="2.14.0" />
   </requires>
   <extension point="xbmc.python.module" library="lib" />
   <extension point="xbmc.addon.metadata">
-    <summary lang="en">Controller for milight/limitlessled Wi-Fi LEDs</summary>
-    <description lang="en">Visit GitHub for more information: https://github.com/McSwindler/python-milight</description>
+    <summary lang="en"># Mookfist LimitlessLED Controller v0.0.3
+
+Intended as a simple wrapper around the LimitlessLED wifi protocol written in python.
+
+Currently only supports version 4 (and possibly version 5) but is designed to support multiple versions.
+
+There are some differences from the original LimitlessLED protocol:
+
+1. Brightness is a percentage between 0 and 100. LimitlessLED protocol's brightness ranges from 2 to 27
+2. Color is a value between 0 and 255 and starts and ends with the color red. LimitlesLED protocol's color starts from blue
+
+## Installation
+
+Download the code: https://github.com/mookfist/mookfist-limitlessled-controller/archive/master.zip
+
+```
+$ unzip master.zip
+$ python setup.py install
+$ python lled.py --help
+```
+
+## API
+
+The API is currently not documented but these examples should help get you going.
+
+### API Examples
+```python
+# Set brightness to 50% for groups 1 and 2
+from mookfist_lled_controller import WifiBridge
+from mookfist_lled_controller import get_bridge
+
+ip, macaddr = get_bridge(version=4)
+
+bridge = WifiBridge(ip, 8899, version=4)
+bridge.brightness(50, 1)
+bridge.brightness(50, 2)
+```
+
+```python
+# Set color to 128 for group 1
+from mookfist_lled_controller import WifiBridge
+from mookfist_lled_controller import get_bridge
+
+ip, macaddr = get_bridge(version=4)
+
+bridge = WifiBridge(ip, 8899, version=4)
+bridge.color(128, 1)
+```
+
+```python
+# Fade groups 1 through 4 from 100% to 0%
+# This is a blocking operation
+from mookfist_lled_controller import WifiBridge
+from mookfist_lled_controller import get_bridge
+from mookfist_lled_controller import fade_brightness
+
+ip, macaddr = get_bridge(version=4)
+bridge = WifiBridge(ip, 8899, version=4)
+
+fade_brightness(bridge, (1,2,3,4), 100, 0)
+```
+
+```python
+# Fade color from 0 to 255 for groups 2 and 3
+# This is a blocking operation
+from mookfist_lled_controller import WifiBridge
+from mookfist_lled_controller import get_bridge
+from mookfist_lled_controller import fade_brightness
+
+ip, macaddr = get_bridge(version=4)
+bridge = WifiBridge(ip, 8899, version=4)
+
+fade_color(bridge, (1,2,3,4), 0, 255)
+```
+
+```python
+# Fade group 1 from 0 to 100% rather slowly
+from mookfist_lled_controller import WifiBridge
+from mookfist_lled_controller import get_bridge
+from mookfist_lled_controller import fade_brightness
+
+ip, macaddr = get_bridge(version=4)
+bridge = WifiBridge(ip, 8899, version=4, pause=50, repeat=5)
+
+fade_brightness(bridge, (1), 0, 100)
+```
+
+
+## Command Line Interface
+
+The lled.py script allows you to control your lights from the command line.
+
+### Commands
+
+| Command | Description |
+| ------- | ----------- |
+| fade &lt;start&gt; &lt;end&gt;   | Fade brightness from &lt;start&gt; to &lt;end&gt;. Values can be between 0 and 100 |
+| fadec &lt;start&gt; &lt;end&gt; | Fade the color from &lt;start&gt; to &lt;end&gt;. Values can be between 0 and 255 |
+| color &lt;color&gt; | Set color to &lt;color&gt;. Value can be between 0 and 255 |
+| brightness &lt;brightness&gt; | Set the brightness to &lt;brightness&gt;. Value can be between 0 and 255 |
+
+
+### Options
+| Argument | Description | Default Value |
+| -------- | ----------- | ------------- |
+| --repeat | Number of times to repeat a command. Increasing this value could improve smoothness, but means it will take a longer time to perform fades | 1 |
+| --pause  | Number of milliseconds to pause between sending commands. Decreasing this value below 100ms might mean some commands are not processed | 100 |
+| --group  | Group number. Repeat the argument for each group you want to send a command to | n/a |
+| --debug  | Turn on debug logging | false |
+| --host   | The IP/hostname of the bridge. If omitted the bridge will be automatically scanned down | n/a |
+| --port   | The port number of the bridge. | 8899 |
+| --version | The version of the LimitlessLED protocol | 4 |
+
+
+### Examples
+
+
+Fade light group 1 to 0% brightness
+
+```
+$ python lled.py fade 100 0 --group 1
+```
+
+Set color to groups 1 and 2
+```
+$ python lled.py color 128 --group 1 --group 2
+```
+
+Set brightness to 50% for group 3
+```
+$ python lled.py brightness 50 --group 3
+```
+
+## Tweaking
+
+The repeat and pause values can be used to tweak how commands are sent. In general, you should wait 100ms between each command sent. But since there is no native fading in LimitlessLED, to achieve fading, the controller sends multiple commands to fade from one value to another.
+
+If the pause is too small, some commands might get missed. But this is what the repeat setting can fix. You can send the same command more than once.
+
+Getting smooth fading is not very easy with the wifi protocol, but you might be able to get better results by playing with these two values</summary>
+    <description lang="en">UNKNOWN</description>
     <disclaimer>This addon is just a wrapper around the original module found at PyPI</disclaimer>
     <language>en</language>
     <platform>all</platform>
-    <source>http://pypi.python.org/pypi/milight</source>
-    <email>wilingua@gmail.com</email>
-    <website>http://pypi.python.org/pypi/milight</website>
+    <source>http://pypi.python.org/pypi/mookfist-lled-controller</source>
+    <email>mookfist@gmail.com</email>
+    <website>http://pypi.python.org/pypi/mookfist-lled-controller</website>
   </extension>
 </addon>
 
@@ -1282,6 +1408,53 @@ is not maintained, and should only be used as a last resort.
   </extension>
 </addon>
 
+<addon id="script.module.python-milight" version="0.6" name="python-milight" provider-name="McSwindler">
+  <requires>
+    <import addon="xbmc.python" version="2.14.0" />
+  </requires>
+  <extension point="xbmc.python.module" library="lib" />
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">Controller for milight/limitlessled Wi-Fi LEDs</summary>
+    <description lang="en">Visit GitHub for more information: https://github.com/McSwindler/python-milight</description>
+    <disclaimer>This addon is just a wrapper around the original module found at PyPI</disclaimer>
+    <language>en</language>
+    <platform>all</platform>
+    <source>http://pypi.python.org/pypi/milight</source>
+    <email>wilingua@gmail.com</email>
+    <website>http://pypi.python.org/pypi/milight</website>
+  </extension>
+</addon>
+
+<addon id="script.module.python-qbittorrent" version="0.1.6" name="python-qbittorrent" provider-name="Mookfist">
+  <requires>
+    <import addon="xbmc.python" version="2.14.0" />
+  </requires>
+  <extension point="xbmc.python.module" library="lib" />
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">Python wrapper for the QBittorrent web api v3.1.x</summary>
+    <description lang="en">Python wrapper for QBittorrent web api v3.1.x</description>
+    <disclaimer>This addon is just a wrapper around the original module found at PyPI</disclaimer>
+    <language>en</language>
+    <platform>all</platform>
+    <source>http://pypi.python.org/pypi/qbittorrent</source>
+    <email>mookfist@gmail.com</email>
+    <website>http://pypi.python.org/pypi/qbittorrent</website>
+  </extension>
+</addon>
+
+<addon id="repository.mookfist" name="Mookfist Repo" version="2.0" provider-name="Mookfist">
+    <extension point="xbmc.addon.repository" name="Mookfist Repository">
+        <info compressed="false">https://raw.githubusercontent.com/mookfist/repo/master/addons.xml</info>
+        <checksum>https://raw.githubusercontent.com/mookfist/repo/master/addons.xml.md5</checksum>
+        <datadir zip="true">https://github.com/mookfist/repo/raw/master/zips</datadir>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary></summary>
+        <description></description>
+        <platform>all</platform>
+    </extension>
+</addon>
+
 <addon id="script.service.mookfist-milights" version="0.0.14" name="Mookfist Milights" provider-name="Mookfist">
   <requires>
     <import addon="xbmc.python" version="2.1.0" />
@@ -1301,23 +1474,6 @@ is not maintained, and should only be used as a last resort.
     <source>https://github.com/mookfist/repo/tree/master/script.service.mookfist-milights</source>
     <email>mookfist@gmail.com</email>
     <website>https://github.com/mookfist/repo</website>
-  </extension>
-</addon>
-
-<addon id="script.module.python-qbittorrent" version="0.1.6" name="python-qbittorrent" provider-name="Mookfist">
-  <requires>
-    <import addon="xbmc.python" version="2.14.0" />
-  </requires>
-  <extension point="xbmc.python.module" library="lib" />
-  <extension point="xbmc.addon.metadata">
-    <summary lang="en">Python wrapper for the QBittorrent web api v3.1.x</summary>
-    <description lang="en">Python wrapper for QBittorrent web api v3.1.x</description>
-    <disclaimer>This addon is just a wrapper around the original module found at PyPI</disclaimer>
-    <language>en</language>
-    <platform>all</platform>
-    <source>http://pypi.python.org/pypi/qbittorrent</source>
-    <email>mookfist@gmail.com</email>
-    <website>http://pypi.python.org/pypi/qbittorrent</website>
   </extension>
 </addon>
 </addons>

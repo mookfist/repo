@@ -39,7 +39,7 @@ ADDON_XML = """<?xml version="1.0" encoding="utf-8"?>
     <description lang="en">%(description)s</description>
     <disclaimer>This addon is just a wrapper around the original module found at PyPI</disclaimer>
     <language>en</language>
-    <platform>all</platform> 
+    <platform>all</platform>
     <source>%(source_url)s</source>
     <email>%(author_email)s</email>
     <website>%(website)s</website>
@@ -100,7 +100,7 @@ archive.close()
 if ext == "whl" or ext == "egg":
   src_dir = tmp_dir + "/" + mod
 else:
-  src_dir = tmp_dir + "/%s-%s/%s" % (mod, ver, mod)
+  src_dir = tmp_dir + "/%s-%s/%s" % (mod, ver, mod.replace('-','_'))
 
 
 

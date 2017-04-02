@@ -1,7 +1,7 @@
 Mookfist Kodi Repository
 ========================
 
-Welcome to the Mookfist Kodi repository. Here you will find various addons for the Kodi media center. 
+Welcome to the Mookfist Kodi repository. Here you will find various addons for the Kodi media center.
 
 ## Installation
 
@@ -30,6 +30,7 @@ These addons expose various python libraries for use by the plugins
 * [python-qbittorent](https://github.com/mookfist/repo/tree/master/script.module.python-qbittorrent ) - A [python library](https://pypi.python.org/pypi/qbittorrent) for controlling the [QBittorrent](http://www.qbittorrent.org) client
 * [python-milights](https://github.com/mookfist/repo/tree/master/script.module.python-milights) - A [python library](https://pypi.python.org/pypi/milight) to speak to Milights and other [LimitlessLED](http://www.limitlessled.com) based products.
 * [python-simplejson](https://github.com/mookfist/repo/tree/master/script.module.python-simplejson) - A [python library](https://pypi.python.org/pypi/simplejson) to manipulate JSON
+* [python-mookfist-lled-controller](https://github.com/repo/tree/master/script.module.python-mookfist-lled-controller) - A [python library](https://pypi.python.org/pypi/mookfist-lled-controller) to control LimitlessLED-based wifi bridges
 
 ### Helper Scripts
 
