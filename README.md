@@ -9,7 +9,7 @@ This is a development branch. Use at your own risk.
 
 To install the repository, you must manually download and install the repository addon.
 
-1. Download https://github.com/mookfist/repo/raw/master/zips/repository.mookfist/repository.mookfist-2.0.zip
+1. Download https://github.com/mookfist/repo/raw/0.2.0devel/zips/repository.mookfist/repository.mookfist-2.1.zip
 2. Goto your Addons screen in Kodi
 3. Select "Install from Zip" and select the repository.mookfist-2.0.zip file you downloaded
 
@@ -21,25 +21,24 @@ The repository is now installed and you can now install the various addons avail
 
 These addons provide additional functionality to Kodi
 
-* [QBittorrent](https://github.com/mookfist/repo/tree/master/plugin.program.qbittorrent) A plugin to monitor a QBittorent client. Currently only lists torrents, but eventually will provide controls as well
-* [Mookfist Milights](https://github.com/mookfist/repo/tree/master/script.service.mookfist-milights) - A plugin that will control milights or other LimitlessLED-based lights
+* [Mookfist Milights](https://github.com/mookfist/repo/tree/0.2.0devel/script.service.mookfist-milights) - A plugin that will control milights or other LimitlessLED-based lights
 
 ### Python Libraries
 
 These addons expose various python libraries for use by the plugins
 
-* [python-requests](https://github.com/mookfist/repo/tree/master/script.module.python-requests) -  [Requests](http://docs.python-requests.org/en/latest/) library for a simpler HTTP API
-* [python-qbittorent](https://github.com/mookfist/repo/tree/master/script.module.python-qbittorrent ) - A [python library](https://pypi.python.org/pypi/qbittorrent) for controlling the [QBittorrent](http://www.qbittorrent.org) client
-* [python-milights](https://github.com/mookfist/repo/tree/master/script.module.python-milights) - A [python library](https://pypi.python.org/pypi/milight) to speak to Milights and other [LimitlessLED](http://www.limitlessled.com) based products.
-* [python-simplejson](https://github.com/mookfist/repo/tree/master/script.module.python-simplejson) - A [python library](https://pypi.python.org/pypi/simplejson) to manipulate JSON
-* [python-mookfist-lled-controller](https://github.com/repo/tree/master/script.module.python-mookfist-lled-controller) - A [python library](https://pypi.python.org/pypi/mookfist-lled-controller) to control LimitlessLED-based wifi bridges
+* [python-requests](https://github.com/mookfist/repo/tree/0.2.0devel/script.module.python-requests) -  [Requests](http://docs.python-requests.org/en/latest/) library for a simpler HTTP API
+* [python-qbittorent](https://github.com/mookfist/repo/tree/0.2.0devel/script.module.python-qbittorrent ) - A [python library](https://pypi.python.org/pypi/qbittorrent) for controlling the [QBittorrent](http://www.qbittorrent.org) client
+* [python-milights](https://github.com/mookfist/repo/tree/0.2.0devel/script.module.python-milights) - A [python library](https://pypi.python.org/pypi/milight) to speak to Milights and other [LimitlessLED](http://www.limitlessled.com) based products.
+* [python-simplejson](https://github.com/mookfist/repo/tree/0.2.0devel/script.module.python-simplejson) - A [python library](https://pypi.python.org/pypi/simplejson) to manipulate JSON
+* [python-mookfist-lled-controller](https://github.com/repo/tree/0.2.0devel/script.module.python-mookfist-lled-controller) - A [python library](https://pypi.python.org/pypi/mookfist-lled-controller) to control LimitlessLED-based wifi bridges
 
 ### Helper Scripts
 
 These python scripts make managing the repo a bit easier and could be of use to you:
 
-* [addons_repo_generator.py](https://github.com/mookfist/repo/blob/master/addons_repo_generator.py) - Generates the addons.xml the file and zip files from existing addons.
-* [pypi_addon_generator](https://github.com/mookfist/repo/blob/master/pypi_addon_generator.py) - Generates a kodi addon from a python library hosted at PyPI
+* [addons_repo_generator.py](https://github.com/mookfist/repo/blob/0.2.0devel/addons_repo_generator.py) - Generates the addons.xml the file and zip files from existing addons.
+* [pypi_addon_generator](https://github.com/mookfist/repo/blob/0.2.0devel/pypi_addon_generator.py) - Generates a kodi addon from a python library hosted at PyPI
 
 
 ## Contributing
