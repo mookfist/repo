@@ -1,7 +1,9 @@
-Mookfist Kodi Repository
-========================
+Mookfist Kodi Repository - 0.2.0 Development Branch
+===================================================
 
 Welcome to the Mookfist Kodi repository. Here you will find various addons for the Kodi media center.
+
+This is a development branch. Use at your own risk.
 
 ## Installation
 
