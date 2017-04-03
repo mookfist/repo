@@ -16,146 +16,116 @@ msgstr ""
 "Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+# structure
+# 300xx - headers
+# 30xxx - labels for settings pages
+
 msgctxt "#30000"
-msgid "General"
+msgid "Bridge Configuration"
 msgstr ""
 
 msgctxt "#30001"
-msgid "Host/ip of the wifi bridge"
+msgid "Initialization"
 msgstr ""
 
 msgctxt "#30002"
-msgid "Port number of the wifi bridge"
-msgstr ""
-
-msgctxt "#30004"
-msgid "Minimum brightness"
-msgstr ""
-
-msgctxt "#30005"
-msgid "Movies"
-msgstr ""
-
-msgctxt "#30006"
-msgid "TV"
-msgstr ""
-
-msgctxt "#30007"
-msgid "Enabled"
-msgstr ""
-
-msgctxt "#30008"
-msgid "Enable Color"
-msgstr ""
-
-msgctxt "#30009"
-msgid "Red Value"
-msgstr ""
-
-msgctxt "#30010"
-msgid "Green Value"
-msgstr ""
-
-msgctxt "#30011"
-msgid "Blue Value"
-msgstr ""
-
-msgctxt "#30012"
-msgid "Set Brightness at Startup"
-msgstr ""
-
-msgctxt "#30013"
-msgid "Maximum Brightness"
-msgstr ""
-
-msgctxt "#30014"
-msgid "Fading Speed"
-msgstr ""
-
-msgctxt "#30015"
-msgid "Slow"
-msgstr ""
-
-msgctxt "#30016"
-msgid "Medium"
-msgstr ""
-
-msgctxt "#30017"
-msgid "Fast"
-msgstr ""
-
-msgctxt "#30018"
-msgid "Global Settings"
-msgstr ""
-
-msgctxt "#30019"
-msgid "Immediate"
-msgstr ""
-
-msgctxt "#30020"
-msgid "Enable Group 1"
-msgstr ""
-
-msgctxt "#30021"
-msgid "Enable Group 2"
-msgstr ""
-
-msgctxt "#30022"
-msgid "Enable Group 3"
-msgstr ""
-
-msgctxt "#30023"
-msgid "Enable Group 4"
-msgstr ""
-
-msgctxt "#30024"
-msgid "Bulb Type"
-msgstr ""
-
-msgctxt "#30025"
-msgid "White"
-msgstr ""
-
-msgctxt "#30026"
-msgid "RGB + White"
-msgstr ""
-
-msgctxt "#30027"
-msgid "RGB"
-msgstr ""
-
-msgctxt "#30028"
-msgid "Command Delay"
-msgstr ""
-
-msgctxt "#30029"
-msgid "Enable Logging"
-msgstr ""
-
-msgctxt "#30030"
-msgid "Enable Custom Pause Settings"
-msgstr ""
-
-msgctxt "#30031"
-msgid "Pause Delay"
-msgstr ""
-
-msgctxt "#30032"
-msgid "Scan for Wifi Bridge"
-msgstr ""
-
-msgctxt "#30033"
-msgid "Fade out all lights"
-msgstr ""
-
-msgctxt "#30034"
 msgid "Testing"
 msgstr ""
 
-msgctxt "#30035"
-msgid "Fade Out"
+msgctxt "#30003"
+msgid "Groups"
 msgstr ""
 
-msgctxt "#30036"
-msgid "Fade In"
+msgctxt "#30110"
+msgid "IP/Hostname"
 msgstr ""
+
+msgctxt "#30111"
+msgid "Port Number"
+msgstr ""
+
+msgctxt "#30112"
+msgid "Scan for a bridge"
+msgstr ""
+
+msgctxt "#30113"
+msgid "Repeat Command"
+msgstr ""
+
+msgctxt "#30114"
+msgid "Command Interval"
+msgstr ""
+
+msgctxt "#30115"
+msgid "Bulb Type"
+msgstr ""
+
+msgctxt "#30116"
+msgid "RGB"
+msgstr ""
+
+msgctxt "#30117"
+msgid "RGB+W"
+msgstr ""
+
+msgctxt "#30118"
+msgid "White"
+msgstr ""
+
+msgctxt "#31001"
+msgid "Set Color on Startup"
+msgstr ""
+
+msgctxt "#31002"
+msgid "Set Brightness on Startup"
+msgstr ""
+
+msgctxt "#31003"
+msgid "Choose Color"
+msgstr ""
+
+msgctxt "#31004"
+msgid "Set Brightness"
+msgstr ""
+
+msgctxt "#31005"
+msgid "Starting Color"
+msgstr ""
+
+msgctxt "#32000"
+msgid "Fade In/Out All Groups"
+msgstr ""
+
+msgctxt "#32001"
+msgid "Fade In/Out Group 1"
+msgstr ""
+
+msgctxt "#32002"
+msgid "Fade In/Out Group 2"
+msgstr ""
+
+msgctxt "#32003"
+msgid "Fade In/Out Group 3"
+msgstr ""
+
+msgctxt "#32004"
+msgid "Fade In/Out Group 4"
+msgstr ""
+
+msgctxt "#33000"
+msgid "Enable Group 1"
+msgstr ""
+
+msgctxt "#33001"
+msgid "Enable Group 2"
+msgstr ""
+
+msgctxt "#33002"
+msgid "Enable Group 3"
+msgstr ""
+
+msgctxt "#33003"
+msgid "Enable Group 4"
+msgstr ""
+
+

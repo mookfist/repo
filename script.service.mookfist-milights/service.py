@@ -13,7 +13,7 @@ __settings__   = xbmcaddon.Addon(id='script.service.mookfist-milights')
 __version__    = __settings__.getAddonInfo('version')
 __language__   = __settings__.getLocalizedString
 
-
+"""
 class MyMonitor(xbmc.Monitor):
 
   def __init__(self):
@@ -202,10 +202,11 @@ class MyMonitor(xbmc.Monitor):
       self._onStop(data)
     elif str(sender) == "xbmc" and str(method) == "Player.OnPause":
       self._onPause(data)
-
+"""
 
 if __name__ == "__main__":
-
+  pass
+"""
   monitor = MyMonitor()
   monitor.onSettingsChanged()
 
@@ -214,4 +215,4 @@ if __name__ == "__main__":
       if monitor.lights:
         monitor.lights.stopFadeThread()
       break
-
+"""

@@ -1,15 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <settings>
   <category label="30000">
-    <setting label="30001" type="text" id="light_host" />
-    <setting label="30002" type="number" id="light_port" />
-    <setting label="30032" type="action" action="RunScript(special://home/addons/script.service.mookfist-milights/cmd.py, scan)"/>
-    <setting label="30024" type="select" id="global_bulb_type" lvalues="30025|30026|30027" default="1" />
-    <setting label="30028" type="number" id="command_delay" default="25" />
-    <setting label="30029" type="bool" id="enable_logging" default="false" />
+    <setting label="30110" type="text" id="bridge_host" />
+    <setting label="30111" type="number" id="bridge_port" />
+    <setting label="30112" type="action" action="RunScript(special://home/addons/script.service.mookfist-milights/cmd.py, scan)"/>
+    <setting label="30115" type="select" id="bridge_bulb_type" lvalues="30116|30117|30118" default="1" />
+    <setting label="30114" type="number" id="command_interval" default="100" />
+    <setting label="30113" type="number" id="pause" default="false" />
+  </category>
+  <category label="30001">
+    <setting label="31001" type="bool" id="startup_color" default="false" />
+    <setting label="31003" type="action" action="RunScript(script.skin.helper.colorpicker, addon=script.service.mookfist-milights, addonsetting=startup_color_value, palette=rainbow), skinstring=startup_color_value" />
+    <setting label="31005" type="number" id="startup_color_value" enable="false"/>
+    <setting type="sep" />
+    <setting label="31002" type="bool" id="startup_brightness" default="false" />
+    <setting label="31004" type="text" id="startup_brightness_value" default="100"/>
 
-    <!-- white, rgbw, rgb -->
-
+  </category>
+  <category label="30003">
+    <setting label="33000" type="bool" id="enable_group1" default="true" />
+    <setting label="33001" type="bool" id="enable_group2" default="false" />
+    <setting label="33002" type="bool" id="enable_group3" default="false" />
+    <setting label="33003" type="bool" id="enable_group4" default="false" />
+  </category>
+  <category label="30002">
+    <setting label="32000" type="action" action="" />
+    <setting label="32001" type="action" action="" />
+    <setting lavel="32002" type="action" action="" />
+    <setting lavel="32003" type="action" action="" />
+    <setting lavel="32004" type="action" action="" />
+  </category>
+  <!--
     <setting type="sep" />
     <setting label="30020" type="bool" id="enable_group1" default="true" />
     <setting label="30021" type="bool" id="enable_group2" default="false" />
@@ -21,23 +42,18 @@
     <setting label="30012" type="bool" id="global_set_brightness_at_start" />
 
     <setting label="30014" type="select" id="global_fade_speed" lvalues="30015|30016|30017|30019" default="1" />
-    <!-- slow, medium, fast, immediate -->
     <setting label="30013" type="number" id="global_max_brightness" default="100" />
     <setting label="30004" type="number" id="global_min_brightness" default="0" />
-    <!--
     <setting label="30013" type="slider" id="global_max_brightness" range="0,1,100" default="100" option="int" />
     <setting label="30004" type="slider" id="global_min_brightness" range="0,1,100" default="10" option="int" />
-    -->
     <setting type="sep"/>
     <setting label="30008" type="bool" id="global_enable_color" />
     <setting label="30009" visible="eq(-1,true)" type="number" id="global_red_value" />
     <setting label="30010" visible="eq(-2,true)" type="number" id="global_green_value" />
     <setting label="30011" visible="eq(-3,true)" type="number" id="global_blue_value" />
-    <!--
     <setting label="30009" visible="eq(-1,true)" type="slider" id="global_red_value" range="0,1,255" default="255" option="int" />
     <setting label="30010" visible="eq(-2,true)" type="slider" id="global_green_value" range="0,1,255" default="255" option="int"/>
     <setting label="30011" visible="eq(-3,true)" type="slider" id="global_blue_value" range="0,1,255" default="255" option="int"/>
-    -->
     <setting type="lsep" label="Pause Settings" />
     <setting label="30030" type="bool" id="global_enable_pause_speed" default="false" />
     <setting label="30014" type="select" id="global_pause_fade_speed" lvalues="30015|30016|30017|30019" default="1" />
@@ -56,5 +72,5 @@
   <category label="30006">
     <setting label="30007" type="bool" id="tv_enabled" />
   </category>
-
+-->
 </settings>
