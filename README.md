@@ -22,11 +22,11 @@ The repository is now installed and you can now install the various addons avail
 These addons provide additional functionality to Kodi
 
 * [Mookfist Milights](https://github.com/mookfist/repo/tree/0.2.0devel/script.service.mookfist-milights) - A plugin that will control milights or other LimitlessLED-based lights
+* [script.module.colorpicker](https://github.com/mookfist/repo/tree/0.2.0devel/script.module.colorpicker) - A ColorPicker dialog window class
 
 ### Python Libraries
 
 These addons expose various python libraries for use by the plugins
-
 * [python-requests](https://github.com/mookfist/repo/tree/0.2.0devel/script.module.python-requests) -  [Requests](http://docs.python-requests.org/en/latest/) library for a simpler HTTP API
 * [python-qbittorent](https://github.com/mookfist/repo/tree/0.2.0devel/script.module.python-qbittorrent ) - A [python library](https://pypi.python.org/pypi/qbittorrent) for controlling the [QBittorrent](http://www.qbittorrent.org) client
 * [python-milights](https://github.com/mookfist/repo/tree/0.2.0devel/script.module.python-milights) - A [python library](https://pypi.python.org/pypi/milight) to speak to Milights and other [LimitlessLED](http://www.limitlessled.com) based products.
@@ -39,7 +39,7 @@ These python scripts make managing the repo a bit easier and could be of use to 
 
 * [addons_repo_generator.py](https://github.com/mookfist/repo/blob/0.2.0devel/addons_repo_generator.py) - Generates the addons.xml the file and zip files from existing addons.
 * [pypi_addon_generator](https://github.com/mookfist/repo/blob/0.2.0devel/pypi_addon_generator.py) - Generates a kodi addon from a python library hosted at PyPI
-
+* [git_addon_generator](https://github.com/mookfist/repo/blog/0.2.0devel/git_addon_generator.py) - Prepares a kodi addon from a git repository
 
 ## Contributing
 
