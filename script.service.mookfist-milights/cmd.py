@@ -102,8 +102,6 @@ def cmd_colorpicker(args):
 
   color_picker.doModal()
 
-  utils.log('HAHAHA COLOR PICKER WORKED SUCKAZ')
-
 
 def parse_arg(arg):
   key,value = arg.split('=')
