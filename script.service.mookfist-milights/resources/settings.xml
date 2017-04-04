@@ -10,7 +10,7 @@
   </category>
   <category label="30001">
     <setting label="31001" type="bool" id="startup_color" default="false" />
-    <setting label="31003" type="action" action="RunScript(script.skin.helper.colorpicker, addon=script.service.mookfist-milights, addonsetting=startup_color_value, palette=rainbow), skinstring=startup_color_value" />
+    <setting label="31003" type="action" action="RunScript(script.service.mookfist-milights, colorpicker, addon=script.service.mookfist-milights, addonsetting=startup_color_value, palette=rainbow), skinstring=startup_color_value" />
     <setting label="31005" type="number" id="startup_color_value" enable="false"/>
     <setting type="sep" />
     <setting label="31002" type="bool" id="startup_brightness" default="false" />
