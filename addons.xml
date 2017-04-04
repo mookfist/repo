@@ -1441,7 +1441,7 @@ is not maintained, and should only be used as a last resort.
     <import addon="script.module.python-milight" version="0.6" />
     <import addon="script.module.python-simplejson" version="2.14.0" />
     <import addon="script.module.python-mookfist-lled-controller" verion="0.0.4" />
-    <import addon="script.skin.helper.colorpicker" version="1.0.13mooked" />
+    <import addon="script.module.colorpicker" version="1.0.13mooked" />
   </requires>
   <extension point="xbmc.service" library="service.py" start="login" />
   <extension point="xbmc.addon.metadata">
