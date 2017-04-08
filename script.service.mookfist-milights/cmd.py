@@ -13,24 +13,22 @@ __settings__   = xbmcaddon.Addon(id='script.service.mookfist-milights')
 __version__    = __settings__.getAddonInfo('version')
 __language__   = __settings__.getLocalizedString
 
-
 class CustomColorPicker(ColorPicker):
   def save_color_setting(self, restoreprevious=False):
-
+    utils.log('CUSOMT COMLORPOPCIKER SAVE!!!!')
     if restoreprevious:
-      colorname = self.current_window.getProperty('current.colorname')
-      colorstring = self.current_window.getProperty('current.colorstring')
+      colorname = __settings__.getSetting('startup_color_name')
+      colorstring = __settings__.getSetting('startup_color_value')
     else:
       colorname = self.current_window.getProperty('colorname')
       colorstring = self.current_window.getProperty('colorstring')
 
     self.create_color_swatch_image(colorstring)
-    __settings__.setSetting('startup_color_value', colorstring[2:])
 
+    utils.log('Setting the setting!')
 
-
-
-
+    __settings__.setSetting('startup_color_value', colorstring)
+    __settings__.setSetting('startup_color_name', colorname)
 
 
 def fade_out(argv):
@@ -97,14 +95,12 @@ def cmd_colorpicker(args):
 
   utils.log('Addon Path: %s' % addon_path)
 
-  color_picker = CustomColorPicker('colorpicker.xml', addon_path, 'Default', '1080i',
-      colors_file = addon_path + '/resources/colors/colors.xml'
+  color_picker = CustomColorPicker('script-skin_helper_service-ColorPicker.xml', colorpicker_path, 'Default', '1080i',
+      skin_color_file = addon_path + '/resources/colors/colors.xml',
+      enable_pil = False
   )
-  color_picker.skinsetting = 'startup_color'
-  color_picker.color_file = addon_path + '/resources/colors/colors.xml'
 
   color_picker.doModal()
-
 
 def parse_arg(arg):
   key,value = arg.split('=')

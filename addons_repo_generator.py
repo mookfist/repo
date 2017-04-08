@@ -76,6 +76,11 @@ class Generator:
             version = xml.etree.ElementTree.parse(addonFile).getroot().attrib['version']
             addonZipName = addon + "-" + version
 
+            zipFile = addonZipDir + "/" + addonZipName + ".zip"
+
+            if os.path.exists(zipFile):
+              os.remove(zipFile)
+
             zipObj = zipfile.ZipFile(addonZipDir + "/" + addonZipName + ".zip", mode='w')
 
             for path, subdirs, files in os.walk(addon):
