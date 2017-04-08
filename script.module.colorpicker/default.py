@@ -4,7 +4,7 @@
 import xbmc,xbmcgui,xbmcaddon
 import resources.lib.ColorPicker as cp
 
-ADDON_ID = "script.skin.helper.colorpicker"
+ADDON_ID = "script.module.colorpicker"
 ADDON = xbmcaddon.Addon(ADDON_ID)
 ADDON_PATH = ADDON.getAddonInfo('path').decode("utf-8")
 
@@ -13,7 +13,7 @@ class Main(object):
     def __init__(self):
         params = self.get_params()
         if params:
-            color_picker = cp.ColorPicker("script-skin_helper_service-ColorPicker.xml", ADDON_PATH, "Default", "1080i")
+            color_picker = cp.ColorPicker("script-skin_helper_service-ColorPicker.xml", ADDON_PATH, "Default", "1080i", foo="bar")
             color_picker.skinstring = params.get("SKINSTRING","")
             color_picker.win_property = params.get("WINPROPERTY","")
             color_picker.active_palette = params.get("PALETTE","")

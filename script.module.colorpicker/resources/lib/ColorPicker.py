@@ -86,19 +86,18 @@ class ColorPicker(xbmcgui.WindowXMLDialog):
         xbmcgui.WindowXMLDialog.__init__(self, *args, **kwargs)
         self.action_exitkeys_id = [10, 13]
         self.win = xbmcgui.Window(10000)
-        self.build_colors_list()
-        self.result = -1
 
         self.addon_id = kwargs.get('addon_id', ADDON_ID)
         self.addon = kwargs.get('addon', ADDON)
         self.addon_path = kwargs.get('addon_path', ADDON_PATH)
 
         self.skin_color_file = kwargs.get('skin_color_file', SKINCOLORFILE)
-        self.skin_color_files_path = kwargs('skin_color_files_path', SKINCOLORFILES_PATH)
-        self.color_files_path = kwargs('color_files_path', COLORFILES_PATH)
+        self.skin_color_files_path = kwargs.get('skin_color_files_path', SKINCOLORFILES_PATH)
+        self.color_files_path = kwargs.get('color_files_path', COLORFILES_PATH)
+        self.enable_pil = kwargs.get('enable_pil', SUPPORTS_PIL)
 
-
-
+        self.build_colors_list()
+        self.result = -1
 
         # check paths
         if xbmcvfs.exists(self.skin_color_file) and not xbmcvfs.exists(self.skin_color_files_path):
@@ -209,6 +208,7 @@ class ColorPicker(xbmcgui.WindowXMLDialog):
         pass
 
     def onAction(self, action):
+        log_msg('ACTION: %s' % action)
         '''builtin kodi event'''
         if action.getId() in (9, 10, 92, 216, 247, 257, 275, 61467, 61448, ):
             # exit or back called from kodi
@@ -216,6 +216,7 @@ class ColorPicker(xbmcgui.WindowXMLDialog):
             self.close_dialog()
 
     def close_dialog(self):
+
         '''close our xml window'''
         self.close()
 
@@ -295,6 +296,8 @@ class ColorPicker(xbmcgui.WindowXMLDialog):
                 self.result = (self.current_window.getProperty("colorstring"),
                                self.current_window.getProperty("colorname"))
                 self.close_dialog()
+            else:
+                self.close_dialog()
 
         elif controlID == 3015:
             try:
@@ -329,7 +332,8 @@ class ColorPicker(xbmcgui.WindowXMLDialog):
                 paths.append(u"%s%s.png" % (self.skin_color_files_path, colorstring))
             for color_image_file in paths:
                 if not xbmcvfs.exists(color_image_file):
-                    if SUPPORTS_PIL:
+                    if self.enable_pil == True:
+                        log_msg('OMG ENABLE_PIL IS TRUE FOR SOME REASON')
                         # create image with PIL
                         try:
                             colorstring = colorstring.strip()

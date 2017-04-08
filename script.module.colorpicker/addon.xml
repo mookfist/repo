@@ -5,7 +5,8 @@
 		<import addon="xbmc.addon" version="12.0.0"/>
 		<import addon="script.module.pil" version="1.1.7"/>
   </requires>
-    <extension point="xbmc.python.module" library="resources/lib" />
+  <extension point="xbmc.python.module" library="resources/lib" />
+  <extension point="xbmc.python.library" library="default.py" />
 	<extension point="xbmc.addon.metadata">
     <summary lang="en">Colorpicker Dialog Class. Based off of Skin Helper Suite's Colorpicker by marcelveldt</summary>
     <description>Colorpicker Dialog Class. Based off of Skin Helper Suite's Colorpicker by marcelveldt. The original source code can be found at https://github.com/marcelveldt/script.skin.helper.colorpicker</description>
