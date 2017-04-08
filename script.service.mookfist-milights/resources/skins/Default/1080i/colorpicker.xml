@@ -67,16 +67,16 @@
 				</control>
 			</itemlayout>
 			<focusedlayout height="45" width="58" condition="!StringCompare(Window.Property(palettename),basic) + !StringCompare(Window.Property(palettename),material-design)">
-                <control type="group">
-                    <animation effect="zoom" time="200" tween="sine" easing="inout" start="100" end="300" center="auto">Focus</animation>
-                    <control type="image">
-                        <width>92%</width>
-                        <height>92%</height>
-                        <texture border="5">$INFO[ListItem.Icon]</texture>
-                    </control>
-                </control>
+        <control type="group">
+          <animation effect="zoom" time="200" tween="sine" easing="inout" start="100" end="300" center="auto">Focus</animation>
+          <control type="image">
+            <width>92%</width>
+            <height>92%</height>
+            <texture border="5">$INFO[ListItem.Icon]</texture>
+          </control>
+        </control>
 			</focusedlayout>
-            <itemlayout height="76" width="128" condition="StringCompare(Window.Property(palettename),basic)">
+      <itemlayout height="76" width="128" condition="StringCompare(Window.Property(palettename),basic)">
 				<control type="image">
 					<width>92%</width>
 					<height>92%</height>
@@ -84,16 +84,16 @@
 				</control>
 			</itemlayout>
 			<focusedlayout height="76" width="128" condition="StringCompare(Window.Property(palettename),basic)">
-                <control type="group">
-                    <animation effect="zoom" time="200" tween="sine" easing="inout" start="100" end="164" center="auto">Focus</animation>
-                    <control type="image">
-                        <width>92%</width>
-                        <height>92%</height>
-                        <texture border="5">$INFO[ListItem.Icon]</texture>
-                    </control>
-                </control>
+        <control type="group">
+          <animation effect="zoom" time="200" tween="sine" easing="inout" start="100" end="164" center="auto">Focus</animation>
+          <control type="image">
+            <width>92%</width>
+            <height>92%</height>
+            <texture border="5">$INFO[ListItem.Icon]</texture>
+          </control>
+        </control>
 			</focusedlayout>
-            <itemlayout height="40" width="125" condition="StringCompare(Window.Property(palettename),material-design)">
+      <itemlayout height="40" width="125" condition="StringCompare(Window.Property(palettename),material-design)">
 				<control type="image">
 					<width>92%</width>
 					<height>92%</height>
@@ -101,28 +101,28 @@
 				</control>
 			</itemlayout>
 			<focusedlayout height="40" width="125" condition="StringCompare(Window.Property(palettename),material-design)">
-                <control type="group">
-                    <animation effect="zoom" time="200" tween="sine" easing="inout" start="100" end="164" center="auto">Focus</animation>
-                    <control type="image">
-                        <width>92%</width>
-                        <height>92%</height>
-                        <texture border="5">$INFO[ListItem.Icon]</texture>
-                    </control>
-                </control>
-			</focusedlayout>
+        <control type="group">
+          <animation effect="zoom" time="200" tween="sine" easing="inout" start="100" end="164" center="auto">Focus</animation>
+          <control type="image">
+            <width>92%</width>
+            <height>92%</height>
+            <texture border="5">$INFO[ListItem.Icon]</texture>
+          </control>
         </control>
+			</focusedlayout>
+    </control>
 
 		<!--current color name-->
-        <control type="label">
-            <left>60</left>
+    <control type="label">
+      <left>60</left>
 			<top>930</top>
-            <width>600</width>
-            <height>40</height>
+      <width>600</width>
+      <height>40</height>
 			<label>$INFO[Window.Property(colorname)]</label>
-            <align>left</align>
-            <textcolor>white</textcolor>
+      <align>left</align>
+      <textcolor>white</textcolor>
 			<shadowcolor>black</shadowcolor>
-        </control>
+    </control>
 
 		<control type="grouplist">
 			<orientation>horizontal</orientation>
@@ -177,6 +177,41 @@
 				<texturenofocus colordiffuse="black" border="5">panel_trans.png</texturenofocus>
 			</control>
 
+			<control type="group" id="3020">
+				<width>450</width>
+				<height>60</height>
+				<control type="label" id="3016">
+					<!-- label opacity-->
+					<width>150</width>
+					<left>0</left>
+					<align>left</align>
+					<onup>3110</onup>
+					<label>$ADDON[script.skin.helper.colorpicker 32049]:</label>
+					<textcolor>white</textcolor>
+					<texturenofocus colordiffuse="black" border="5">panel_trans.png</texturenofocus>
+				</control>
+				<control type="slider" id="3015">
+					<!-- opacity slider -->
+					<top>25</top>
+					<left>160</left>
+					<onup>3011</onup>
+					<ondown>3011</ondown>
+					<width>200</width>
+				</control>
+
+				<control type="label" id="3017">
+					<!-- opacity percentage -->
+					<width>80</width>
+					<height>60</height>
+					<right>0</right>
+					<align>right</align>
+					<onup>3110</onup>
+					<onleft>3010</onleft>
+					<label>$INFO[Control.Getlabel(3015)]</label>
+					<textcolor>white</textcolor>
+					<texturenofocus colordiffuse="black" border="5">panel_trans.png</texturenofocus>
+				</control>
+			</control>
 		</control>
 
 	</controls>

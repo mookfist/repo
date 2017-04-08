@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<addon id="repository.mookfist-local" name="Mookfist Local Repo" version="2.2" provider-name="Mookfist">
+    <extension point="xbmc.addon.repository" name="Mookfist Local Repository">
+      <info compressed="false">http://127.0.0.1:8181/addons.xml</info>
+      <checksum>http://127.0.0.1:8181/addons.xml.md5</checksum>
+        <datadir zip="true">http://127.0.0.1:8181/zips</datadir>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary></summary>
+        <description></description>
+        <platform>all</platform>
+    </extension>
+</addon>
+

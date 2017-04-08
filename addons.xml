@@ -1185,6 +1185,19 @@ This is not a backwards compatible change.
   </extension>
 </addon>
 
+<addon id="repository.mookfist-local" name="Mookfist Local Repo" version="2.2" provider-name="Mookfist">
+    <extension point="xbmc.addon.repository" name="Mookfist Local Repository">
+      <info compressed="false">http://127.0.0.1:8181/addons.xml</info>
+      <checksum>http://127.0.0.1:8181/addons.xml.md5</checksum>
+        <datadir zip="true">http://127.0.0.1:8181/zips</datadir>
+    </extension>
+    <extension point="xbmc.addon.metadata">
+        <summary></summary>
+        <description></description>
+        <platform>all</platform>
+    </extension>
+</addon>
+
 <addon id="script.module.python-mookfist-lled-controller" version="0.0.4" name="python-mookfist-lled-controller" provider-name="mookfist">
   <requires>
     <import addon="xbmc.python" version="2.14.0" />

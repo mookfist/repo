@@ -92,13 +92,16 @@ def scan_bridges():
 
 def cmd_colorpicker(args):
 
-  path = xbmcaddon.Addon("script.service.mookfist-milights").getAddonInfo('path').decode('utf-8')
+  colorpicker_path = xbmcaddon.Addon("script.module.colorpicker").getAddonInfo('path').decode('utf-8')
+  addon_path = xbmcaddon.Addon('script.service.mookfist-milights').getAddonInfo('path').decode('utf-8')
 
-  color_picker = CustomColorPicker('colorpicker.xml', path, 'Default', '1080i',
-      addon_path=path
-      )
+  utils.log('Addon Path: %s' % addon_path)
+
+  color_picker = CustomColorPicker('colorpicker.xml', addon_path, 'Default', '1080i',
+      colors_file = addon_path + '/resources/colors/colors.xml'
+  )
   color_picker.skinsetting = 'startup_color'
-  color_picker.color_file = path + '/resources/colors/colors.xml'
+  color_picker.color_file = addon_path + '/resources/colors/colors.xml'
 
   color_picker.doModal()
 
