@@ -18,8 +18,10 @@ def get_bridge(version=4):
 
     """
 
-    if version == 4:
-        from .bridges.ver4 import get_bridge as gb
+    if version == 4 or version == 5:
+        from mookfist_lled_controller.bridges.ver4 import get_bridge as gb
+    elif version == 6:
+        from mookfist_lled_controller.bridges.ver6 import get_bridge as gb
     else:
         raise Exception("Unsupported protocol version: %s" % version)
 
@@ -45,25 +47,14 @@ class WifiBridge(object):
         self.repeat = repeat
         self._groups = {}
 
-        if version == 4:
-            from .bridges.ver4 import Group
+        if version == 4 or version == 5:
+            from mookfist_lled_controller.bridges.ver4 import Bridge
+        elif version == 6:
+            from mookfist_lled_controller.bridges.ver6 import Bridge
         else:
             raise Exception("Unsupported protocol version: %s" % version)
 
-        self._Group = Group
-
-        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-
-        self._last_set_group = -1
-
-
-    def get_group(self, group):
-        """
-        Get an instance of a Group class for the specific group
-        """
-        if group not in self._groups:
-            self._groups[group] = self._Group(group)
-        return self._groups[group]
+        self._bridge = Bridge(ip, port, pause, repeat)
 
     def color(self, color, group=1):
         """
@@ -71,13 +62,7 @@ class WifiBridge(object):
 
         Color ranges from 0 to 255, where 0 is red.
         """
-        g = self.get_group(group)
-
-        if self._last_set_group != group:
-            self.send(g.on())
-            self._last_set_group = group
-
-        self.send(g.color(color))
+        self._bridge.color(color, group)
 
     def brightness(self, brightness, group=1):
         """
@@ -85,23 +70,10 @@ class WifiBridge(object):
 
         Brightness ranges from 2 to 27
         """
-        g = self.get_group(group)
+        self._bridge.brightness(brightness, group)
 
-        if self._last_set_group != group:
-            self.send(g.on())
-            self._last_set_group = group
+    def on(self, group=1):
+        self._bridge.on(group)
 
-        self.send(g.brightness(brightness))
-
-    def send(self, cmd):
-        """Send a command
-
-        cmd is expected to be array of numbers
-        """
-
-        for x in range(0,self.repeat): 
-            logging.debug('Sending command: %s' % cmd.message())
-            self._sock.sendto(bytearray(cmd.message()), (self.ip, self.port))
-            time.sleep(self.pause)
-
-
+    def off(self, group=1):
+        self._bridge.off(group)

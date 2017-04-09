@@ -9,6 +9,10 @@ from mookfist_lled_controller import fade_brightness
 from mookfist_lled_controller import fade_color
 from mookfist_lled_controller import set_color
 from mookfist_lled_controller import set_brightness
+from mookfist_lled_controller import set_on
+from mookfist_lled_controller import set_off
+from mookfist_lled_controller.exceptions import UnsupportedVersion
+from mookfist_lled_controller.exceptions import InvalidGroup
 
 def configure_logger(debug=False):
     """Configure a logger with colored output"""
@@ -41,6 +45,20 @@ class Main(object):
             self.action = 'color'
         elif arguments['brightness']:
             self.action = 'brightness'
+        elif arguments['on']:
+            self.action = ['on']
+        elif arguments['off']:
+            self.action = 'off'
+
+
+        if arguments['--bridge-version'] == '4' or arguments['--bridge-version'] == '5':
+            self.bridge_version = 4
+        elif arguments['--bridge-version'] == '6':
+            self.bridge_version = 6
+        elif arguments['--bridge-version'] != None:
+            raise UnsupportedVersion 
+        else:
+            self.bridge_version = 4
 
         self.log = logging.getLogger('lled')
 
@@ -71,6 +89,14 @@ class Main(object):
         self.log.info('Setting brightness to %s%%' % brightness)
         set_brightness(self.bridge, self.arguments['--group'], brightness)
 
+    def action_on(self):
+        self.log.info('Turning lights on')
+        set_on(self.bridge, self.arguments['--group'])
+
+    def action_off(self):
+        self.log.info('Turning lights off')
+        set_off(self.bridge, self.arguments['--group'])
+
     def route_action(self):
         if self.arguments['fade']:
             self.action_fade()
@@ -80,36 +106,47 @@ class Main(object):
             self.action_color()
         elif self.arguments['brightness']:
             self.action_brightness()
+        elif self.arguments['on']:
+            self.action_on()
+        elif self.arguments['off']:
+            self.action_off()
+
 
 
     def run(self):
-        if (self.arguments['--host']):
-            host = self.arguments['--host']
-        else:
-            self.log.info('Scanning for bridge...')
-            host, macaddr = get_bridge()
-            self.log.info('Bridge detected: %s' % (macaddr))
+        try:
+            if (self.arguments['--host']):
+                host = self.arguments['--host']
+            else:
+                self.log.info('Scanning for bridge...')
+                host, macaddr = get_bridge(self.bridge_version)
+                self.log.info('Bridge detected: %s' % (macaddr))
 
-        port = 8899
-        if self.arguments['--port']:
-            port = int(self.arguments['--port'])
+            port = 8899
+            if self.arguments['--port']:
+                port = int(self.arguments['--port'])
 
-        rc = 1
-        if self.arguments['--repeat']:
-            rc = int(self.arguments['--repeat'])
+            rc = 1
+            if self.arguments['--repeat']:
+                rc = int(self.arguments['--repeat'])
 
-        pause = 100
-        if self.arguments['--pause']:
-            pause = int(self.arguments['--pause'])
+            pause = 100
+            if self.arguments['--pause']:
+                pause = int(self.arguments['--pause'])
 
-        version = 4
-        if self.arguments['--version']:
-            version = int(self.arguments['--version'])
+            version = 4
+            if self.arguments['--bridge-version']:
+                version = int(self.arguments['--bridge-version'])
 
-        self.log.info('Bridge v%s: %s:%s' % (version, host, port))
-        self.log.debug('Pause: %sms - Repeat Count: %s' % (pause, rc))
+            self.log.info('Bridge v%s: %s:%s' % (version, host, port))
+            self.log.debug('Pause: %sms - Repeat Count: %s' % (pause, rc))
 
-        self.bridge = WifiBridge(host, port, version, pause, rc)
+            self.bridge = WifiBridge(host, port, version, pause, rc)
+    
+            self.route_action()
+        except UnsupportedVersion:
+            self.log.error('The chosen bridge version is unsupported')
+        except InvalidGroup:
+            self.log.error('Groups can be numbered 1 through 4 only')
 
-        self.route_action()
 

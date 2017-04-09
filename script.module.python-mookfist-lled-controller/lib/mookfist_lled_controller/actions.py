@@ -3,6 +3,16 @@
 Helper functions that perform different actions on a bridge
 """
 
+def set_off(bridge, groups):
+    """Turn off lights"""
+    for grp in groups:
+        bridge.off(int(grp))
+
+def set_on(bridge, groups):
+    """Turn on lights"""
+    for grp in groups:
+        bridge.on(int(grp))
+
 def fade_brightness(bridge, groups, start, end):
     """Fade the brightness of the selected groups"""
 
