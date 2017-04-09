@@ -11,6 +11,7 @@ from mookfist_lled_controller import set_color
 from mookfist_lled_controller import set_brightness
 from mookfist_lled_controller import set_on
 from mookfist_lled_controller import set_off
+from mookfist_lled_controller import set_white
 from mookfist_lled_controller.exceptions import UnsupportedVersion
 from mookfist_lled_controller.exceptions import InvalidGroup
 
@@ -49,6 +50,8 @@ class Main(object):
             self.action = ['on']
         elif arguments['off']:
             self.action = 'off'
+        elif arguments['white']:
+            self.action = 'white'
 
 
         if arguments['--bridge-version'] == '4' or arguments['--bridge-version'] == '5':
@@ -84,6 +87,10 @@ class Main(object):
         self.log.info('Setting color to %s' % color)
         set_color(self.bridge, self.arguments['--group'], color)
 
+    def action_white(self):
+        self.log.info('Setting color to white')
+        set_white(self.bridge, self.arguments['--group'])
+
     def action_brightness(self):
         brightness = int(self.arguments['<brightness>'])
         self.log.info('Setting brightness to %s%%' % brightness)
@@ -110,6 +117,8 @@ class Main(object):
             self.action_on()
         elif self.arguments['off']:
             self.action_off()
+        elif self.arguments['white']:
+            self.action_white()
 
 
 

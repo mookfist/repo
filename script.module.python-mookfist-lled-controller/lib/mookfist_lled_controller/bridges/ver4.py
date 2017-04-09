@@ -73,6 +73,22 @@ class Bridge(object):
         g = self.get_group(group)
         self.send(g.on())
 
+    def white(self, group=1):
+        g = self.get_group(group)
+
+        if group == 1:
+            self.send(Command(0x45))
+            self.send(Command(0xC5))
+        elif group == 2:
+            self.send(Command(0x47))
+            self.send(Command(0xC7))
+        elif group == 3:
+            self.send(Command(0x49))
+            self.send(Command(0xC9))
+        elif group == 4:
+            self.send(Command(0x4b))
+            self.send(Command(0xcb))
+
 
     def brightness(self, brightness, group=1):
         g = self.get_group(group)
@@ -161,6 +177,18 @@ class Group(object):
         if color > 255:
             color = color - 255
         return Command(0x40, color)
+
+    def white(self):
+        if self.group == 1:
+            cmd = 0x45
+        elif self.group == 2:
+            cmd = 0x46
+        elif self.group == 3:
+            cmd = 0x47
+        elif self.group == 4:
+            cmd = 0x48
+
+        return Command(cmd)
 
     def brightness(self, brightness):
         """"get the brightness command for this group and brightness (0-100%)

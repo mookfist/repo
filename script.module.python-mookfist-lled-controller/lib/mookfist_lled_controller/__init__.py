@@ -7,6 +7,7 @@ from .actions import set_color
 from .actions import set_brightness
 from .actions import set_on
 from .actions import set_off
+from .actions import set_white
 
 def pprint_bytearray(h):
     s = []

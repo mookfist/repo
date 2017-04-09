@@ -13,6 +13,10 @@ def set_on(bridge, groups):
     for grp in groups:
         bridge.on(int(grp))
 
+def set_white(bridge, groups):
+    for grp in groups:
+        bridge.white(int(grp))
+
 def fade_brightness(bridge, groups, start, end):
     """Fade the brightness of the selected groups"""
 

@@ -72,6 +72,9 @@ class WifiBridge(object):
         """
         self._bridge.brightness(brightness, group)
 
+    def white(self, group=1):
+        self._bridge.white(group)
+
     def on(self, group=1):
         self._bridge.on(group)
 
