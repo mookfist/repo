@@ -1,6 +1,6 @@
 from .bridge import WifiBridge
 
-from .bridge import get_bridge
+from .bridge import get_bridges
 from .actions import fade_brightness
 from .actions import fade_color
 from .actions import set_color

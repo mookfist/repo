@@ -4,7 +4,7 @@ import logging
 from docopt import docopt
 from mookfist_lled_controller import logger
 from mookfist_lled_controller import WifiBridge
-from mookfist_lled_controller import get_bridge
+from mookfist_lled_controller import get_bridges
 from mookfist_lled_controller import fade_brightness
 from mookfist_lled_controller import fade_color
 from mookfist_lled_controller import set_color
@@ -14,7 +14,7 @@ from mookfist_lled_controller import set_off
 from mookfist_lled_controller import set_white
 from mookfist_lled_controller.exceptions import UnsupportedVersion
 from mookfist_lled_controller.exceptions import InvalidGroup
-
+from mookfist_lled_controller.exceptions import NoBridgeFound
 def configure_logger(debug=False):
     """Configure a logger with colored output"""
 
@@ -128,13 +128,22 @@ class Main(object):
                 host = self.arguments['--host']
             else:
                 self.log.info('Scanning for bridge...')
-                host, macaddr = get_bridge(self.bridge_version)
-                self.log.info('Bridge detected: %s' % (macaddr))
+                bridges = get_bridge(self.bridge_version)
+                self.log.info('Found %s bridge(s)' % len(bridges))
+                
+                if len(bridges) > 1:
+                    self.log.warning('Multiple bridges have been found. I will choose the first one I saw')
+                    self.log.warning('If you really don\'t want me to do that, then use the --bridge-ip (and --bridge-port if needed) flags when using this tool')
+                   
+                    self.log.info('--- Available Bridges')
+                    for bridge in bridges:
+                        self.log.info('    %s - %s' % (bridge[0], bridge[1]))
+                elif len(bridges) == 0:
+                    raise NoBridgeFound
+                
+                host = bridges[0][0]
 
-            port = 8899
-            if self.arguments['--port']:
-                port = int(self.arguments['--port'])
-
+            
             rc = 1
             if self.arguments['--repeat']:
                 rc = int(self.arguments['--repeat'])
@@ -147,8 +156,20 @@ class Main(object):
             if self.arguments['--bridge-version']:
                 version = int(self.arguments['--bridge-version'])
 
-            self.log.info('Bridge v%s: %s:%s' % (version, host, port))
-            self.log.debug('Pause: %sms - Repeat Count: %s' % (pause, rc))
+            if version == 4 or version == 5:
+                port = 8899
+            elif version == 6:
+                port = 5987
+            elif self.arguments['--port']:
+                port = int(self.arguments['--port'])
+
+            self.log.info('--- Bridge Details')
+            self.log.info('Version: %s' % version)
+            self.log.info('IP: %s' % host)
+            self.log.info('Port: %s' % port)
+            self.log.debug('--- Settings')
+            self.log.debug('Pause: %sms' % pause)
+            self.log.debug('Command Repeat: %s' % rc)
 
             self.bridge = WifiBridge(host, port, version, pause, rc)
     
@@ -157,5 +178,7 @@ class Main(object):
             self.log.error('The chosen bridge version is unsupported')
         except InvalidGroup:
             self.log.error('Groups can be numbered 1 through 4 only')
+        except NoBridgeFound:
+            self.log.error('Sorry, I was not able to find any bridges. So either give me the IP (and port number) of the bridge you wish to use, or figure out why I can not find any bridges')
 
 

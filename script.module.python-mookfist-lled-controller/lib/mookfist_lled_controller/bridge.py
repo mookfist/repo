@@ -7,21 +7,16 @@ import socket
 import time
 import logging
 
-def get_bridge(version=4):
+def get_bridges(version=4):
     """Get Bridge
 
-    Returns the ip and mac address of the first availale
-    wifi bridge.
-
-    Example:
-        ip, mac = GetBridge(ver=6)
-
+    Returns a list of IP and MAC addresses on the network
     """
 
     if version == 4 or version == 5:
-        from mookfist_lled_controller.bridges.ver4 import get_bridge as gb
+        from mookfist_lled_controller.bridges.ver4 import get_bridges as gb
     elif version == 6:
-        from mookfist_lled_controller.bridges.ver6 import get_bridge as gb
+        from mookfist_lled_controller.bridges.ver6 import get_bridges as gb
     else:
         raise Exception("Unsupported protocol version: %s" % version)
 

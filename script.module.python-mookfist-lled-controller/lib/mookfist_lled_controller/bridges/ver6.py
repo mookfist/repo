@@ -11,17 +11,19 @@ from mookfist_lled_controller.exceptions import NoBridgeFound
 from mookfist_lled_controller.exceptions import InvalidGroup
 from mookfist_lled_controller import pprint_bytearray
 
-def get_bridge():
-    """Get first available bridge"""
+def get_bridges():
+    """Get available bridges"""
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.settimeout(2)
     sock.bind(('', 0))
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-#    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
     counter = 0
     max_tries = 5
+
+    bridges = []
 
     while counter < max_tries:
         try:
@@ -29,11 +31,15 @@ def get_bridge():
             data = sock.recv(1024)
             if data:
                 host, mac = data.split(','.encode('utf8'))[:2]
-                return (host.decode('utf8'), mac.decode('utf'))
+                bridge = (host.decode('utf8'), mac.decode('utf8'))
+                if bridge not in bridges:
+                    bridges.append(bridge)
+            time.sleep(1)
+            counter = counter + 1
         except socket.timeout:
             counter = counter + 1
 
-    raise NoBridgeFound()
+    return tuple(bridges)
 
 
 def format_hex(i):

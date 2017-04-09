@@ -20,6 +20,8 @@ msgstr ""
 # 300xx - headers
 # 30xxx - labels for settings pages
 
+
+### SETTINGS HEADERS ###
 msgctxt "#30000"
 msgid "Bridge Configuration"
 msgstr ""
@@ -36,6 +38,8 @@ msgctxt "#30003"
 msgid "Groups"
 msgstr ""
 
+
+### BRIDGE CONFIGURATION SETTINGS ###
 msgctxt "#30110"
 msgid "IP/Hostname"
 msgstr ""
@@ -57,21 +61,22 @@ msgid "Command Interval"
 msgstr ""
 
 msgctxt "#30115"
-msgid "Bulb Type"
+msgid "Bridge Version"
 msgstr ""
 
 msgctxt "#30116"
-msgid "RGB"
+msgid "4"
 msgstr ""
 
 msgctxt "#30117"
-msgid "RGB+W"
+msgid "5"
 msgstr ""
 
 msgctxt "#30118"
-msgid "White"
+msgid "6"
 msgstr ""
 
+### INITIALIZATOI SETTINGS ###
 msgctxt "#31001"
 msgid "Set Color on Startup"
 msgstr ""

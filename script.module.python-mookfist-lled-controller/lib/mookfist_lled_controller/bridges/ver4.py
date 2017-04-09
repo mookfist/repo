@@ -10,8 +10,8 @@ import time
 from mookfist_lled_controller.exceptions import NoBridgeFound
 from mookfist_lled_controller.exceptions import InvalidGroup
 
-def get_bridge():
-    """Get first available bridge"""
+def get_bridges():
+    """Get available bridges"""
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.settimeout(2)
@@ -22,17 +22,25 @@ def get_bridge():
     counter = 0
     max_tries = 5
 
+    bridges = []
+
     while counter < max_tries:
         try:
-            sock.sendto('Link_Wi-Fi', ('255.255.255.255', 48899))
+            sock.sendto(bytearray('Link_Wi-Fi'.encode('utf8')), ('255.255.255.255', 48899))
             data = sock.recv(1024)
             if data:
-                host, mac = data.split(',')[:2]
-                return (host, mac)
+                host, mac = data.split(','.encode('utf8'))[:2]
+                
+                bridge = (host.decode('utf8'),mac.decode('utf8'))
+                if bridge not in bridges:
+                    bridges.append(bridge)
+            time.sleep(1)
+            counter = counter + 1
         except socket.timeout:
             counter = counter + 1
 
-    raise NoBridgeFound()
+    
+    return tuple(bridges)
 
 class Bridge(object):
     def __init__(self, ip, port, pause=100, repeat=1, *args, **kwargs):

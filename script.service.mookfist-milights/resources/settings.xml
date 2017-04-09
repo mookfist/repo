@@ -4,9 +4,7 @@
     <setting label="30110" type="text" id="bridge_host" />
     <setting label="30111" type="number" id="bridge_port" />
     <setting label="30112" type="action" action="RunScript(special://home/addons/script.service.mookfist-milights/cmd.py, scan)"/>
-    <setting label="30115" type="select" id="bridge_bulb_type" lvalues="30116|30117|30118" default="1" />
-    <setting label="30114" type="number" id="command_interval" default="100" />
-    <setting label="30113" type="number" id="pause" default="false" />
+    <setting label="30115" type="select" id="bridge_version" lvalues="30116|30117|30118" default="1" />
   </category>
   <category label="30001">
     <setting label="31001" type="bool" id="startup_color" default="false" />
