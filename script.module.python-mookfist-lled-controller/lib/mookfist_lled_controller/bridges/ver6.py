@@ -11,11 +11,13 @@ from mookfist_lled_controller.exceptions import NoBridgeFound
 from mookfist_lled_controller.exceptions import InvalidGroup
 from mookfist_lled_controller import pprint_bytearray
 
-def get_bridges():
+def get_bridges(sock=None):
     """Get available bridges"""
 
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.settimeout(2)
+    if sock == None:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.settimeout(2)
+
     sock.bind(('', 0))
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -48,7 +50,7 @@ def format_hex(i):
     else:
         i = hex(i)
     return i
-    
+
 
 
 class Command(object):
@@ -77,8 +79,8 @@ class Command(object):
         self[7] = 0x00
         self[8] = 0x02
         self[9] = 0x00
-        
-    
+
+
     def __getitem__(self, key):
         key = int(key)
         if key >= len(self._cmd):
@@ -114,10 +116,13 @@ class Bridge(object):
 
         self._Group = kwargs.get('group_class', Group)
 
-        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self._sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        self._sock.settimeout(2)
         self._last_set_group = -1
+
+        self._sock = kwargs.get('sock', None)
+        if self._sock == None:
+            self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+            self._sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
 
         self.logger = logging.getLogger('bridge6')
 
@@ -126,6 +131,9 @@ class Bridge(object):
         self._cmd_counter = 0x01
 
     def get_session_ids(self):
+
+        self._sock.settimeout(2)
+
         self.logger.debug('Getting session IDs')
         b = [
             0x20,
@@ -157,12 +165,11 @@ class Bridge(object):
             0x1e
         ]
 
-
-        self.send_raw(bytearray(b))
+        self._sock.sendto(bytearray(b), (self.ip, self.port))
 
         data = self._sock.recv(1024)
 
-        
+
         if data:
 
             db = bytearray(data)
@@ -192,7 +199,7 @@ class Bridge(object):
             0x00,
             0x00,
             0x00,
-            
+
             0x00,
             0x00,
             0x00,
@@ -207,7 +214,7 @@ class Bridge(object):
         ]
 
         self.logger.debug('Confirming initialization')
-        self.send_raw(bytearray(b))
+        self._sock.sendto(bytearray(b), (self.ip, self.port))
 
         data = self._sock.recv(1024)
         self.logger.debug('Response: %s' % pprint_bytearray(bytearray(data)))
@@ -258,7 +265,7 @@ class Bridge(object):
             cmd[21] = cmd.checksum(group)
 
             self.send_raw(bytearray(cmd.message()))
-            
+
             response = self._sock.recv(1024)
             self.logger.debug('Response: %s' % pprint_bytearray(bytearray(response)))
 
@@ -332,10 +339,10 @@ class Group(object):
 
     def brightness(self, brightness):
         """"get the brightness command for this group and brightness (0-100%)
-        
+
             LimitlessLED only supports values 2 to 27 for brightness, so this percentage
             is actually a percentage of the value 25
-        
+
         """
         target_brightness = int(math.ceil(25 * (brightness / 100.0)) + 2)
         cmd = self._prepare_cmd()

@@ -28,7 +28,7 @@ class WifiBridge(object):
 
     Abstraction against different LimitlessLED bridge versions
     """
-    def __init__(self, ip, port, version=4, pause=100, repeat=1):
+    def __init__(self, ip, port, version=4, pause=100, repeat=1, sock=None):
         """
         ip: IP Address of the wifi bridge
         port: Port number of the wifi bridge
@@ -42,6 +42,11 @@ class WifiBridge(object):
         self.repeat = repeat
         self._groups = {}
 
+        if sock == None:
+           sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+           sock.settimeout(2)
+           sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
         if version == 4 or version == 5:
             from mookfist_lled_controller.bridges.ver4 import Bridge
         elif version == 6:
@@ -49,7 +54,10 @@ class WifiBridge(object):
         else:
             raise Exception("Unsupported protocol version: %s" % version)
 
-        self._bridge = Bridge(ip, port, pause, repeat)
+        self._bridge = Bridge(ip, port, pause, repeat, sock)
+
+    def get_group(self, group=1):
+        return self._bridge.get_group(group)
 
     def color(self, color, group=1):
         """
@@ -75,3 +83,6 @@ class WifiBridge(object):
 
     def off(self, group=1):
         self._bridge.off(group)
+
+    def send(self, cmd):
+        self._bridge.send(cmd)

@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <settings>
   <category label="30000">
-    <setting label="30110" type="text" id="bridge_host" />
-    <setting label="30111" type="number" id="bridge_port" />
-    <setting label="30112" type="action" action="RunScript(special://home/addons/script.service.mookfist-milights/cmd.py, scan)"/>
-    <setting label="30115" type="select" id="bridge_version" lvalues="30116|30117|30118" default="1" />
+    <setting label="30112" type="action" action="RunScript(script.service.mookfist-milights, scan)" />
+    <setting label="30119" type="bool" id="enable_manual_bridge" default="false" />
+    <setting label="30110" type="text" id="bridge_ip" enable="eq(-1,true)"/>
+    <setting label="30111" type="number" id="bridge_port" enable="eq(-2,true)" />
+    <setting label="30115" type="select" id="bridge_version" lvalues="30116|30117|30118" default="1" enable="eq(-3,true)" />
   </category>
   <category label="30001">
     <setting label="31001" type="bool" id="startup_color" default="false" />
+    <setting label="31006" type="action" action="RunScript(script.service.mookfist-milights, set_color_to_white)" />
     <setting label="31003" type="action" action="RunScript(script.service.mookfist-milights, colorpicker)" />
-    <!-- <setting label="31003" type="action" action="RunScript(script.service.mookfist-milights, colorpicker, addon=script.service.mookfist-milights, addonsetting=startup_color_value, palette=rainbow), skinstring=startup_color_value" /> -->
     <setting label="31005" type="number" id="startup_color_value" enable="false"/>
     <setting type="sep" />
-    <setting label="31002" type="bool" id="startup_brightness" default="false" />
     <setting label="31004" type="text" id="startup_brightness_value" default="100"/>
 
   </category>
@@ -23,11 +23,7 @@
     <setting label="33003" type="bool" id="enable_group4" default="false" />
   </category>
   <category label="30002">
-    <setting label="32000" type="action" action="" />
-    <setting label="32001" type="action" action="" />
-    <setting lavel="32002" type="action" action="" />
-    <setting lavel="32003" type="action" action="" />
-    <setting lavel="32004" type="action" action="" />
+    <setting label="32000" type="action" action="RunScript(script.service.mookfist-milights, fade_outin, group=1)" />
   </category>
   <!--
     <setting type="sep" />

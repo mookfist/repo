@@ -3,8 +3,9 @@ from light import Lights, LightFadeThread
 from lib import scanner
 import sys, simplejson
 import xbmc, xbmcaddon, xbmcgui
-
+from mookfist_lled_controller import get_bridges
 from ColorPicker import ColorPicker
+import math
 
 __scriptname__ = "Mookfist Milights - Commands"
 __author__     =  "Mookfist"
@@ -15,7 +16,6 @@ __language__   = __settings__.getLocalizedString
 
 class CustomColorPicker(ColorPicker):
   def save_color_setting(self, restoreprevious=False):
-    utils.log('CUSOMT COMLORPOPCIKER SAVE!!!!')
     if restoreprevious:
       colorname = __settings__.getSetting('startup_color_name')
       colorstring = __settings__.getSetting('startup_color_value')
@@ -25,19 +25,19 @@ class CustomColorPicker(ColorPicker):
 
     self.create_color_swatch_image(colorstring)
 
-    utils.log('Setting the setting!')
+    brightness = int(colorstring[:2], 16)
+
+    brightness_percent = (brightness / 255.0) * 100.0
+
+    brightness_percent = int(math.ceil(brightness_percent))
 
     __settings__.setSetting('startup_color_value', colorstring)
     __settings__.setSetting('startup_color_name', colorname)
+    __settings__.setSetting('startup_brightness_value', str(brightness_percent))
 
 
 def fade_out(argv):
-  group = 'all'
-  if argv:
-    group = argv[0]
-
-  if group != 'all':
-    group = int(group)
+  group = argv['group']
 
   if len(argv) >= 2:
     brightness = int(argv[1])
@@ -51,16 +51,11 @@ def fade_out(argv):
 
   utils.log('data: %s' % (simplejson.dumps(data)))
 
+
   xbmc.executebuiltin('NotifyAll(mookfist-milights, fade_out, "' + simplejson.dumps(data) + '")')
 
 def fade_in(argv):
-  group = 'all'
-  if argv:
-    group = argv[0]
-
-  if group != 'all':
-    group = int(group)
-
+  group = argv['group']
   data = {
     'group': group,
     'brightness': -1
@@ -68,10 +63,54 @@ def fade_in(argv):
   xbmc.executebuiltin('NotifyAll(mookfist-milights, fade_in, "' + simplejson.dumps(data) + '")')
 
 def scan_bridges():
-    running = True
-    dialog = xbmcgui.DialogProgress()
-    dialog.create('Scanning')
 
+    utils.log('Showing bridgelist!!!')
+
+    busy_dialog = xbmcgui.DialogBusy()
+    busy_dialog.create()
+
+    v4_bridges = get_bridges(version=4)
+    v6_bridges = get_bridges(version=6)
+
+    bridges = []
+
+    for bridge in v4_bridges:
+      bridges.append('Version: 4/5 - IP: %s' % bridge[0])
+
+    for bridge in v6_bridges:
+      bridges.append('Version: 6 - IP: %s' % bridge[0])
+
+
+    busy_dialog.close()
+
+    bridge_version, bridge_ip = bridges[xbmcgui.Dialog().select('Bridges', bridges)].split(' - ')
+
+    bridge_version = bridge_version.split(': ')[1]
+    bridge_port = 0
+    if bridge_version == '4/5':
+      bridge_version = 0
+      bridge_port = 8899
+
+    elif bridge_version == '6':
+      bridge_version = 2
+      bridge_port = 5987
+    else:
+      raise Exception('Invalid Bridge Version?!')
+
+    bridge_ip = bridge_ip.split(': ')[1]
+
+    utils.log('Selected Bridge: %s:%s - Version %s' % (bridge_ip, bridge_port, bridge_version))
+
+    __settings__.setSetting('bridge_version', str(bridge_version))
+    __settings__.setSetting('bridge_port', str(bridge_port))
+    __settings__.setSetting('bridge_ip', bridge_ip)
+
+#    dialog = xbmcgui.Dialog().select('Bridges', [li])
+#    utils.log('%s' % dialog)
+
+#    dialog = xbmcgui.WindowXMLDialog('bridgelist.xml', __settings__.getAddonInfo('path'), 'Default','1080i')
+#    dialog.doModal()
+    return
     counter = 0
     max_tries = 30
 
@@ -102,6 +141,10 @@ def cmd_colorpicker(args):
 
   color_picker.doModal()
 
+def cmd_set_to_white(args):
+  __settings__.setSetting('startup_color_value','ffffffff')
+  __settings__.setSetting('startup_brightness_value', '100')
+
 def parse_arg(arg):
   key,value = arg.split('=')
   return (key,value)
@@ -123,7 +166,17 @@ def main(argv):
 
   if cmd == 'colorpicker':
     cmd_colorpicker(args)
-
+  elif cmd == 'scan':
+    scan_bridges()
+  elif cmd == 'set_color_to_white':
+    cmd_set_to_white(args)
+  elif cmd == 'fade_in':
+    fade_in(args)
+  elif cmd == 'fade_out':
+    fade_out(args)
+  elif cmd == 'fade_outin':
+    fade_out(args)
+    fade_in(args)
   """
 
 

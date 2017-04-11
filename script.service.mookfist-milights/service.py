@@ -1,10 +1,10 @@
-from light import Lights, LightFadeThread
-from utils import *
-
 import xbmc, xbmcaddon
 import time
 import simplejson as json
 import threading
+
+from lib.controller import Controller
+from lib.utils import Logger
 
 __scriptname__ = "Mookfist Milights"
 __author__     = "Mookfist"
@@ -12,6 +12,78 @@ __url__        = "https://github.com/mookfist/repo"
 __settings__   = xbmcaddon.Addon(id='script.service.mookfist-milights')
 __version__    = __settings__.getAddonInfo('version')
 __language__   = __settings__.getLocalizedString
+
+class ServiceMonitor(xbmc.Monitor):
+  def __init__(self, controller_thread):
+    xbmc.Monitor.__init__(self)
+    self.logger = Logger('mookfist-milights', 'service')
+    self.controller_thread = controller_thread
+
+  def dispatch_bridge_command(self, method, data):
+
+    self.logger.debug('Dispatching bridge command: %s - %s' % (method, data))
+
+    if method == 'on':
+      self.controller_thread.addOnCommand(data['group'])
+    elif method == 'off':
+      self.controller_thread.addOffCommand(data['group'])
+    elif method == 'fade_in':
+      self.controller_thread.fadeIn(data['group'])
+    elif method == 'fade_out':
+      self.controller_thread.fadeOut(data['group'])
+
+  def onNotification(self, sender, method, data):
+
+    if sender == 'mookfist-milights':
+      self.dispatch_bridge_command(method.replace('Other.',''), json.loads(data))
+
+    self.logger.info("SENDER: %s --- METHOD %s --- DATA %s" % (sender, method, data))
+    """
+    data = json.loads(data)
+
+    if str(sender) == 'mookfist-milights':
+        if str(method) == 'Other.fade_out':
+          self.onFadeOut(data)
+        elif str(method) == 'Other.fade_in':
+          self.onFadeIn(data)
+
+    elif str(sender) == "xbmc" and str(method) == "Player.OnPlay":
+      self._onPlay(data)
+    elif str(sender) == "xbmc" and str(method) == "Player.OnStop":
+      self._onStop(data)
+    elif str(sender) == "xbmc" and str(method) == "Player.OnPause":
+      self._onPause(data)
+    """
+
+  def onSettingsChanged(self):
+
+    self.logger.info('ON SETTINGS CHANGED')
+
+    bridge_ip = __settings__.getSetting('bridge_ip')
+    bridge_port = int(__settings__.getSetting('bridge_port'))
+    bridge_version = int(__settings__.getSetting('bridge_version'))
+
+    if bridge_version == 0:
+      bridge_version = 4
+    elif bridge_version == 1:
+      bridge_version = 5
+    elif bridge_version == 2:
+      bridge_version = 6
+
+    self.controller_thread.initialize_bridge(bridge_ip, bridge_port, bridge_version)
+
+    data = {
+      'group': 1
+    }
+
+    for x in range(0,5):
+      xbmc.executebuiltin('NotifyAll(mookfist-milights, on, "%s")' % json.dumps(data))
+      time.sleep(0.01)
+      xbmc.executebuiltin('NotifyAll(mookfist-milights, off, "%s")' % json.dumps(data))
+      time.sleep(0.01)
+
+    xbmc.executebuiltin('NotifyAll(mookfist-milights, on, "%s")' % json.dumps(data))
+
 
 """
 class MyMonitor(xbmc.Monitor):
@@ -79,7 +151,7 @@ class MyMonitor(xbmc.Monitor):
           self.lights.fade(i, getMaxBrightness(i), stepSpeed)
 
 
-  def _onPause(self, data):
+  ef _onPause(self, data):
 
     self.paused = True
 
@@ -205,7 +277,31 @@ class MyMonitor(xbmc.Monitor):
 """
 
 if __name__ == "__main__":
-  pass
+
+  controller = Controller()
+  monitor = ServiceMonitor(controller)
+
+
+  bridge_ip = __settings__.getSetting('bridge_ip')
+  bridge_port = int(__settings__.getSetting('bridge_port'))
+  bridge_version = int(__settings__.getSetting('bridge_version'))
+
+  if bridge_version == 0:
+    bridge_version = 4
+  elif bridge_version == 1:
+    bridge_version = 5
+  elif bridge_version == 2:
+    bridge_version = 6
+
+  controller = Controller(bridge_ip=bridge_ip, bridge_port=bridge_port, bridge_version=bridge_version)
+  monitor = ServiceMonitor(controller)
+
+  controller.start()
+
+  while not monitor.abortRequested():
+    if monitor.waitForAbort(10):
+      controller.stop()
+
 """
   monitor = MyMonitor()
   monitor.onSettingsChanged()

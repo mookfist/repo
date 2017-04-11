@@ -10,11 +10,13 @@ import time
 from mookfist_lled_controller.exceptions import NoBridgeFound
 from mookfist_lled_controller.exceptions import InvalidGroup
 
-def get_bridges():
+def get_bridges(sock=None):
     """Get available bridges"""
 
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.settimeout(2)
+    if sock == None:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.settimeout(2)
+
     sock.bind(('', 0))
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -30,7 +32,7 @@ def get_bridges():
             data = sock.recv(1024)
             if data:
                 host, mac = data.split(','.encode('utf8'))[:2]
-                
+
                 bridge = (host.decode('utf8'),mac.decode('utf8'))
                 if bridge not in bridges:
                     bridges.append(bridge)
@@ -39,7 +41,7 @@ def get_bridges():
         except socket.timeout:
             counter = counter + 1
 
-    
+
     return tuple(bridges)
 
 class Bridge(object):
@@ -52,7 +54,12 @@ class Bridge(object):
 
         self._Group = kwargs.get('group_class', Group)
 
-        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self._sock = kwargs.get('sock', None)
+
+        if self._sock == None:
+          self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+          self._sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+
         self._last_set_group = -1
 
         self.logger = logging.getLogger('bridge')
@@ -108,8 +115,11 @@ class Bridge(object):
         self.send(g.brightness(brightness))
 
     def send(self, cmd):
+        self._sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         for x in range(0, self.repeat):
             self.logger.debug('Sending command: %s' % cmd.message())
+            print 'HIIIIIIIIIIIIIIIIIIIIIIIIIIII!!'
+            print 'IP: %s ---- PORT %s' % (self.ip, self.port)
             self._sock.sendto(bytearray(cmd.message()), (self.ip, self.port))
             time.sleep(self.pause)
 
@@ -118,7 +128,7 @@ class Bridge(object):
 class Command(object):
     """A LimitlessLED Command"""
 
-    def __init__(self, cmd, value=0x00, suffix=None):
+    def __init__(self, cmd, value=0x00, suffix=0x55):
         """
         cmd: command to send
         value: value of command, if any (defaults to 0x00)
@@ -158,7 +168,7 @@ class Group(object):
         elif self.group == 4:
             cmd = 0x4B
         else:
-            raise InvalidGroup() 
+            raise InvalidGroup()
 
         return Command(cmd)
 
@@ -200,10 +210,10 @@ class Group(object):
 
     def brightness(self, brightness):
         """"get the brightness command for this group and brightness (0-100%)
-        
+
             LimitlessLED only supports values 2 to 27 for brightness, so this percentage
             is actually a percentage of the value 25
-        
+
         """
         target_brightness = int(math.ceil(25 * (brightness / 100.0)) + 2)
 

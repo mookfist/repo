@@ -76,13 +76,13 @@ msgctxt "#30118"
 msgid "6"
 msgstr ""
 
-### INITIALIZATOI SETTINGS ###
-msgctxt "#31001"
-msgid "Set Color on Startup"
+msgctxt "#30119"
+msgid "Manually Configure Bridge"
 msgstr ""
 
-msgctxt "#31002"
-msgid "Set Brightness on Startup"
+### INITIALIZATOI SETTINGS ###
+msgctxt "#31001"
+msgid "Set Color/Brightness on Startup"
 msgstr ""
 
 msgctxt "#31003"
@@ -94,8 +94,14 @@ msgid "Set Brightness"
 msgstr ""
 
 msgctxt "#31005"
-msgid "Starting Color"
+msgid "Color"
 msgstr ""
+
+msgctxt "#31006"
+msgid "Set Color to White"
+msgstr ""
+
+### TESTING ###
 
 msgctxt "#32000"
 msgid "Fade In/Out All Groups"
