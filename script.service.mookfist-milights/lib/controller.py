@@ -95,9 +95,7 @@ class Controller(threading.Thread):
         self._bridge = WifiBridge(self._bridge_ip, self._bridge_port, self._bridge_version)
 
       if len(self._queue) > 0:
-        self.logger.info('Sending command!')
         cmd = self._queue.popleft()
-        self.logger.info('Sending command: %s' % cmd.message())
         self._bridge.send(cmd)
       else:
         time.sleep(0.01)

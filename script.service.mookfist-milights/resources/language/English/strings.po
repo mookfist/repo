@@ -22,64 +22,61 @@ msgstr ""
 
 
 ### SETTINGS HEADERS ###
-msgctxt "#30000"
+msgctxt "#32100"
 msgid "Bridge Configuration"
 msgstr ""
 
-msgctxt "#30001"
+msgctxt "#32103"
+msgid "IP/Hostname"
+msgstr ""
+
+msgctxt "#32104"
+msgid "Port Number"
+msgstr ""
+
+msgctxt "#32101"
+msgid "Scan for a bridge"
+msgstr ""
+
+msgctxt "#32105"
+msgid "Bridge Version"
+msgstr ""
+
+msgctxt "#32106"
+msgid "4"
+msgstr ""
+
+msgctxt "#32107"
+msgid "5"
+msgstr ""
+
+msgctxt "#32108"
+msgid "6"
+msgstr ""
+
+msgctxt "#32102"
+msgid "Manually Configure Bridge"
+msgstr ""
+
+
+msgctxt "#32200"
 msgid "Initialization"
 msgstr ""
 
-msgctxt "#30002"
+msgctxt "#32300"
 msgid "Testing"
 msgstr ""
 
-msgctxt "#30003"
+msgctxt "#32400"
 msgid "Groups"
+msgstr ""
+
+msgctxt "#32500"
+msgid "Tweaking"
 msgstr ""
 
 
 ### BRIDGE CONFIGURATION SETTINGS ###
-msgctxt "#30110"
-msgid "IP/Hostname"
-msgstr ""
-
-msgctxt "#30111"
-msgid "Port Number"
-msgstr ""
-
-msgctxt "#30112"
-msgid "Scan for a bridge"
-msgstr ""
-
-msgctxt "#30113"
-msgid "Repeat Command"
-msgstr ""
-
-msgctxt "#30114"
-msgid "Command Interval"
-msgstr ""
-
-msgctxt "#30115"
-msgid "Bridge Version"
-msgstr ""
-
-msgctxt "#30116"
-msgid "4"
-msgstr ""
-
-msgctxt "#30117"
-msgid "5"
-msgstr ""
-
-msgctxt "#30118"
-msgid "6"
-msgstr ""
-
-msgctxt "#30119"
-msgid "Manually Configure Bridge"
-msgstr ""
-
 ### INITIALIZATOI SETTINGS ###
 msgctxt "#31001"
 msgid "Set Color/Brightness on Startup"
@@ -123,6 +120,8 @@ msgctxt "#32004"
 msgid "Fade In/Out Group 4"
 msgstr ""
 
+### GROUPS ###
+
 msgctxt "#33000"
 msgid "Enable Group 1"
 msgstr ""
@@ -139,4 +138,12 @@ msgctxt "#33003"
 msgid "Enable Group 4"
 msgstr ""
 
+### TWEAKING ###
 
+msgctxt "#34001"
+msgid "Number of times to repeat a command"
+msgstr ""
+
+msgctxt "#34002"
+msgid "Number of milliseconds to wait before sending another command"
+msgstr ""

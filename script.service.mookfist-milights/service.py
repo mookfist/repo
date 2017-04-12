@@ -5,13 +5,13 @@ import threading
 
 from lib.controller import Controller
 from lib.utils import Logger
+from lib.utils import initialize_logger
 
 __scriptname__ = "Mookfist Milights"
 __author__     = "Mookfist"
 __url__        = "https://github.com/mookfist/repo"
 __settings__   = xbmcaddon.Addon(id='script.service.mookfist-milights')
 __version__    = __settings__.getAddonInfo('version')
-__language__   = __settings__.getLocalizedString
 
 class ServiceMonitor(xbmc.Monitor):
   def __init__(self, controller_thread):
@@ -24,44 +24,30 @@ class ServiceMonitor(xbmc.Monitor):
     self.logger.debug('Dispatching bridge command: %s - %s' % (method, data))
 
     if method == 'on':
-      self.controller_thread.addOnCommand(data['group'])
+      self.controller_thread.addOnCommand(int(data['group']))
     elif method == 'off':
-      self.controller_thread.addOffCommand(data['group'])
+      self.controller_thread.addOffCommand(int(data['group']))
     elif method == 'fade_in':
-      self.controller_thread.fadeIn(data['group'])
+      self.controller_thread.fadeIn(int(data['group']))
     elif method == 'fade_out':
-      self.controller_thread.fadeOut(data['group'])
+      self.controller_thread.fadeOut(int(data['group']))
+    elif method == 'brightness':
+      self.controller_thread.brightness(int(data['brightness']), int(data['group']))
 
   def onNotification(self, sender, method, data):
 
     if sender == 'mookfist-milights':
       self.dispatch_bridge_command(method.replace('Other.',''), json.loads(data))
 
-    self.logger.info("SENDER: %s --- METHOD %s --- DATA %s" % (sender, method, data))
-    """
-    data = json.loads(data)
-
-    if str(sender) == 'mookfist-milights':
-        if str(method) == 'Other.fade_out':
-          self.onFadeOut(data)
-        elif str(method) == 'Other.fade_in':
-          self.onFadeIn(data)
-
-    elif str(sender) == "xbmc" and str(method) == "Player.OnPlay":
-      self._onPlay(data)
-    elif str(sender) == "xbmc" and str(method) == "Player.OnStop":
-      self._onStop(data)
-    elif str(sender) == "xbmc" and str(method) == "Player.OnPause":
-      self._onPause(data)
-    """
+    # self.logger.debug("SENDER: %s --- METHOD %s --- DATA %s" % (sender, method, data))
 
   def onSettingsChanged(self):
-
-    self.logger.info('ON SETTINGS CHANGED')
 
     bridge_ip = __settings__.getSetting('bridge_ip')
     bridge_port = int(__settings__.getSetting('bridge_port'))
     bridge_version = int(__settings__.getSetting('bridge_version'))
+    repeat = int(__settings__.getSetting('repeat_count'))
+    pause = int(__settings__.getSetting('pause'))
 
     if bridge_version == 0:
       bridge_version = 4
@@ -70,19 +56,41 @@ class ServiceMonitor(xbmc.Monitor):
     elif bridge_version == 2:
       bridge_version = 6
 
-    self.controller_thread.initialize_bridge(bridge_ip, bridge_port, bridge_version)
+    self.controller_thread.initialize_bridge(
+        bridge_ip=bridge_ip,
+        bridge_port=bridge_port,
+        bridge_version=bridge_version,
+        repeat=repeat,
+        pause=pause
+    )
 
-    data = {
-      'group': 1
-    }
+    groups = []
+
+    for x in range(1,5):
+      if __settings__.getSetting('enable_group%s' % x) == 'true':
+        groups.append(x)
+
 
     for x in range(0,5):
-      xbmc.executebuiltin('NotifyAll(mookfist-milights, on, "%s")' % json.dumps(data))
-      time.sleep(0.01)
-      xbmc.executebuiltin('NotifyAll(mookfist-milights, off, "%s")' % json.dumps(data))
-      time.sleep(0.01)
+      for g in groups:
+        data = {
+            'group': g
+        }
 
-    xbmc.executebuiltin('NotifyAll(mookfist-milights, on, "%s")' % json.dumps(data))
+        xbmc.executebuiltin('NotifyAll(mookfist-milights, on, "%s")' % json.dumps(data))
+
+      for g in groups:
+        data = {
+            'group': g
+        }
+        xbmc.executebuiltin('NotifyAll(mookfist-milights, off, "%s")' % json.dumps(data))
+      time.sleep(0.08)
+
+    for g in groups:
+      data = {
+          'group': g
+      }
+      xbmc.executebuiltin('NotifyAll(mookfist-milights, on, "%s")' % json.dumps(data))
 
 
 """
@@ -278,6 +286,8 @@ class MyMonitor(xbmc.Monitor):
 
 if __name__ == "__main__":
 
+  initialize_logger()
+
   controller = Controller()
   monitor = ServiceMonitor(controller)
 
@@ -285,6 +295,8 @@ if __name__ == "__main__":
   bridge_ip = __settings__.getSetting('bridge_ip')
   bridge_port = int(__settings__.getSetting('bridge_port'))
   bridge_version = int(__settings__.getSetting('bridge_version'))
+  repeat = int(__settings__.getSetting('repeat_count'))
+  pause = int(__settings__.getSetting('pause'))
 
   if bridge_version == 0:
     bridge_version = 4
@@ -293,7 +305,13 @@ if __name__ == "__main__":
   elif bridge_version == 2:
     bridge_version = 6
 
-  controller = Controller(bridge_ip=bridge_ip, bridge_port=bridge_port, bridge_version=bridge_version)
+  controller = Controller(
+      bridge_ip=bridge_ip,
+      bridge_port=bridge_port,
+      bridge_version=bridge_version,
+      repeat=repeat,
+      pause=pause
+  )
   monitor = ServiceMonitor(controller)
 
   controller.start()

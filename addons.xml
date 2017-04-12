@@ -1198,7 +1198,7 @@ This is not a backwards compatible change.
     </extension>
 </addon>
 
-<addon id="script.module.python-mookfist-lled-controller" version="0.0.11" name="python-mookfist-lled-controller" provider-name="mookfist">
+<addon id="script.module.python-mookfist-lled-controller" version="0.0.13" name="python-mookfist-lled-controller" provider-name="mookfist">
   <requires>
     <import addon="xbmc.python" version="2.14.0" />
   </requires>
@@ -1280,23 +1280,6 @@ is not maintained, and should only be used as a last resort.
   </extension>
 </addon>
 
-<addon id="script.module.python-milight" version="0.6" name="python-milight" provider-name="McSwindler">
-  <requires>
-    <import addon="xbmc.python" version="2.14.0" />
-  </requires>
-  <extension point="xbmc.python.module" library="lib" />
-  <extension point="xbmc.addon.metadata">
-    <summary lang="en">Controller for milight/limitlessled Wi-Fi LEDs</summary>
-    <description lang="en">Visit GitHub for more information: https://github.com/McSwindler/python-milight</description>
-    <disclaimer>This addon is just a wrapper around the original module found at PyPI</disclaimer>
-    <language>en</language>
-    <platform>all</platform>
-    <source>http://pypi.python.org/pypi/milight</source>
-    <email>wilingua@gmail.com</email>
-    <website>http://pypi.python.org/pypi/milight</website>
-  </extension>
-</addon>
-
 <addon id="repository.mookfist" name="Mookfist Repo" version="2.2" provider-name="Mookfist">
     <extension point="xbmc.addon.repository" name="Mookfist Repository">
         <info compressed="false">https://raw.githubusercontent.com/mookfist/repo/0.2.0devel/addons.xml</info>
@@ -1313,9 +1296,8 @@ is not maintained, and should only be used as a last resort.
 <addon id="script.service.mookfist-milights" version="0.2.0devel" name="Mookfist Milights" provider-name="Mookfist">
   <requires>
     <import addon="xbmc.python" version="2.1.0" />
-    <import addon="script.module.python-milight" version="0.6" />
     <import addon="script.module.python-simplejson" version="2.14.0" />
-    <import addon="script.module.python-mookfist-lled-controller" version="0.0.11"/>
+    <import addon="script.module.python-mookfist-lled-controller" version="0.0.13"/>
     <import addon="script.module.colorpicker" version="1.0.11mooked" />
     <!--    <import addon="script.skin.helper.colorpicker" version="1.0.11" /> -->
   </requires>

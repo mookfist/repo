@@ -12,7 +12,6 @@ __author__     =  "Mookfist"
 __url__        =  "https://github.com/mookfist/repo"
 __settings__   = xbmcaddon.Addon(id='script.service.mookfist-milights')
 __version__    = __settings__.getAddonInfo('version')
-__language__   = __settings__.getLocalizedString
 
 class CustomColorPicker(ColorPicker):
   def save_color_setting(self, restoreprevious=False):
@@ -39,6 +38,15 @@ class CustomColorPicker(ColorPicker):
 def fade_out(argv):
   group = argv['group']
 
+  groups = []
+
+  if group == 'all':
+    for x in range(1,5):
+      if __settings__.getSetting('enable_group%s' % x) == 'true':
+        groups.append(x)
+  else:
+    groups.append(int(group))
+
   if len(argv) >= 2:
     brightness = int(argv[1])
   else:
@@ -49,18 +57,33 @@ def fade_out(argv):
     'brightness': brightness
   }
 
-  utils.log('data: %s' % (simplejson.dumps(data)))
-
-
-  xbmc.executebuiltin('NotifyAll(mookfist-milights, fade_out, "' + simplejson.dumps(data) + '")')
+  for x in range(100,-1,-1):
+    for group in groups:
+      data = {
+          'group': group,
+          'brightness': x
+      }
+      xbmc.executebuiltin('NotifyAll(mookfist-milights, brightness, "' + simplejson.dumps(data) + '"')
 
 def fade_in(argv):
   group = argv['group']
-  data = {
-    'group': group,
-    'brightness': -1
-  }
-  xbmc.executebuiltin('NotifyAll(mookfist-milights, fade_in, "' + simplejson.dumps(data) + '")')
+
+  groups = []
+
+  if group == 'all':
+    for x in range(1,5):
+      if __settings__.getSetting('enable_group%s' % x) == 'true':
+        groups.append(x)
+  else:
+    groups.append(int(group))
+
+  for x in range(0,101):
+    for group in groups:
+      data = {
+          'group': group,
+          'brightness': x
+      }
+      xbmc.executebuiltin('NotifyAll(mookfist-milights, brightness, "' + simplejson.dumps(data) + '")')
 
 def scan_bridges():
 
