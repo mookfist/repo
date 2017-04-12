@@ -9,6 +9,7 @@ import logging
 import time
 from mookfist_lled_controller.exceptions import NoBridgeFound
 from mookfist_lled_controller.exceptions import InvalidGroup
+from mookfist_lled_controller import color_from_rgb
 
 GROUPS = (1,2,3,4)
 
@@ -66,7 +67,7 @@ class Bridge(object):
 
         self._last_set_group = -1
 
-        self.logger = logging.getLogger('bridge')
+        self.logger = logging.getLogger('mlledctrl.bridge4')
 
 
     def get_group(self, group):
@@ -83,6 +84,12 @@ class Bridge(object):
             self._last_set_group = group
 
         self.send(g.color(color))
+
+    def color_from_rgb(self, r, g, b, group=1):
+        color = color_from_rgb(r, g, b, 2.0/3.0) - 5
+        if color < 0:
+            color = color + 255
+        self.color(color, group)
 
     def off(self, group=1):
         g = self.get_group(group)

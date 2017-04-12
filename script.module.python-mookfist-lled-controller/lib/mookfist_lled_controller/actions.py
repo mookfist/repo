@@ -49,6 +49,9 @@ def set_color(bridge, groups, color):
 
         bridge.color(color, int(grp))
 
+def set_rgb(bridge, groups, r, g, b):
+    for grp in groups:
+        bridge.color_from_rgb(r, g, b, int(grp))
 
 def set_brightness(bridge, groups, brightness):
     """Set the brightness of the selected groups"""

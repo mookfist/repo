@@ -1,6 +1,7 @@
 """Stuff for the CLI"""
 import sys
 import logging
+import traceback
 from docopt import docopt
 from mookfist_lled_controller import logger
 from mookfist_lled_controller import WifiBridge
@@ -12,6 +13,8 @@ from mookfist_lled_controller import set_brightness
 from mookfist_lled_controller import set_on
 from mookfist_lled_controller import set_off
 from mookfist_lled_controller import set_white
+from mookfist_lled_controller import set_rgb
+from mookfist_lled_controller import color_from_rgb
 from mookfist_lled_controller.exceptions import UnsupportedVersion
 from mookfist_lled_controller.exceptions import InvalidGroup
 from mookfist_lled_controller.exceptions import NoBridgeFound
@@ -44,6 +47,8 @@ class Main(object):
             self.action = 'fadec'
         elif arguments['color']:
             self.action = 'color'
+        elif arguments['rgb']:
+            self.action = 'rgb'
         elif arguments['brightness']:
             self.action = 'brightness'
         elif arguments['on']:
@@ -52,6 +57,8 @@ class Main(object):
             self.action = 'off'
         elif arguments['white']:
             self.action = 'white'
+        elif arguments['colorcycle']:
+            self.action = 'colorcycle'
 
 
         if arguments['--bridge-version'] == '4' or arguments['--bridge-version'] == '5':
@@ -104,6 +111,27 @@ class Main(object):
         self.log.info('Turning lights off')
         set_off(self.bridge, self.arguments['--group'])
 
+    def action_rgb(self):
+        r = int(self.arguments['<r>'])
+        b = int(self.arguments['<b>'])
+        g = int(self.arguments['<g>'])
+
+        color = color_from_rgb(r,b,g)
+
+        self.log.info('Setting color to rgb(%s,%s,%s) - translated to: %s' % (r,b,g,color))
+        set_rgb(self.bridge, self.arguments['--group'], r, g, b)
+
+    def action_colorcycle(self):
+        for x in range(0,256):
+        #    x = x + 25
+            if x < 0:
+                x = x + 255
+            elif x > 255:
+                x = x - 255
+            self.log.info('Setting color to %s' % x)
+            set_color(self.bridge, self.arguments['--group'], x)
+
+
     def route_action(self):
         if self.arguments['fade']:
             self.action_fade()
@@ -119,7 +147,10 @@ class Main(object):
             self.action_off()
         elif self.arguments['white']:
             self.action_white()
-
+        elif self.arguments['rgb']:
+            self.action_rgb()
+        elif self.arguments['colorcycle']:
+            self.action_colorcycle()
 
 
     def run(self):
@@ -176,8 +207,10 @@ class Main(object):
             self.route_action()
         except UnsupportedVersion:
             self.log.error('The chosen bridge version is unsupported')
-        except InvalidGroup:
+        except InvalidGroup as e:
+            exc_type, exc_value, exc_traceback = sys.exc_info()
             self.log.error('Groups can be numbered 1 through 4 only')
+            self.log.error(traceback.format_exception(exc_type, exc_value, exc_traceback))
         except NoBridgeFound:
             self.log.error('Sorry, I was not able to find any bridges. So either give me the IP (and port number) of the bridge you wish to use, or figure out why I can not find any bridges')
 

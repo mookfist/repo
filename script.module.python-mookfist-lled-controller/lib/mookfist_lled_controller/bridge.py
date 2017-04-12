@@ -64,6 +64,9 @@ class WifiBridge(object):
         """
         self._bridge.color(color, group)
 
+    def color_from_rgb(self, r, g, b, group=1):
+        self._bridge.color_from_rgb(r,g,b,group)
+
     def brightness(self, brightness, group=1):
         """
         Set the brightness for a specific group
@@ -81,3 +84,5 @@ class WifiBridge(object):
     def off(self, group=1):
         self._bridge.off(group)
 
+    def send(self, cmd, group=1):
+        self._bridge.send(cmd, group)

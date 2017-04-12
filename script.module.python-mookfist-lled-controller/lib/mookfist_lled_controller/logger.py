@@ -17,7 +17,7 @@ class ColoredFormatter(logging.Formatter):
         lvlname = record.levelname.ljust(8)
 
         lvl = '%s[%s%s%s]' % (Fore.WHITE, lvlname_color, lvlname, Fore.WHITE)
-        msg = lvl + ' ' + Fore.RESET + record.msg
+        msg = '%s %s%s' % (lvl, Fore.RESET, record.msg)
         return msg
 
 def get_logger(name, level=logging.INFO):

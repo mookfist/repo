@@ -1198,7 +1198,7 @@ This is not a backwards compatible change.
     </extension>
 </addon>
 
-<addon id="script.module.python-mookfist-lled-controller" version="0.0.13" name="python-mookfist-lled-controller" provider-name="mookfist">
+<addon id="script.module.python-mookfist-lled-controller" version="0.0.14" name="python-mookfist-lled-controller" provider-name="mookfist">
   <requires>
     <import addon="xbmc.python" version="2.14.0" />
   </requires>
@@ -1297,7 +1297,7 @@ is not maintained, and should only be used as a last resort.
   <requires>
     <import addon="xbmc.python" version="2.1.0" />
     <import addon="script.module.python-simplejson" version="2.14.0" />
-    <import addon="script.module.python-mookfist-lled-controller" version="0.0.13"/>
+    <import addon="script.module.python-mookfist-lled-controller" version="0.0.14"/>
     <import addon="script.module.colorpicker" version="1.0.11mooked" />
     <!--    <import addon="script.skin.helper.colorpicker" version="1.0.11" /> -->
   </requires>
