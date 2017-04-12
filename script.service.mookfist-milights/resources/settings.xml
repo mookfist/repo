@@ -8,26 +8,26 @@
     <setting label="32105" type="select" id="bridge_version" lvalues="32106|32107|32108" default="1" enable="eq(-3,true)" />
   </category>
   <category label="32200">
-    <setting label="31001" type="bool" id="startup_color" default="false" />
-    <setting label="31006" type="action" action="RunScript(script.service.mookfist-milights, set_color_to_white)" />
-    <setting label="31003" type="action" action="RunScript(script.service.mookfist-milights, colorpicker)" />
-    <setting label="31005" type="number" id="startup_color_value" enable="false"/>
+    <setting label="32201" type="bool" id="startup_color" default="false" />
+    <setting label="32206" type="action" action="RunScript(script.service.mookfist-milights, set_color_to_white)" />
+    <setting label="32203" type="action" action="RunScript(script.service.mookfist-milights, colorpicker)" />
+    <setting label="32205" type="number" id="startup_color_value" enable="false"/>
     <setting type="sep" />
-    <setting label="31004" type="text" id="startup_brightness_value" default="100"/>
+    <setting label="32204" type="text" id="startup_brightness_value" default="100"/>
 
   </category>
-  <category label="32300">
-    <setting label="33000" type="bool" id="enable_group1" default="true" />
-    <setting label="33001" type="bool" id="enable_group2" default="false" />
-    <setting label="33002" type="bool" id="enable_group3" default="false" />
-    <setting label="33003" type="bool" id="enable_group4" default="false" />
-  </category>
   <category label="32400">
-    <setting label="32000" type="action" action="RunScript(script.service.mookfist-milights, fade_outin, group=all)" />
+    <setting label="32401" type="bool" id="enable_group1" default="true" />
+    <setting label="32402" type="bool" id="enable_group2" default="false" />
+    <setting label="32403" type="bool" id="enable_group3" default="false" />
+    <setting label="32404" type="bool" id="enable_group4" default="false" />
+  </category>
+  <category label="32300">
+    <setting label="32301" type="action" action="RunScript(script.service.mookfist-milights, fade_outin, group=all)" />
   </category>
   <category label="32500">
-    <setting label="34001" type="number" id="repeat_count" default="1" />
-    <setting label="34002" type="number" id="pause" default="100" />
+    <setting label="32501" type="number" id="repeat_count" default="1" />
+    <setting label="32502" type="number" id="pause" default="100" />
   </category>
 
   <!--

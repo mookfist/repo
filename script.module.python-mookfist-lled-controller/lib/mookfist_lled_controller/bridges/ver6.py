@@ -266,10 +266,6 @@ class Bridge(object):
         cmd[8] = self._cmd_counter
         cmd[9] = 0x00
 
-        self.logger.debug('Current cmd: %s' % pprint_bytearray(cmd.message()))
-
-        print "YOOOOOOOO: %s" % cmd
-
         cmd[21] = cmd.checksum(group)
 
         for x in range(0, self.repeat):

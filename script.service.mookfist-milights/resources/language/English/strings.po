@@ -21,7 +21,7 @@ msgstr ""
 # 30xxx - labels for settings pages
 
 
-### SETTINGS HEADERS ###
+### BRIDGE CONFIGURATION ###
 msgctxt "#32100"
 msgid "Bridge Configuration"
 msgstr ""
@@ -59,91 +59,72 @@ msgid "Manually Configure Bridge"
 msgstr ""
 
 
+### INITIALIZATION ###
 msgctxt "#32200"
 msgid "Initialization"
 msgstr ""
 
+msgctxt "#32201"
+msgid "Set Color/Brightness on Startup"
+msgstr ""
+
+msgctxt "#32203"
+msgid "Choose Color"
+msgstr ""
+
+msgctxt "#32204"
+msgid "Set Brightness"
+msgstr ""
+
+msgctxt "#32205"
+msgid "Color"
+msgstr ""
+
+msgctxt "#32206"
+msgid "Set Color to White"
+msgstr ""
+
+
+### TESTING ###
 msgctxt "#32300"
 msgid "Testing"
 msgstr ""
 
+msgctxt "#32301"
+msgid "Fade In/Out All Groups"
+msgstr ""
+
+### GROUPS ###
 msgctxt "#32400"
 msgid "Groups"
 msgstr ""
 
-msgctxt "#32500"
-msgid "Tweaking"
-msgstr ""
-
-
-### BRIDGE CONFIGURATION SETTINGS ###
-### INITIALIZATOI SETTINGS ###
-msgctxt "#31001"
-msgid "Set Color/Brightness on Startup"
-msgstr ""
-
-msgctxt "#31003"
-msgid "Choose Color"
-msgstr ""
-
-msgctxt "#31004"
-msgid "Set Brightness"
-msgstr ""
-
-msgctxt "#31005"
-msgid "Color"
-msgstr ""
-
-msgctxt "#31006"
-msgid "Set Color to White"
-msgstr ""
-
-### TESTING ###
-
-msgctxt "#32000"
-msgid "Fade In/Out All Groups"
-msgstr ""
-
-msgctxt "#32001"
-msgid "Fade In/Out Group 1"
-msgstr ""
-
-msgctxt "#32002"
-msgid "Fade In/Out Group 2"
-msgstr ""
-
-msgctxt "#32003"
-msgid "Fade In/Out Group 3"
-msgstr ""
-
-msgctxt "#32004"
-msgid "Fade In/Out Group 4"
-msgstr ""
-
-### GROUPS ###
-
-msgctxt "#33000"
+msgctxt "#32401"
 msgid "Enable Group 1"
 msgstr ""
 
-msgctxt "#33001"
+msgctxt "#32402"
 msgid "Enable Group 2"
 msgstr ""
 
-msgctxt "#33002"
+msgctxt "#32403"
 msgid "Enable Group 3"
 msgstr ""
 
-msgctxt "#33003"
+msgctxt "#32404"
 msgid "Enable Group 4"
 msgstr ""
 
 ### TWEAKING ###
 
-msgctxt "#34001"
+msgctxt "#32500"
+msgid "Tweaking"
+msgstr ""
+
+msgctxt "#32501"
 msgid "Number of times to repeat a command"
 msgstr ""
 
-msgctxt "#34002"
+msgctxt "#32502"
 msgid "Number of milliseconds to wait before sending another command"
 msgstr ""

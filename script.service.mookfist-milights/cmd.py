@@ -37,7 +37,14 @@ class CustomColorPicker(ColorPicker):
 
 def fade_out(argv):
   group = argv['group']
-
+  if group == 'all':
+    group = 1
+  data = {
+      'group': group
+  }
+  print 'YOOOOOOOO NOTIFY!'
+  xbmc.executebuiltin('NotifyAll(mookfist-milights, fadeout, "%s")' % simplejson.dumps(data))
+  return
   groups = []
 
   if group == 'all':
@@ -66,6 +73,15 @@ def fade_out(argv):
       xbmc.executebuiltin('NotifyAll(mookfist-milights, brightness, "' + simplejson.dumps(data) + '"')
 
 def fade_in(argv):
+  group = argv['group']
+  if group == 'all':
+    group = 1
+  data = {
+      'group': group
+  }
+
+  xbmc.executebuiltin('NotifyAll(mookfist-milights, fadein, "%s")' % simplejson.dumps(data))
+  return
   group = argv['group']
 
   groups = []

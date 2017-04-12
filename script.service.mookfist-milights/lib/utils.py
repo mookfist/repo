@@ -21,7 +21,7 @@ class KodiLogFormatter(logging.Formatter):
     msg = '[%s] %s' % (record.name, record.msg)
     return msg
 
-def initialize_logger(self):
+def initialize_logger():
   logger = logging.getLogger('mlledctrl')
   handler = KodiLogHandler()
   handler.setFormatter(KodiLogFormatter())
