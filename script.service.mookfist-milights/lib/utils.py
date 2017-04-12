@@ -1,4 +1,32 @@
 import xbmc
+import logging
+
+class KodiLogHandler(logging.Handler):
+  def emit(self, record):
+    msg = self.format(record)
+
+    if record.levelname == 'DEBUG':
+      xbmc.log(msg, xbmc.LOGDEBUG)
+    elif record.levelname == 'INFO':
+      xbmc.log(msg, xbmc.LOGINFO)
+    elif record.levelname == 'WARNING':
+      xbmc.log(msg, xbmc.LOGWARNING)
+    elif record.levelname == 'ERROR':
+      xbmc.log(msg, xbmc.LOGERROR)
+    elif record.levelname == 'CRITICAL':
+      xbmc.log(msg, xbmc.LOGFATAL)
+
+class KodiLogFormatter(logging.Formatter):
+  def format(self, record):
+    msg = '[%s] %s' % (record.name, record.msg)
+    return msg
+
+def initialize_logger(self):
+  logger = logging.getLogger('mlledctrl')
+  handler = KodiLogHandler()
+  handler.setFormatter(KodiLogFormatter())
+  logger.addHandler(handler)
+  logger.setLevel(logging.DEBUG)
 
 class Logger():
 
