@@ -41,21 +41,27 @@ class Controller(threading.Thread):
     self.logger.debug('Starting thread')
     super(Controller, self).start(*args, **kwargs)
 
-  def addColorCommand(self, color, group):
+  def color_rgb(self, r, g, b, group):
+    if self._bridge:
+      grp = self._bridge.get_group(group)
+      cmd = grp.color_rgb(r,g,b)
+      self.addCommand(cmd)
+
+  def color(self, color, group):
     if self._bridge:
       g = self._bridge.get_group(group)
       cmd = g.color(color)
 
       self.addCommand(cmd)
 
-  def addOnCommand(self, group):
+  def on(self, group):
     if self._bridge:
       g = self._bridge.get_group(group)
       cmd = g.on()
 
       self.addCommand(cmd)
 
-  def addOffCommand(self, group):
+  def off(self, group):
     if self._bridge:
       g = self._bridge.get_group(group)
       cmd = g.off()
@@ -77,15 +83,17 @@ class Controller(threading.Thread):
         self.addCommand(cmd)
 
   def fadeOut(self, group):
-    if self._bridge:
-      g = self._bridge.get_group(group)
+      if self._bridge:
+          g = self._bridge.get_group(group)
 
       for i in range(100,-1,-1):
-        cmd = g.brightness(i)
-        self.addCommand(cmd)
+          cmd = g.brightness(i)
+          self.addCommand(cmd)
+
 
   def addCommand(self, command):
     self._queue.append(command)
+
 
   def initialize_bridge(self, bridge_ip, bridge_port, bridge_version, pause=100, repeat=1):
 

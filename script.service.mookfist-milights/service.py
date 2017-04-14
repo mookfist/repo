@@ -1,5 +1,5 @@
 import xbmc, xbmcaddon
-import time
+import time, math
 import simplejson as json
 import threading
 
@@ -27,9 +27,9 @@ class ServiceMonitor(xbmc.Monitor):
       data['group'] = 1
 
     if method == 'on':
-      self.controller_thread.addOnCommand(int(data['group']))
+      self.controller_thread.on(int(data['group']))
     elif method == 'off':
-      self.controller_thread.addOffCommand(int(data['group']))
+      self.controller_thread.off(int(data['group']))
     elif method == 'fadein':
       self.controller_thread.fadeIn(int(data['group']))
     elif method == 'fadeout':
@@ -47,6 +47,8 @@ class ServiceMonitor(xbmc.Monitor):
 
 
   def onSettingsChanged(self):
+
+    self.logger.debug('Plugin settings have changed')
 
     bridge_ip = __settings__.getSetting('bridge_ip')
     bridge_port = int(__settings__.getSetting('bridge_port'))
@@ -70,26 +72,68 @@ class ServiceMonitor(xbmc.Monitor):
     )
 
     while self.controller_thread.isBridgeAvailable() == False:
-      time.sleep(0.005)
+      time.sleep(0.01)
 
     groups = []
 
     for x in range(1,5):
+
+      brightness = int(__settings__.getSetting('group%s_brightness' % x))
+      color = __settings__.getSetting('group%s_color_value' % x)
+
+      if color != '':
+
+        color_brightness = int(color[0:2],16)
+        color_brightness = int(math.floor((float(color_brightness) / 255.0) * 100.0))
+
+        self.logger.debug('CB: %s - B: %s' % (color_brightness, brightness))
+        if color_brightness != brightness:
+
+          new_brightness = hex(int(math.ceil((brightness / 100.0) * 255.0)))
+          color = list(color)
+          color[0] = new_brightness[2]
+          if len(new_brightness) == 4:
+            color[1] = new_brightness[3]
+          else:
+            color[1] = '0'
+
+          print color
+          color = ''.join(color)
+          __settings__.setSetting('group%s_color_value' % x, color)
+          return
+
+
       if __settings__.getSetting('enable_group%s' % x) == 'true':
         groups.append(x)
 
 
-    for x in range(0,5):
+
+    for x in range(0,3):
       for g in groups:
-        self.controller_thread.addOnCommand(g)
+        self.controller_thread.on(g)
+
+      time.sleep(0.5)
 
       for g in groups:
-        self.controller_thread.addOffCommand(g)
+        self.controller_thread.off(g)
 
-      time.sleep(0.08)
+      time.sleep(0.5)
 
     for g in groups:
-      self.controller_thread.addOnCommand(g)
+      enable_startup = __settings__.getSetting('group%s_enable_startup' % g)
+
+      if enable_startup == 'true':
+        brightness = int(__settings__.getSetting('group%s_brightness' % g))
+        color = __settings__.getSetting('group%s_color_value' % g)
+
+        red = int(color[2:4], 16)
+        green = int(color[4:6], 16)
+        blue = int(color[6:8], 16)
+
+        self.controller_thread.on(g)
+        self.controller_thread.color_rgb(red,green,blue,g)
+        self.controller_thread.brightness(brightness,g)
+
 
 """
 class MyMonitor(xbmc.Monitor):
@@ -293,8 +337,8 @@ if __name__ == "__main__":
   bridge_ip = __settings__.getSetting('bridge_ip')
   bridge_port = __settings__.getSetting('bridge_port')
   bridge_version = __settings__.getSetting('bridge_version')
-  repeat = __settings__.getSetting('repeat_count')
-  pause = __settings__.getSetting('pause')
+  repeat = int(__settings__.getSetting('repeat_count'))
+  pause = int(__settings__.getSetting('pause'))
 
   if bridge_port != None and bridge_port != '':
     bridge_port = int(bridge_port)

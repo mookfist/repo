@@ -65,23 +65,23 @@ msgid "Initialization"
 msgstr ""
 
 msgctxt "#32201"
-msgid "Set Color/Brightness on Startup"
+msgid "Set Color/Brightness at Startup"
 msgstr ""
 
 msgctxt "#32203"
-msgid "Choose Color"
+msgid "Color Picker"
 msgstr ""
 
 msgctxt "#32204"
-msgid "Set Brightness"
+msgid "Brightness"
 msgstr ""
 
 msgctxt "#32205"
-msgid "Color"
+msgid "Color Code"
 msgstr ""
 
 msgctxt "#32206"
-msgid "Set Color to White"
+msgid "White"
 msgstr ""
 
 
@@ -115,6 +115,22 @@ msgctxt "#32404"
 msgid "Enable Group 4"
 msgstr ""
 
+msgctxt "#32405"
+msgid "Group 1"
+msgstr ""
+
+msgctxt "#32406"
+msgid "Group 2"
+msgstr ""
+
+msgctxt "#32407"
+msgid "Group 3"
+msgstr ""
+
+msgctxt "#32408"
+msgid "Group 4"
+msgstr ""
+
 ### TWEAKING ###
 
 msgctxt "#32500"
@@ -127,4 +143,33 @@ msgstr ""
 
 msgctxt "#32502"
 msgid "Number of milliseconds to wait before sending another command"
+msgstr ""
+
+msgctxt "#32503"
+msgid "Command Control"
+msgstr ""
+
+### SPEEDS ###
+msgctxt "#32600"
+msgid "Speed Control"
+msgstr ""
+
+msgctxt "#32604"
+msgid "Fading Speed"
+msgstr ""
+
+msgctxt "#32601"
+msgid "Slow Speed"
+msgstr ""
+
+msgctxt "#32602"
+msgid "Medium Speed"
+msgstr ""
+
+msgctxt "#32603"
+msgid "Fast Speed"
+msgstr ""
+
+msgctxt "#32604"
+msgid "Immediate"
 msgstr ""

@@ -3,22 +3,49 @@
 Helper functions that perform different actions on a bridge
 """
 
-def set_off(bridge, groups):
-    """Turn off lights"""
+def turn_off(bridge, groups):
+    """Turn off lights
+
+    Parameters
+    ----------
+    bridge : mookfist_lled_controller.WifiBridge
+    groups : list
+    """
     for grp in groups:
         bridge.off(int(grp))
 
-def set_on(bridge, groups):
-    """Turn on lights"""
+def turn_on(bridge, groups):
+    """Turn on lights
+    
+    Parameters
+    ----------
+    bridge: mookfist_lled_controller.WifiBridge
+    groups: list
+    """
     for grp in groups:
         bridge.on(int(grp))
 
-def set_white(bridge, groups):
+def white(bridge, groups):
+    """Turn on the white light
+
+    Parameters
+    ----------
+    bridge : mookfist_lled_controller.WifiBridge
+    groups : list
+    """
     for grp in groups:
         bridge.white(int(grp))
 
-def fade_brightness(bridge, groups, start, end):
-    """Fade the brightness of the selected groups"""
+def transition_brightness(bridge, groups, start, end):
+    """Transition the brightness of the selected groups
+    
+    Parameters
+    ----------
+    bridge : mookfist_lled_controller.WifiBridge
+    groups : list
+    start : int
+    end : int
+    """
 
     if start > end:
         cmds = list(reversed(range(end, start)))
@@ -31,8 +58,16 @@ def fade_brightness(bridge, groups, start, end):
             bridge.brightness(cmd, int(grp))
 
 
-def fade_color(bridge, groups, start, end):
-    """Fade the color of the selected groups"""
+def transition_color(bridge, groups, start, end):
+    """Transition the color of the selected groups
+    
+    Parameters
+    ----------
+    bridge : mookfist_lled_controller.WifiBridge
+    groups : list
+    start : int
+    end : int
+    """
     if start > end:
         cmds = list(reversed(range(end, start)))
     else:
@@ -44,16 +79,36 @@ def fade_color(bridge, groups, start, end):
 
 
 def set_color(bridge, groups, color):
-    """Set the color of the selected groups"""
-    for grp in groups:
+    """Set the color of the selected groups
 
+    Parameters:
+    bridge : mookfist_lled_controller.WifiBridge
+    groups : list
+    color : int
+    """
+    for grp in groups:
         bridge.color(color, int(grp))
 
 def set_rgb(bridge, groups, r, g, b):
+    """Set the color of selected groups using red/green/blue values
+
+    Parameters:
+    bridge : mookfist_lled_controller.WifiBridge
+    groups : list
+    r : int
+    b : int
+    g : int
+    """
     for grp in groups:
         bridge.color_from_rgb(r, g, b, int(grp))
 
 def set_brightness(bridge, groups, brightness):
-    """Set the brightness of the selected groups"""
+    """Set the brightness of the selected groups
+
+    Parameters:
+    bridge : mookfist_lled_controller.WifiBridge
+    groups : list
+    brightnes: int
+    """
     for grp in groups:
         bridge.brightness(brightness, int(grp))

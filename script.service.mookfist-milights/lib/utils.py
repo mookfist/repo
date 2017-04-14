@@ -4,6 +4,7 @@ import logging
 class KodiLogHandler(logging.Handler):
   def emit(self, record):
     msg = self.format(record)
+    print r'' + msg
 
     if record.levelname == 'DEBUG':
       xbmc.log(msg, xbmc.LOGDEBUG)
@@ -18,7 +19,8 @@ class KodiLogHandler(logging.Handler):
 
 class KodiLogFormatter(logging.Formatter):
   def format(self, record):
-    msg = '[%s] %s' % (record.name, record.msg)
+    msg = record.msg.replace('\00','\\00')
+    msg = '[%s] %s' % (record.name, msg)
     return msg
 
 def initialize_logger():
