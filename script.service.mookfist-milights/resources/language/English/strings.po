@@ -20,6 +20,10 @@ msgstr ""
 # 300xx - headers
 # 30xxx - labels for settings pages
 
+### CONTEXT MENU ###
+msgctxt "#30000"
+msgid "Dim Lights"
+msgstr ""
 
 ### BRIDGE CONFIGURATION ###
 msgctxt "#32100"
@@ -94,6 +98,42 @@ msgctxt "#32301"
 msgid "Fade In/Out All Groups"
 msgstr ""
 
+msgctxt "#32303"
+msgid "Fade In/Out Group 1"
+msgstr ""
+
+msgctxt "#32304"
+msgid "Fade In/Out Group 2"
+msgstr ""
+
+msgctxt "#32305"
+msgid "Fade In/Out Group 3"
+msgstr ""
+
+msgctxt "#32306"
+msgid "Fade In/Out Group 4"
+msgstr ""
+
+msgctxt "#32307"
+msgid "Toggle White for all Groups"
+msgstr ""
+
+msgctxt "#32308"
+msgid "Toggle White for Group 1"
+msgstr ""
+
+msgctxt "#32309"
+msgid "Toggle White for Group 2"
+msgstr ""
+
+msgctxt "#32310"
+msgid "Toggle White for Group 3"
+msgstr ""
+
+msgctxt "#32311"
+msgid "Toggle White for Group 4"
+msgstr ""
+
 ### GROUPS ###
 msgctxt "#32400"
 msgid "Groups"
@@ -137,6 +177,14 @@ msgctxt "#32500"
 msgid "Tweaking"
 msgstr ""
 
+msgctxt "#32504"
+msgid "Automatically dim when playing TV shows"
+msgstr ""
+
+msgctxt "#32505"
+msgid "Automatically dim when playing any video other than TV shows"
+msgstr ""
+
 msgctxt "#32501"
 msgid "Number of times to repeat a command"
 msgstr ""
@@ -147,6 +195,10 @@ msgstr ""
 
 msgctxt "#32503"
 msgid "Command Control"
+msgstr ""
+
+msgctxt "#32506"
+msgid "Advanced Settings"
 msgstr ""
 
 ### SPEEDS ###
