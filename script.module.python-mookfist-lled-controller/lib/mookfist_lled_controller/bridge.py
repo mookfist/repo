@@ -39,7 +39,7 @@ class WifiBridge(object):
     """
 
     VERSIONS = (4,5,6)
-    
+
     def __init__(self, ip, port, version, pause=100, repeat=1, **kwargs):
         """
         Parameters
@@ -67,12 +67,12 @@ class WifiBridge(object):
 
     def get_group(self, group=1):
         """Return a Group instance
-        
+
         Parameters
         ----------
         group : int
         """
-        
+
         return self._bridge.get_group(group)
 
     def color(self, color, group=1):
@@ -88,7 +88,7 @@ class WifiBridge(object):
         """
         self._bridge.color(color, group)
 
-    def color_from_rgb(self, r, g, b, group=1):
+    def color_rgb(self, r, g, b, group=1):
         """Set the color for a group using RGB values
 
         Color ranges from 0 to 255. If the color is 0 0 0 the lights
@@ -109,7 +109,7 @@ class WifiBridge(object):
         g : int
         group : int
         """
-        self._bridge.color_from_rgb(r,g,b,group)
+        self._bridge.color_rgb(r, g, b, group)
 
     def brightness(self, brightness, group=1):
         """Set the brightness for a specific group

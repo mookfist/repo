@@ -7,7 +7,7 @@ from .actions import set_brightness
 from .actions import turn_on
 from .actions import turn_off
 from .actions import white
-from .actions import set_rgb
+from .actions import color_rgb
 from .colors import color_from_rgb
 from .colors import color_from_hls
 from .colors import color_from_html

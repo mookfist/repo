@@ -53,7 +53,7 @@ def format_hex(i):
     else:
         i = hex(i)
     return i
-
+    
 
 
 class CustomCommand(Command):
@@ -146,7 +146,7 @@ class Bridge(object):
 
         data = self._sock.recv(1024)
 
-
+        
         if data:
 
             db = bytearray(data)
@@ -202,7 +202,7 @@ class Bridge(object):
             0x00,
             0x00,
             0x00,
-
+            
             0x00,
             0x00,
             0x00,
@@ -229,48 +229,34 @@ class Bridge(object):
         return self._groups[group]
 
     def color(self, color, group=1):
+        self.logger.debug('Set raw color value to %s for group %s' % (color, group))
         g = self._init_group(group)
         self.send(g.color(color))
 
     def color_rgb(self, r, g, b, group=1):
-        g = self._init_group(group)
-        self.send(g.color_rgb(color))
-        if r == 255 and g == 255 and b == 255:
-            self.white(group)
-            self.brightness(100)
-            return
-        elif r == 0 and g == 0 and b == 0:
-            self.off()
-            return
-        elif r == b and b == g and g == r:
-            brightness = math.ceil((r / 255.0) * 100.0)
-            self.white(group)
-            self.brightness(int(brightness))
-            return
 
-        ## B and G are inversed here. For some reason this
-        # worked when using 0 255 0 for green for example
-        color = color_from_rgb(r, b, g)
-        print color
-        color = color + 25
-        if color > 255:
-            color = color - 255
-        self.color(color, group)
+        self.logger.debug('Set color to rgb(%s,%s,%s) for group %s' % (r, g, b, group))
+        grp = self._init_group(group)
+        self.send(grp.color_rgb(r,g,b))
 
     def brightness(self, brightness, group=1):
+        self.logger.debug('Set brightness to %s for group %s' % (brightness, group))
         g = self._init_group(group)
         self.send(g.brightness(brightness))
 
     def white(self, group=1):
+        self.logger.debug('Set group %s to white' % group)
         g = self._init_group(group)
         self.send(g.white())
 
     def on(self, group=1):
+        self.logger.debug('Turn on group %s' % group)
         g = self.get_group(group)
         self.send(g.on(),group)
         self._last_set_group = group
 
     def off(self, group=1):
+        self.logger.debug('Turn off group %s' % group)
         g = self.get_group(group)
         self.send(g.off(),group)
         self._last_set_group = -1
@@ -284,24 +270,24 @@ class Bridge(object):
     def send(self, cmd, group=1):
 
         if type(cmd) == CustomCommand:
-          cmds = (cmd,)
+            cmds = [cmd]
         else:
-          cmds = cmd
-
-        if self._wb1 == None or self._wb2 == None:
-            self.get_session_ids()
+            cmds = cmd
 
         for cmd in cmds:
-          cmd[5] = self._wb1
-          cmd[6] = self._wb2
-          cmd[7] = 0x00
-          cmd[8] = self._cmd_counter
-          cmd[9] = 0x00
-          cmd[21] = cmd.checksum()
+            if self._wb1 == None or self._wb2 == None:
+                self.get_session_ids()
 
-        for x in range(0, self.repeat):
-            for cmd in cmds:
+            for x in range(0, self.repeat):
+                cmd[5] = self._wb1
+                cmd[6] = self._wb2
+                cmd[7] = 0x00
+                cmd[8] = self._cmd_counter
+                cmd[9] = 0x00
+                cmd[21] = cmd.checksum()
+
                 self.send_raw(cmd)
+            
 
 class Group(object):
     """Represents a group of lights"""
@@ -347,6 +333,24 @@ class Group(object):
         cmd[14] = 0x03
         cmd[15] = 0x02
         return cmd
+    
+    def color_rgb(self, r, g, b):
+        if r == 255 and b == 255 and g == 255:
+            cmd = (self.white(), self.brightness(100))
+        elif r == 0 and b == 0 and g == 0:
+            cmd = self.off()
+        elif r == b and b == g and g == r:
+            brightness = int(math.ceil((r / 255.0) * 100.0))
+            cmd = (self.white(), self.brightness(brightness))
+        else:
+            color = color_from_rgb(r, g, b)
+            color = color + 25
+            if color > 255:
+                color = color - 255
+            cmd = self.color(color)
+
+        return cmd
+
 
     def color(self, color):
         """get the Color command for this group and color (0-255)"""
@@ -359,31 +363,6 @@ class Group(object):
         return cmd
         # return Command(0x40, color)
 
-    def color_rgb(self, r, g, b):
-        if r == 255 and g == 255 and b == 255:
-            cmd = (self.white(), self.brightness(100))
-        elif r == 0 and g == 0 and b == 0:
-            cmd = self.off()
-        elif r == b and b == g and g == r:
-            brightness = math.ceil((r / 255.0) * 100.0)
-            cmd = (self.white(), self.brightness(int(brightness)))
-        else:
-            ## B and G are inversed here. For some reason this
-            # worked when using 0 255 0 for green for example
-            color = color_from_rgb(r, b, g)
-
-            # This offset seemed necessary for some reason
-            # Without it, 25 0 0 produced a truer red on both
-            # my light bulbs and my led strip
-            color = color + 25 #
-            if color > 255:
-                color = color - 255
-            cmd = self.color(color)
-
-        return cmd
-
-
-
     def white(self):
         cmd = self._prepare_cmd()
         cmd[14] = 0x03
@@ -392,10 +371,10 @@ class Group(object):
 
     def brightness(self, brightness):
         """"get the brightness command for this group and brightness (0-100%)
-
+        
             LimitlessLED only supports values 2 to 27 for brightness, so this percentage
             is actually a percentage of the value 25
-
+        
         """
         target_brightness = int(math.ceil(25 * (brightness / 100.0)) + 2)
         cmd = self._prepare_cmd()

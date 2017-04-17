@@ -13,8 +13,7 @@ from mookfist_lled_controller import set_brightness
 from mookfist_lled_controller import turn_on
 from mookfist_lled_controller import turn_off
 from mookfist_lled_controller import white
-from mookfist_lled_controller import set_rgb
-from mookfist_lled_controller import color_from_rgb
+from mookfist_lled_controller import color_rgb
 from mookfist_lled_controller.exceptions import UnsupportedVersion
 from mookfist_lled_controller.exceptions import InvalidGroup
 from mookfist_lled_controller.exceptions import NoBridgeFound
@@ -116,10 +115,8 @@ class Main(object):
         g = int(self.arguments['<g>'])
         b = int(self.arguments['<b>'])
 
-        color = color_from_rgb(r, g, b)
-
-        self.log.info('Setting color to rgb(%s, %s, %s) - translated to: %s' % (r, g, b, color))
-        set_rgb(self.bridge, self.arguments['--group'], r, g, b)
+        self.log.info('Setting color to rgb(%s, %s, %s)' % (r, g, b))
+        color_rgb(self.bridge, self.arguments['--group'], r, g, b)
 
     def action_colorcycle(self):
         for x in range(0,256):

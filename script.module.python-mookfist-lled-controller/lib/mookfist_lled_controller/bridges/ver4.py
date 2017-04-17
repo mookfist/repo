@@ -82,34 +82,39 @@ class Bridge(object):
     def _init_group(self, group=1):
         g = self.get_group(group)
         if self._last_set_group != group:
-            self.send(g.on())
-            self._last_set_group = group
+          self.on(group)
         return g
 
 
     def color(self, color, group=1):
+        self.logger.debug('Set raw color value to %s for group %s' % (color, group))
         g = self._init_group(group)
         self.send(g.color(color))
 
     def color_rgb(self, r, g, b, group=1):
-        g = self._init_group(group)
-        self.send(g.color_rgb(r,g,b))
+        self.logger.debug('Set color to rgb(%s,%s,%s) for group %s' % (r, g, b, group))
+        grp = self._init_group(group)
+        self.send(grp.color_rgb(r,g,b))
 
     def off(self, group=1):
+        self.logger.debug('Turn off group %s' % group)
         g = self.get_group(group)
         self.send(g.off())
         self._last_set_group = -1
 
     def on(self, group=1):
+        self.logger.debug('Turn on group %s' % group)
         g = self.get_group(group)
         self.send(g.on())
         self._last_set_group = group
 
     def white(self, group=1):
+        self.logger.debug('Turn on white color for group %s' % (group))
         g = self._init_group(group)
         self.send(g.white())
 
     def brightness(self, brightness, group=1):
+        self.logger.debug('Setting brightness to %s for group %s' % (brightness, group))
         g = self._init_group(group)
         self.send(g.brightness(brightness))
 

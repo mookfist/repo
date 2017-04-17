@@ -89,7 +89,7 @@ def set_color(bridge, groups, color):
     for grp in groups:
         bridge.color(color, int(grp))
 
-def set_rgb(bridge, groups, r, g, b):
+def color_rgb(bridge, groups, r, g, b):
     """Set the color of selected groups using red/green/blue values
 
     Parameters:
@@ -100,7 +100,7 @@ def set_rgb(bridge, groups, r, g, b):
     g : int
     """
     for grp in groups:
-        bridge.color_from_rgb(r, g, b, int(grp))
+        bridge.color_rgb(r, g, b, int(grp))
 
 def set_brightness(bridge, groups, brightness):
     """Set the brightness of the selected groups
