@@ -157,6 +157,24 @@ def cmd_fade_in(args):
 
   xbmc.executebuiltin('NotifyAll(mookfist-milights, fade-in, "' + simplejson.dumps(cmd) + '")')
 
+def cmd_fade_outin(args):
+  group = args['group']
+  if group == 'all':
+    group = (1,2,3,4)
+  elif ',' in group:
+    group = group.split(',')
+  else:
+    group = (int(group),)
+
+  enabled_groups = [grp for grp in group if __settings__.getSetting('enable_group%s' % grp) == 'true']
+
+  cmd = {
+      'groups': enabled_groups
+  }
+
+  xbmc.executebuiltin('NotifyAll(mookfist-milights, fade-outin, "' + simplejson.dumps(cmd) + '")')
+
+
 def parse_arg(arg):
   key,value = arg.split('=')
   return (key,value)
@@ -189,8 +207,7 @@ def main(argv):
   elif cmd == 'fade_out':
     cmd_fade_out(args)
   elif cmd == 'fade_outin':
-    cmd_fade_out(args)
-    cmd_fade_in(args)
+    cmd_fade_outin(args)
   elif cmd == 'white':
     cmd_white(args)
 

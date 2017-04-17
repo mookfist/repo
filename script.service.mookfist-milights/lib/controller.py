@@ -33,6 +33,9 @@ class Controller(threading.Thread):
 
         color = self._settings.getSetting('group%s_color_value' % grp)
 
+        if color == '':
+          color = '00000000'
+
         r = int(color[2:4], 16)
         g = int(color[4:6], 16)
         b = int(color[6:8], 16)
@@ -109,7 +112,7 @@ class Controller(threading.Thread):
           self.brightness(brightness, (grp,))
         grp_idx = grp_idx + 1
 
-  def fade_in(self, groups):
+  def fade_in(self, groups, starting_brightness=None):
 
     speeds = ['slow','medium','fast']
 
@@ -119,7 +122,10 @@ class Controller(threading.Thread):
       grp_fade_cmds = []
       interval_str = self._settings.getSetting('group%s_fade_speed' % grp)
       interval = int(self._settings.getSetting('%s_speed_interval' % speeds[int(interval_str)]))
-      starting_brightness = self._group_states[grp]['brightness']
+
+      if starting_brightness == None:
+        starting_brightness = self._group_states[grp]['brightness']
+
       ending_brightness = int(self._settings.getSetting('group%s_brightness' % grp))
 
       self.logger.debug('Fading in group %s at speed %s (%s steps)' % (grp, interval_str, interval))

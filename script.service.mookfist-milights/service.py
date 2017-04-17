@@ -35,6 +35,9 @@ class ServiceMonitor(xbmc.Monitor):
       self.controller_thread.fade_out(data['groups'])
     elif method == 'fade-in':
       self.controller_thread.fade_in(data['groups'])
+    elif method == 'fade-outin':
+      self.controller_thread.fade_out(data['groups'])
+      self.controller_thread.fade_in(data['groups'], starting_brightness=0)
     elif method == 'brightness':
       self.controller_thread.brightness(data['brightness'], data['groups'])
 
@@ -360,6 +363,9 @@ class MyMonitor(xbmc.Monitor):
 if __name__ == "__main__":
 
   initialize_logger()
+  controller = Controller(settings=__settings__)
+  monitor    = ServiceMonitor(controller)
+  controller.start()
 
   bridge_ip = __settings__.getSetting('bridge_ip')
   bridge_port = __settings__.getSetting('bridge_port')
@@ -367,35 +373,18 @@ if __name__ == "__main__":
   repeat = int(__settings__.getSetting('repeat_count'))
   pause = int(__settings__.getSetting('pause'))
 
-  if bridge_port != None and bridge_port != '':
+  if bridge_port != '' and bridge_ip != '' and bridge_version != '':
     bridge_port = int(bridge_port)
-
-  if bridge_version != None and bridge_version != '':
     bridge_version = int(bridge_version)
 
-  if bridge_version == 0:
-    bridge_version = 4
-  elif bridge_version == 1:
-    bridge_version = 5
-  elif bridge_version == 2:
-    bridge_version = 6
-  else:
-    bridge_version = None
+    if bridge_version == 0:
+      bridge_version = 4
+    elif bridge_version == 1:
+      bridge_version = 5
+    elif bridge_version == 2:
+      bridge_version = 6
 
-
-  controller = Controller(settings=__settings__)
-  monitor = ServiceMonitor(controller)
-
-  controller.initialize_bridge(
-      bridge_ip=bridge_ip,
-      bridge_port=bridge_port,
-      bridge_version=bridge_version,
-      repeat=repeat,
-      pause=pause
-  )
-  controller.start()
-
-  monitor.onSettingsChanged()
+    monitor.onSettingsChanged()
 
   while not monitor.abortRequested():
     if monitor.waitForAbort(10):
