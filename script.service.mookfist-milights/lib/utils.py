@@ -2,9 +2,14 @@ import xbmc
 import logging
 
 class KodiLogHandler(logging.Handler):
+  def __init__(self):
+    super(KodiLogHandler, self).__init__()
+    self.counter = 0
+
   def emit(self, record):
     msg = self.format(record)
-    print r'' + msg
+
+    msg = '(%s) %s' % (self.counter, msg)
 
     if record.levelname == 'DEBUG':
       xbmc.log(msg, xbmc.LOGDEBUG)
@@ -17,10 +22,18 @@ class KodiLogHandler(logging.Handler):
     elif record.levelname == 'CRITICAL':
       xbmc.log(msg, xbmc.LOGFATAL)
 
+    self.counter = self.counter + 1
+    if self.counter > 9999:
+      self.counter = 0
+
 class KodiLogFormatter(logging.Formatter):
+
+  def __init__(self):
+    super(KodiLogFormatter, self).__init__()
+    self.counter = 0
+
   def format(self, record):
-    msg = record.msg.replace('\00','\\00')
-    msg = '[%s] %s' % (record.name, msg)
+    msg = '[%s] %s' % (record.name, record.msg)
     return msg
 
 def initialize_logger():
