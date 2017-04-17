@@ -19,12 +19,26 @@ class ServiceMonitor(xbmc.Monitor):
     self.logger = Logger('mookfist-milights', 'service')
     self.controller_thread = controller_thread
 
+    self._enabled_groups = []
+
+    for grp in [1,2,3,4]:
+      if __settings__.getSetting('enable_group%s' % grp) == 'true':
+        self._enabled_groups.append(grp)
+
   def dispatch_bridge_command(self, method, data):
 
     self.logger.debug('Dispatching bridge command: %s - %s' % (method, data))
 
-    if data['group'] == 'all':
-      data['group'] = 1
+    if method == 'white':
+      self.controller_thread.white(data['groups'])
+    elif method == 'fade-out':
+      self.controller_thread.fade_out(data['groups'])
+    elif method == 'fade-in':
+      self.controller_thread.fade_in(data['groups'])
+    elif method == 'brightness':
+      self.controller_thread.brightness(data['brightness'], data['groups'])
+
+    return
 
     if method == 'on':
       self.controller_thread.on(int(data['group']))
@@ -39,16 +53,40 @@ class ServiceMonitor(xbmc.Monitor):
       self.controller_thread.fadeIn(data['group'])
     elif method == 'brightness':
       self.controller_thread.brightness(data['brightness'], int(data['group']))
+    elif method == 'fade-out':
+      self.controller_thread.fade_out(data['group'])
+
+  def dispatch_xbmc_command(self, method, data):
+    if method == 'Player.OnPlay':
+      if data['item']['type'] == 'movie' and __settings__.getSetting('autoplay_movie') == 'true':
+        self.controller_thread.reset_queue()
+        self.controller_thread.fade_out(self._enabled_groups)
+      elif data['item']['type'] == 'episode' and __settings__.getSetting('autoplay_tv') == 'true':
+        self.controller_thread.reset_queue()
+        self.controller_thread.fade_out(self._enabled_groups)
+    elif method == 'Player.OnStop':
+      if data['item']['type'] == 'movie' and __settings__.getSetting('autoplay_movie') == 'true':
+        self.controller_thread.reset_queue()
+        self.controller_thread.fade_in(self._enabled_groups)
+      elif data['item']['type'] == 'episode' and __settings__.getSetting('autoplay_tv') == 'true':
+        self.controller_thread.reset_queue()
+        self.controller_thread.fade_in(self._enabled_groups)
+
+
 
   def onNotification(self, sender, method, data):
     self.logger.debug("SENDER: %s --- METHOD %s --- DATA %s" % (sender, method, data))
     if sender == 'mookfist-milights':
       self.dispatch_bridge_command(method.replace('Other.',''), json.loads(data))
+    elif sender == 'xbmc':
+      self.dispatch_xbmc_command(method, json.loads(data))
 
 
   def onSettingsChanged(self):
 
     self.logger.debug('Plugin settings have changed')
+
+    self.controller_thread.reset_queue()
 
     bridge_ip = __settings__.getSetting('bridge_ip')
     bridge_port = int(__settings__.getSetting('bridge_port'))
@@ -109,30 +147,23 @@ class ServiceMonitor(xbmc.Monitor):
 
 
     for x in range(0,3):
-      for g in groups:
-        self.controller_thread.on(g)
-
-      time.sleep(0.5)
-
-      for g in groups:
-        self.controller_thread.off(g)
-
-      time.sleep(0.5)
+      self.controller_thread.on(groups)
+      time.sleep(0.2)
+      self.controller_thread.off(groups)
+      time.sleep(0.2)
 
     for g in groups:
-      enable_startup = __settings__.getSetting('group%s_enable_startup' % g)
 
-      if enable_startup == 'true':
-        brightness = int(__settings__.getSetting('group%s_brightness' % g))
-        color = __settings__.getSetting('group%s_color_value' % g)
+      brightness = int(__settings__.getSetting('group%s_brightness' % g))
+      color = __settings__.getSetting('group%s_color_value' % g)
 
-        red = int(color[2:4], 16)
-        green = int(color[4:6], 16)
-        blue = int(color[6:8], 16)
+      red = int(color[2:4], 16)
+      green = int(color[4:6], 16)
+      blue = int(color[6:8], 16)
 
-        self.controller_thread.on(g)
-        self.controller_thread.color_rgb(red,green,blue,g)
-        self.controller_thread.brightness(brightness,g)
+      self.controller_thread.on([g])
+      self.controller_thread.color_rgb(red,green,blue,[g])
+      self.controller_thread.brightness(brightness,[g])
 
 
 """
@@ -330,10 +361,6 @@ if __name__ == "__main__":
 
   initialize_logger()
 
-  controller = Controller()
-  monitor = ServiceMonitor(controller)
-
-
   bridge_ip = __settings__.getSetting('bridge_ip')
   bridge_port = __settings__.getSetting('bridge_port')
   bridge_version = __settings__.getSetting('bridge_version')
@@ -356,8 +383,7 @@ if __name__ == "__main__":
     bridge_version = None
 
 
-
-  controller = Controller()
+  controller = Controller(settings=__settings__)
   monitor = ServiceMonitor(controller)
 
   controller.initialize_bridge(
@@ -368,6 +394,8 @@ if __name__ == "__main__":
       pause=pause
   )
   controller.start()
+
+  monitor.onSettingsChanged()
 
   while not monitor.abortRequested():
     if monitor.waitForAbort(10):

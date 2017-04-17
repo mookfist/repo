@@ -39,85 +39,7 @@ class CustomColorPicker(ColorPicker):
     __settings__.setSetting('group%s_enable_startup' % self.bridge_group, 'true')
 
 
-def fade_out(argv):
-  group = argv['group']
-  if group == 'all':
-    groups = (1,2,3,4)
-  elif ',' in group:
-    groups = group.split(',')
-  else:
-    groups = [group]
-
-  data = {
-      'group': groups
-  }
-  xbmc.executebuiltin('NotifyAll(mookfist-milights, fadeout, "%s")' % simplejson.dumps(data))
-  return
-  groups = []
-
-  if group == 'all':
-    for x in range(1,5):
-      if __settings__.getSetting('enable_group%s' % x) == 'true':
-        groups.append(x)
-  else:
-    groups.append(int(group))
-
-  if len(argv) >= 2:
-    brightness = int(argv[1])
-  else:
-    brightness = -1
-
-  data = {
-    'group': group,
-    'brightness': brightness
-  }
-
-  for x in range(100,-1,-1):
-    for group in groups:
-      data = {
-          'group': group,
-          'brightness': x
-      }
-      xbmc.executebuiltin('NotifyAll(mookfist-milights, brightness, "' + simplejson.dumps(data) + '"')
-
-def fade_in(argv):
-  group = argv['group']
-  groups = []
-  if group == 'all':
-    for g in [1,2,3,4]:
-      if __settings__.getSetting('enable_group%s' % g) == 'true':
-        groups.append(g)
-  elif ',' in group:
-    groups = group.split(',')
-  else:
-    groups.append(group)
-
-  data = {
-      'group': groups
-  }
-
-  xbmc.executebuiltin('NotifyAll(mookfist-milights, fadein, "%s")' % simplejson.dumps(data))
-  return
-  group = argv['group']
-
-  groups = []
-
-  if group == 'all':
-    for x in range(1,5):
-      if __settings__.getSetting('enable_group%s' % x) == 'true':
-        groups.append(x)
-  else:
-    groups.append(int(group))
-
-  for x in range(0,101):
-    for group in groups:
-      data = {
-          'group': group,
-          'brightness': x
-      }
-      xbmc.executebuiltin('NotifyAll(mookfist-milights, brightness, "' + simplejson.dumps(data) + '")')
-
-def scan_bridges():
+def cmd_scan_bridges():
 
     busy_dialog = xbmcgui.DialogBusy()
     busy_dialog.create()
@@ -178,6 +100,63 @@ def cmd_set_to_white(args):
   __settings__.setSetting('group%s_color_value' % args['group'], 'ffffffff')
   __settings__.setSetting('group%s_brightness' % args['group'], '100')
 
+def cmd_white(args):
+  group = args['group']
+  if group == 'all':
+    group = (1,2,3,4)
+  elif ',' in group:
+    group = group.split(',')
+  else:
+    group = (group,)
+
+  enabled_groups = [grp for grp in group if __settings__.getSetting('enable_group%s' % grp) == 'true']
+
+  cmd = {
+    'groups': enabled_groups,
+    'brightness': 100
+  }
+
+  json = simplejson.dumps(cmd)
+
+  xbmc.executebuiltin('NotifyAll(mookfist-milights, white, "' + json + '")')
+  xbmc.executebuiltin('NotifyAll(mookfist-milights, brightness, "' + json + '")')
+
+
+def cmd_fade_out(args):
+  group = args['group']
+  if group == 'all':
+    group = (1,2,3,4)
+  elif ',' in group:
+    group = group.split(',')
+  else:
+    group = (group,)
+
+  enabled_groups = [grp for grp in group if __settings__.getSetting('enable_group%s' % grp) == 'true']
+
+  cmd = {
+      'groups': enabled_groups
+  }
+
+  xbmc.executebuiltin('NotifyAll(mookfist-milights, fade-out, "' + simplejson.dumps(cmd) + '")')
+
+def cmd_fade_in(args):
+
+  group = args['group']
+  if group == 'all':
+    group = (1,2,3,4)
+  elif ',' in group:
+    group = group.split(',')
+  else:
+    group = (group,)
+
+  enabled_groups = [grp for grp in group if __settings__.getSetting('enable_group%s' % grp) == 'true']
+
+  cmd = {
+      'groups': enabled_groups
+  }
+
+  xbmc.executebuiltin('NotifyAll(mookfist-milights, fade-in, "' + simplejson.dumps(cmd) + '")')
+
 def parse_arg(arg):
   key,value = arg.split('=')
   return (key,value)
@@ -190,6 +169,8 @@ def parse_args(args):
 
   return d
 
+
+
 def main(argv):
 
   cmd = argv[0]
@@ -200,16 +181,18 @@ def main(argv):
   if cmd == 'colorpicker':
     cmd_colorpicker(args)
   elif cmd == 'scan':
-    scan_bridges()
-  elif cmd == 'white':
+    cmd_scan_bridges()
+  elif cmd == 'set_to_white':
     cmd_set_to_white(args)
   elif cmd == 'fade_in':
-    fade_in(args)
+    cmd_fade_in(args)
   elif cmd == 'fade_out':
-    fade_out(args)
+    cmd_fade_out(args)
   elif cmd == 'fade_outin':
-    fade_out(args)
-    fade_in(args)
+    cmd_fade_out(args)
+    cmd_fade_in(args)
+  elif cmd == 'white':
+    cmd_white(args)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
