@@ -134,6 +134,18 @@ msgctxt "#32311"
 msgid "Toggle White for Group 4"
 msgstr ""
 
+msgctxt "#32312"
+msgid "Set all lights to red"
+msgstr ""
+
+msgctxt "#32313"
+msgid "Set brightness of all lights to 50%"
+msgstr ""
+
+msgctxt "#32314"
+msgid "Set brightness of all lights to 100%"
+msgstr ""
+
 ### GROUPS ###
 msgctxt "#32400"
 msgid "Groups"

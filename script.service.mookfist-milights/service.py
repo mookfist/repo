@@ -42,6 +42,8 @@ class ServiceMonitor(xbmc.Monitor):
       self.controller_thread.fade_in(data['groups'], starting_brightness=0)
     elif method == 'brightness':
       self.controller_thread.brightness(data['brightness'], data['groups'])
+    elif method == 'color-rgb':
+      self.controller_thread.color_rgb(data['r'], data['b'], data['g'], data['groups'])
     elif method == 'pay-attention':
       self.pay_attention = True
 

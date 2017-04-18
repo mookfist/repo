@@ -100,8 +100,8 @@ def cmd_set_to_white(args):
   __settings__.setSetting('group%s_color_value' % args['group'], 'ffffffff')
   __settings__.setSetting('group%s_brightness' % args['group'], '100')
 
-def cmd_white(args):
-  group = args['group']
+def cmd_brightness(args):
+  group = args['groups']
   if group == 'all':
     group = (1,2,3,4)
   elif ',' in group:
@@ -109,7 +109,27 @@ def cmd_white(args):
   else:
     group = (group,)
 
-  enabled_groups = [grp for grp in group if __settings__.getSetting('enable_group%s' % grp) == 'true']
+  enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group%s' % grp) == 'true']
+
+  cmd = {
+      'groups': enabled_groups,
+      'brightness': int(args['brightness'])
+  }
+
+  json = simplejson.dumps(cmd)
+
+  xbmc.executebuiltin('NotifyAll(mookfist-milights, brightness, "' + json + '")')
+
+def cmd_white(args):
+  group = args['groups']
+  if group == 'all':
+    group = (1,2,3,4)
+  elif ',' in group:
+    group = group.split(',')
+  else:
+    group = (group,)
+
+  enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group%s' % grp) == 'true']
 
   cmd = {
     'groups': enabled_groups,
@@ -121,9 +141,33 @@ def cmd_white(args):
   xbmc.executebuiltin('NotifyAll(mookfist-milights, white, "' + json + '")')
   xbmc.executebuiltin('NotifyAll(mookfist-milights, brightness, "' + json + '")')
 
+def cmd_color_rgb(args):
+  group = args['groups']
+  r = args['r']
+  g = args['g']
+  b = args['b']
+
+  if group == 'all':
+    group = (1,2,3,4)
+  elif ',' in group:
+    group = group.split(',')
+  else:
+    group = (group,)
+
+  enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group%s' % grp) == 'true']
+
+  cmd = {
+      'r': int(r),
+      'g': int(g),
+      'b': int(b),
+      'groups': enabled_groups
+  }
+
+  json = simplejson.dumps(cmd)
+  xbmc.executebuiltin('NotifyAll(mookfist-milights, color-rgb, "' + json + '")')
 
 def cmd_fade_out(args):
-  group = args['group']
+  group = args['groups']
   if group == 'all':
     group = (1,2,3,4)
   elif ',' in group:
@@ -141,7 +185,7 @@ def cmd_fade_out(args):
 
 def cmd_fade_in(args):
 
-  group = args['group']
+  group = args['groups']
   if group == 'all':
     group = (1,2,3,4)
   elif ',' in group:
@@ -163,15 +207,15 @@ def cmd_fade_in(args):
   xbmc.executebuiltin('NotifyAll(mookfist-milights, fade-in, "' + simplejson.dumps(cmd) + '")')
 
 def cmd_fade_outin(args):
-  group = args['group']
+  group = args['groups']
   if group == 'all':
     group = (1,2,3,4)
   elif ',' in group:
-    group = [int(grp) for grp in group.split(',')]
+    group = group.split(',')
   else:
-    group = (int(group),)
+    group = (group,)
 
-  enabled_groups = [grp for grp in group if __settings__.getSetting('enable_group%s' % grp) == 'true']
+  enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group%s' % grp) == 'true']
 
   cmd = {
       'groups': enabled_groups
@@ -201,6 +245,7 @@ def parse_args(args):
 
 def main(argv):
 
+  utils.log('Script - ARGV: %s' % (argv))
   cmd = argv[0]
   args = parse_args(argv[1:])
 
@@ -220,6 +265,10 @@ def main(argv):
     cmd_fade_outin(args)
   elif cmd == 'white':
     cmd_white(args)
+  elif cmd == 'color_rgb':
+    cmd_color_rgb(args)
+  elif cmd == 'brightness':
+    cmd_brightness(args)
 
 if __name__ == "__main__":
     main(sys.argv[1:])

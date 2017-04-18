@@ -1,66 +1,142 @@
-mookfist-milights Kodi Addon v0.2.0devel
-========================================
+# mookfist-milights Kodi Addon v0.2.0devel
 
 This addon is for controlling LimitlessLED-based lights (including Milights).
 
-This is a development branch for the new v0.2.0 release. This release should include support for v6 bridges, along with a different form of configuration and speed control.
+Supports bridge versions 4, 5 and 6.
+
+## Installation
+
+To install this plugin, you must install the Mookfist repository, then find the Mooklist Milights under services.
+
+## Setup
+
+Before setting up this plugin, please make sure that your light bulbs are synced to your wifi bridge.
+
+To use the "Testing" features, please save the configuration first then re-open the plugin settings.
+
+### Bridge Configuratoin
+
+Select "Scan for a bridge" to find all available wifi bridges automatically. If for some reason this not work, you can manually configure your bridge's IP address, port number, and version.
+
+| Setting | Description |
+-------------------------
+| Scan for a bridge | Scans for all available bridges, allowing you to choose one |
+| Manually configure bridge | Enable this to manually specify the IP, port number, and version of your wifi bridge |
+| IP/Hostname | IP Address of the wifi bridge |
+| Port Number | Port number of the wifi bridge. For versions 4 and 5 this is typically 8899, and for version 6 it is 5987 |
+| Bridge Version | Version of the wifi bridge. Versions 4 and 5 are compatible with each other but version 6 is not. |
+
+For version 4 and 5, the default port number is 8899. For version 6 it is 5987.
+
+### Group Configuration
+
+You can configure each group with separate settings. Enable each group you want Kodi to control.
+
+| Setting | Description |
+-------------------------
+| Enable Group | Turn on to allow Kodi to control your lights |
+| White | Set the color of the lights to white |
+| Color Picker | Use a color picker to choose a color for the lights |
+| Brightness | Set the brightness of the lights between 0 and 100 |
+| Fading Speed | The speed to fade the lights |
+
+### Tweaking
+
+Here you can adjust various parameters of the plugin. The LimitlessLED wifi bridge is not pefect, and you may need to tweak these settings to find a sweet spot for perfect smoothness.
+
+It's important to note that fading lights is done by sending many brightness commands to reach the desired brightness. The LimitlessLED protocol has no fading feature. Thus, if the interval for a speed setting is 1, then fading out the lights results in sending brightness 100, 99, 98, 97, etc... to the wifi bridge.
 
 
-Supports LimitlessLED protocol v4 only.
+| Setting | Description |
+-------------------------
+| Automatically dim when playing TV shows | If enabled, then the lights will automatically fade out when a TV show episode starts |
+| Automatically dim when playing any video other than TV shows | If enabled lights will fade out for any type of video playback except for TV shows |
+| Number of times to repeat command | Number of times to repeat a command sent to the wifi bridge. Increasing this value will make transitions slower, but may result in smoother transitions. |
+| Number of milliseconds to wait before sending another command | Decreasing this value will make transitions faster, but may result in less smooth transitions. |
+| Slow Speed | Interval of brightness steps for a slow speed |
+| Medium Speed | Interval of brightness steps for a medium speed |
+| Fast Speed | Interval of brightness steps for a fast speed |
 
-Fading is done by sending commands to adjust the brightness until the target brightness is reached. In my testing, this can sometimes result in some funky behavior. Limitless LED does not have speed control for fading.
+### Testing
 
-So when configuring this addon, you may want to experiment a bit to find the sweet spot.
+You can use these tools to test your configuration. Before using them, make sure that you have previously saved your configuration.
 
-Integration with Other Plugins
-==============================
+You can also enable debug logging to see exactly what is being sent to your wifi bridge.
 
-You can execute fade commands from other plugins by doing this:
+## Integration with Other Plugins
 
-```RunScript(special://home/addons/script.service.mookfist-milights/cmd.py fade_in 1 50)```
+You can integrate against this plugin via running commands, or sending notifications
 
-The arguments are:
+### Commands
 
-1. fade_in or fade_out
-2. group number or the word 'all' for all groups
-3. target brightness or use -1 to use configured min/max brightness
+Groups are either a comma-separated list of group numbers between 1 and 4, or the word 'all' for all enabled groups.
 
-Additioanl integration examples are available in /integrations
+To execute a command from your plugin you can do
 
-Configuration
-=============
+```python
+import xbmc
 
-General Settings
- - Host: IP/hostname of the wifi bridge.
- - Port: Port number of the wifi bridge (usually should be 8899)
- - Scan for Wifi Bridge will scan your network for available bridges. It currently only supports one bridge. If one is found then host and port are automatically filled in.
- - Bulb Type: Choose which type of LED bulb you have. It's expected that all groups have the same type
- - Command Delay: The delay in milliseconds between each command sent to the wifi bridge
- - Enable Logging: IF true, milights will log information to your kodi.log file
- - Enable Group 1 - 4: IF enabled, the addon will send commands for that group
+xbmc.executebuiltin('RunScript(script.service.mookfist-milights, fade_in, groups=1,2,3)')
+```
 
-Global Settings
- - Set Brightness at Startup: if enabled, then your lights will be set to the maximum brightness value when Kodi starts
- - Fading Speed: How fast do you want the brightness to fade when fading in and out
- - Max/Min Brightness: How bright and dark you want the lights to get.
- - Enable Color: Kodi will change the colors of lights
- - Red/Green/Blue values: Set the RGB values for the color you want.
- - Enable Custom Pause Settings: If this is enabled, then you can have different settings when pausing a video then when playing.
-   - Fading Speed: How fast you want a video to fade in and out when a video is paused/resumed
-   - Pause Delay: How long to wait to fade in the lights after a video is paused
+Each command has a groups parameter that can be a comma separatest list of group numbers betwee 1 and 4 or the word 'all' for all groups (equivalent to `groups=1,2,3,4`).
 
-Testing
- - Make sure everything is setup by selecting Fade In or Fade Out to control the lights
+#### Available Commands
 
-Movies
- - If enabled, lights will fade in and out when playing movies. IT should be noted however, that unless a video is marked as a "TV show", ALL videos are movies, including video addons. I need to investigate a better way of determining whether you are actually watching a movie or not.
+##### Fade In
 
-TV Shows
- - If enabled, lights will fade in and out when playing TV shows.
+```
+RunScript(script.service.mookfist-milights, fade_in, groups=[groups])
+```
+
+Fades in lights for `[groups]`
+
+##### Fade Out
+
+```
+RunScript(script.service.mookfist-milights, fade_out, group=[groups])
+```
+
+Fades out lights for `[groups]`
+
+##### White
+
+```
+RunScript(script.service.mookfist-milights, white, group=[groups])
+```
+
+Turns lights to white for `[groups]`
+
+##### Color RGB
+
+```
+RunScript(script.service.mookfist-milights, white, groups=[groups] r=[r] g=[g] b=[b])
+```
+
+Sets the color for `[groups]`. `[r]` `[g]` `[b]` can be between 0 and 255. Note that not all colors are supported. If the color is a shade of grey, then the color will be set to white with the brightness adjusted.
+
+##### Brightness
+
+```
+RunScript(script.service.mookfist-milights, brightness, groups=[groups] brightness=[brightness])
+```
+
+Sets the brightness to `[brightness]` for `[groups]`. `[brightness]` can be a value between 0 and 100.
+
+##### On
+
+```
+RunScript(script.service.mookfist-milights, on, groups=[groups])
+```
+
+Turn on `[groups]`
+
+##### Off
+
+```
+RunScript(script.service.mookfist-milights, off, groups=[groups])
+```
+
+Turn off `[groups]`
 
 
-You can manually set the host and port number of your wifi bridge, or use the Scan feature to automatically detect it. The scan feature currently only supports one bridge.
-
-You can set the starting colors and brightness as well. These will be applied every time Kodi starts.
-
-You have four fade speeds: Immediate, Fast, Medium, and Slow.
