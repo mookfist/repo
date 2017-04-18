@@ -1,8 +1,10 @@
-# mookfist-milights Kodi Addon v0.2.0devel
+# mookfist-milights Kodi Addon v0.2.0~beta1
 
 This addon is for controlling LimitlessLED-based lights (including Milights).
 
 Supports bridge versions 4, 5 and 6.
+
+This plugin in beta.
 
 ## Installation
 
