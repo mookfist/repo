@@ -9,9 +9,9 @@ This is a development branch. Use at your own risk.
 
 To install the repository, you must manually download and install the repository addon.
 
-1. Download https://github.com/mookfist/repo/raw/0.2.0devel/zips/repository.mookfist/repository.mookfist-2.1.zip
+1. Download https://github.com/mookfist/repo/raw/0.2.0devel/zips/repository.mookfist/repository.mookfist-2.2.zip
 2. Goto your Addons screen in Kodi
-3. Select "Install from Zip" and select the repository.mookfist-2.0.zip file you downloaded
+3. Select "Install from Zip" and select the repository.mookfist-2.2.zip file you downloaded
 
 The repository is now installed and you can now install the various addons available.
 
@@ -22,14 +22,12 @@ The repository is now installed and you can now install the various addons avail
 These addons provide additional functionality to Kodi
 
 * [Mookfist Milights](https://github.com/mookfist/repo/tree/0.2.0devel/script.service.mookfist-milights) - A plugin that will control milights or other LimitlessLED-based lights
+* [Mookfist Milights Context Menu](https://github.com/mookfist/repo/tree/0.2.0devel/script.context-menu.mookfist-milights) - A context menu plugin to expose light control from Mookfist Milights
 * [script.module.colorpicker](https://github.com/mookfist/repo/tree/0.2.0devel/script.module.colorpicker) - A ColorPicker dialog window class
 
 ### Python Libraries
 
 These addons expose various python libraries for use by the plugins
-* [python-requests](https://github.com/mookfist/repo/tree/0.2.0devel/script.module.python-requests) -  [Requests](http://docs.python-requests.org/en/latest/) library for a simpler HTTP API
-* [python-qbittorent](https://github.com/mookfist/repo/tree/0.2.0devel/script.module.python-qbittorrent ) - A [python library](https://pypi.python.org/pypi/qbittorrent) for controlling the [QBittorrent](http://www.qbittorrent.org) client
-* [python-milights](https://github.com/mookfist/repo/tree/0.2.0devel/script.module.python-milights) - A [python library](https://pypi.python.org/pypi/milight) to speak to Milights and other [LimitlessLED](http://www.limitlessled.com) based products.
 * [python-simplejson](https://github.com/mookfist/repo/tree/0.2.0devel/script.module.python-simplejson) - A [python library](https://pypi.python.org/pypi/simplejson) to manipulate JSON
 * [python-mookfist-lled-controller](https://github.com/repo/tree/0.2.0devel/script.module.python-mookfist-lled-controller) - A [python library](https://pypi.python.org/pypi/mookfist-lled-controller) to control LimitlessLED-based wifi bridges
 

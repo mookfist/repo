@@ -8,6 +8,8 @@ Supports bridge versions 4, 5 and 6.
 
 To install this plugin, you must install the Mookfist repository, then find the Mooklist Milights under services.
 
+Please visit https://github.com/mookfist/mookfist-repo for more information.
+
 ## Setup
 
 Before setting up this plugin, please make sure that your light bulbs are synced to your wifi bridge.
