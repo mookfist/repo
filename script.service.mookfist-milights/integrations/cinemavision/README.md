@@ -1,6 +1,5 @@
 Mookfist Milights Cinemavision Integration
 ==========================================
 
-These example action files are what I use to control my lights from CinemaVision.
+These are example files showing how you can use CinemaVision action files to controller the Mookfist Milights plugin.
 
-In order for this to work properly, you must disable Movies in the mookfist-milights configuration.

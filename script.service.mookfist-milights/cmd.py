@@ -127,11 +127,11 @@ def cmd_fade_out(args):
   if group == 'all':
     group = (1,2,3,4)
   elif ',' in group:
-    group = group.split(',')
+    group = [int(grp) for grp in group.split(',')]
   else:
     group = (group,)
 
-  enabled_groups = [grp for grp in group if __settings__.getSetting('enable_group%s' % grp) == 'true']
+  enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group%s' % grp) == 'true']
 
   cmd = {
       'groups': enabled_groups
@@ -145,11 +145,11 @@ def cmd_fade_in(args):
   if group == 'all':
     group = (1,2,3,4)
   elif ',' in group:
-    group = group.split(',')
+    group = [int(grp) for grp in group.split(',')]
   else:
     group = (group,)
 
-  enabled_groups = [grp for grp in group if __settings__.getSetting('enable_group%s' % grp) == 'true']
+  enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group%s' % grp) == 'true']
 
   cmd = {
       'groups': enabled_groups
@@ -167,7 +167,7 @@ def cmd_fade_outin(args):
   if group == 'all':
     group = (1,2,3,4)
   elif ',' in group:
-    group = group.split(',')
+    group = [int(grp) for grp in group.split(',')]
   else:
     group = (int(group),)
 
