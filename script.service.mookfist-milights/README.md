@@ -19,7 +19,7 @@ To use the "Testing" features, please save the configuration first then re-open 
 Select "Scan for a bridge" to find all available wifi bridges automatically. If for some reason this not work, you can manually configure your bridge's IP address, port number, and version.
 
 | Setting | Description |
--------------------------
+|---------|-------------|
 | Scan for a bridge | Scans for all available bridges, allowing you to choose one |
 | Manually configure bridge | Enable this to manually specify the IP, port number, and version of your wifi bridge |
 | IP/Hostname | IP Address of the wifi bridge |
@@ -33,7 +33,7 @@ For version 4 and 5, the default port number is 8899. For version 6 it is 5987.
 You can configure each group with separate settings. Enable each group you want Kodi to control.
 
 | Setting | Description |
--------------------------
+|---------|-------------|
 | Enable Group | Turn on to allow Kodi to control your lights |
 | White | Set the color of the lights to white |
 | Color Picker | Use a color picker to choose a color for the lights |
@@ -48,7 +48,7 @@ It's important to note that fading lights is done by sending many brightness com
 
 
 | Setting | Description |
--------------------------
+|---------|-------------|
 | Automatically dim when playing TV shows | If enabled, then the lights will automatically fade out when a TV show episode starts |
 | Automatically dim when playing any video other than TV shows | If enabled lights will fade out for any type of video playback except for TV shows |
 | Number of times to repeat command | Number of times to repeat a command sent to the wifi bridge. Increasing this value will make transitions slower, but may result in smoother transitions. |
