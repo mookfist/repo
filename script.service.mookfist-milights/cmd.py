@@ -1,5 +1,4 @@
 import utils
-from light import Lights, LightFadeThread
 from lib import scanner
 import sys, simplejson
 import xbmc, xbmcaddon, xbmcgui
