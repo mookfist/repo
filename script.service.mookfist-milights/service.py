@@ -21,6 +21,8 @@ class ServiceMonitor(xbmc.Monitor):
 
     self._enabled_groups = []
 
+    self.pay_attention = False
+
     for grp in [1,2,3,4]:
       if __settings__.getSetting('enable_group%s' % grp) == 'true':
         self._enabled_groups.append(grp)
@@ -36,45 +38,29 @@ class ServiceMonitor(xbmc.Monitor):
     elif method == 'fade-in':
       self.controller_thread.fade_in(data['groups'])
     elif method == 'fade-outin':
-      self.controller_thread.fade_out(data['groups'])
+      self.controller_thread.fade_out(data['groups'], starting_brightness=100)
       self.controller_thread.fade_in(data['groups'], starting_brightness=0)
     elif method == 'brightness':
       self.controller_thread.brightness(data['brightness'], data['groups'])
-
-    return
-
-    if method == 'on':
-      self.controller_thread.on(int(data['group']))
-    elif method == 'off':
-      self.controller_thread.off(int(data['group']))
-    elif method == 'fadein':
-      self.controller_thread.fadeIn(int(data['group']))
-    elif method == 'fadeout':
-      self.controller_thread.fadeOut(int(data['group']))
-    elif method == 'fade_outin':
-      self.controller_thread.fadeOut(data['group'])
-      self.controller_thread.fadeIn(data['group'])
-    elif method == 'brightness':
-      self.controller_thread.brightness(data['brightness'], int(data['group']))
-    elif method == 'fade-out':
-      self.controller_thread.fade_out(data['group'])
+    elif method == 'pay-attention':
+      self.pay_attention = True
 
   def dispatch_xbmc_command(self, method, data):
     if method == 'Player.OnPlay':
-      if data['item']['type'] == 'movie' and __settings__.getSetting('autoplay_movie') == 'true':
-        self.controller_thread.reset_queue()
-        self.controller_thread.fade_out(self._enabled_groups)
-      elif data['item']['type'] == 'episode' and __settings__.getSetting('autoplay_tv') == 'true':
-        self.controller_thread.reset_queue()
-        self.controller_thread.fade_out(self._enabled_groups)
-    elif method == 'Player.OnStop':
-      if data['item']['type'] == 'movie' and __settings__.getSetting('autoplay_movie') == 'true':
-        self.controller_thread.reset_queue()
-        self.controller_thread.fade_in(self._enabled_groups)
-      elif data['item']['type'] == 'episode' and __settings__.getSetting('autoplay_tv') == 'true':
-        self.controller_thread.reset_queue()
-        self.controller_thread.fade_in(self._enabled_groups)
 
+      if ((self.pay_attention == True)
+      or (data['item']['type'] == 'movie' and __settings__.getSetting('autoplay_movie') == 'true')
+      or (data['item']['type'] == 'episode' and __settings__.getSetting('autoplay_tv') == 'true')):
+        self.controller_thread.reset_queue()
+        self.controller_thread.fade_out(self._enabled_groups)
+        self.pay_attention = True
+    elif method == 'Player.OnStop':
+      if ((self.pay_attention == True)
+      or (data['item']['type'] == 'movie' and __settings__.getSetting('autoplay_movie') == 'true')
+      or (data['item']['type'] == 'episode' and __settings__.getSetting('autplay_tv') == 'true')):
+        self.controller_thread.reset_queue()
+        self.controller_thread.fade_in(self._enabled_groups)
+        self.pay_attention = False
 
 
   def onNotification(self, sender, method, data):

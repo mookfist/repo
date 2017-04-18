@@ -155,6 +155,11 @@ def cmd_fade_in(args):
       'groups': enabled_groups
   }
 
+  if 'speed' in args:
+    cmd['speed'] = args['speed']
+  else:
+    cmd['speed'] = None
+
   xbmc.executebuiltin('NotifyAll(mookfist-milights, fade-in, "' + simplejson.dumps(cmd) + '")')
 
 def cmd_fade_outin(args):
@@ -171,6 +176,11 @@ def cmd_fade_outin(args):
   cmd = {
       'groups': enabled_groups
   }
+
+  if 'speed' in args:
+    cmd['speed'] = args['speed']
+  else:
+    cmd['speed'] = None
 
   xbmc.executebuiltin('NotifyAll(mookfist-milights, fade-outin, "' + simplejson.dumps(cmd) + '")')
 

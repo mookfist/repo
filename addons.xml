@@ -1280,6 +1280,31 @@ is not maintained, and should only be used as a last resort.
   </extension>
 </addon>
 
+<addon id="script.context-menu.mookfist-milights" version="0.2.0devel" name="Mookfist Milights Context Menu" provider-name="Mookfist">
+  <requires>
+    <import addon="xbmc.python" version="2.23.0" />
+  </requires>
+  <extension point="kodi.context.item">
+    <menu id="kodi.core.main">
+      <item library="contextitem.py">
+        <label>30000</label>
+        <visible>true</visible>
+      </item>
+    </menu>
+  </extension>
+  <extension point="xbmc.addon.metadata">
+    <summary lang="en">Mookfist Milights Context Menu</summary>
+    <description lang="en">Adds a context menu item to dim lights before playing something.</description>
+	  <disclaimer lang="en">Not suitable for low sodium diets</disclaimer>
+	  <language>en</language>
+    <platform>all</platform>
+    <license>MIT</license>
+    <source>https://github.com/mookfist/repo/tree/master/script.context-menu.mookfist-milights</source>
+    <email>mookfist@gmail.com</email>
+    <website>https://github.com/mookfist/repo</website>
+  </extension>
+</addon>
+
 <addon id="repository.mookfist" name="Mookfist Repo" version="2.2" provider-name="Mookfist">
     <extension point="xbmc.addon.repository" name="Mookfist Repository">
         <info compressed="false">https://raw.githubusercontent.com/mookfist/repo/0.2.0devel/addons.xml</info>
@@ -1299,16 +1324,9 @@ is not maintained, and should only be used as a last resort.
     <import addon="script.module.python-simplejson" version="2.14.0" />
     <import addon="script.module.python-mookfist-lled-controller" version="0.0.16"/>
     <import addon="script.module.colorpicker" version="1.0.11mooked" />
+    <import addon="script.context-menu.mookfist-milights" versin="0.2.0devel" />
     <!--    <import addon="script.skin.helper.colorpicker" version="1.0.11" /> -->
   </requires>
-  <extension point="kodi.context.item">
-    <menu id="kodi.core.main">
-      <item library="contextitem.py">
-        <label>30000</label>
-        <visible>true</visible>
-      </item>
-    </menu>
-  </extension>
   <extension point="xbmc.service" library="service.py" start="login" />
   <extension point="xbmc.python.script" library="cmd.py" />
   <extension point="xbmc.addon.metadata">

@@ -5,16 +5,9 @@
     <import addon="script.module.python-simplejson" version="2.14.0" />
     <import addon="script.module.python-mookfist-lled-controller" version="0.0.16"/>
     <import addon="script.module.colorpicker" version="1.0.11mooked" />
+    <import addon="script.context-menu.mookfist-milights" versin="0.2.0devel" />
     <!--    <import addon="script.skin.helper.colorpicker" version="1.0.11" /> -->
   </requires>
-  <extension point="kodi.context.item">
-    <menu id="kodi.core.main">
-      <item library="contextitem.py">
-        <label>30000</label>
-        <visible>true</visible>
-      </item>
-    </menu>
-  </extension>
   <extension point="xbmc.service" library="service.py" start="login" />
   <extension point="xbmc.python.script" library="cmd.py" />
   <extension point="xbmc.addon.metadata">

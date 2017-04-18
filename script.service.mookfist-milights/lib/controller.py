@@ -80,11 +80,10 @@ class Controller(threading.Thread):
 
     self._running = True
 
-
     self.logger.debug('Starting thread')
     super(Controller, self).start(*args, **kwargs)
 
-  def fade_out(self, groups):
+  def fade_out(self, groups, starting_brightness=None):
 
     speeds = ['slow','medium','fast']
 
@@ -92,9 +91,13 @@ class Controller(threading.Thread):
 
     for grp in groups:
       grp_fade_cmds = []
+
       interval_str = self._settings.getSetting('group%s_fade_speed' % grp)
       interval = int(self._settings.getSetting('%s_speed_interval' % speeds[int(interval_str)]))
-      starting_brightness = self._group_states[grp]['brightness']
+
+      if starting_brightness == None:
+        starting_brightness = self._group_states[grp]['brightness']
+
       ending_brightness = -1
 
       self.logger.debug('Fading out group %s at speed %s (%s steps)' % (grp, interval_str, interval))
@@ -111,6 +114,7 @@ class Controller(threading.Thread):
         if brightness != None:
           self.brightness(brightness, (grp,))
         grp_idx = grp_idx + 1
+
 
   def fade_in(self, groups, starting_brightness=None):
 
