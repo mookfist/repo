@@ -133,29 +133,36 @@ is not maintained, and should only be used as a last resort.
     </extension>
 </addon>
 
-<addon id="script.service.mookfist-milights" version="0.2.0~beta3" name="Mookfist Milights" provider-name="Mookfist">
+<addon id="script.service.mookfist-milights" version="0.2.0~beta4" name="Mookfist Milights" provider-name="Mookfist">
   <requires>
     <import addon="xbmc.python" version="2.23.0" />
     <import addon="script.module.python-simplejson" version="2.14.0" />
     <import addon="script.module.python-mookfist-lled-controller" version="0.0.16"/>
     <import addon="script.module.colorpicker" version="1.0.11mooked" />
     <import addon="script.context-menu.mookfist-milights" versin="0.2.0~beta1" />
-    <!--    <import addon="script.skin.helper.colorpicker" version="1.0.11" /> -->
   </requires>
   <extension point="xbmc.service" library="service.py" start="login" />
   <extension point="xbmc.python.script" library="cmd.py" />
   <extension point="xbmc.addon.metadata">
     <summary lang="en">Mookfist Milights</summary>
-    <description lang="en">Controls the wifi bridge of Limitless LED-compatible products, such as Milights, LimitlessLED, Easybulb, AppLamp, iLight.</description>
-    <description lang="de">Steuert LimitlessLED kompatible Produkte (Milight, LimitlessLED, Easybulb, AppLamp, iLight) mithilfe des WLAN Steuermoduls (Bridge)</description>
+    <description lang="en">Controls the wifi bridge of Limitless LED-compatible products, such as Milights, LimitlessLED, Easybulb, AppLamp, iLight.[CR][CR]Please ensure that your wifi bridge is properly configured, and that your lights are synced to your bridge properly.[CR][CR]Supports bridge versions 4, 5 and 6. This plugin can only control one bridge at a time.</description>
     <disclaimer lang="en">May contain soy products</disclaimer>
-    <disclaimer lang="de">Kann Spuren von Soja enthalten</disclaimer>
-	<language>en</language>
+	  <language>en</language>
     <platform>all</platform>
     <license>MIT</license>
     <source>https://github.com/mookfist/repo/tree/master/script.service.mookfist-milights</source>
     <email>mookfist@gmail.com</email>
     <website>https://github.com/mookfist/repo</website>
+    <news>v0.2.0~beta4 (2017-4-25)
+      - Updated Descriptions
+      - Updated Metadata
+      - Updated Icon</news>
+    <forum></forum>
+    <assets>
+      <icon>icon.png</icon>
+      <fanart></fanart>
+      <screenshot></screenshot>
+    </assets>
   </extension>
 </addon>
 </addons>
