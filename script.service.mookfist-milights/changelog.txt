@@ -1,3 +1,20 @@
+version 0.2.0~beta3
+ - Fix issues when brightness or color have not been configured
+
+version 0.2.0~beta2
+ - Fix ImportError issue #36
+
+version 0.2.0~beta1
+ - Support version 6
+ - New bridge scanning tool supports multiple bridges
+ - Color picker
+ - Per-group settings
+ - Expose numerous tweaking settings
+ - Flash lights to prove config is correct
+ - More testing features
+ - Context menu option
+ - CinemaVision action files
+
 version 0.0.13
  - Now has the option to scan for existing wifi bridges. Only supports a
  single bridge
