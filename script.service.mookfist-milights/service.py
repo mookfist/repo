@@ -144,17 +144,27 @@ class ServiceMonitor(xbmc.Monitor):
       time.sleep(0.2)
 
     for g in groups:
-
-      brightness = int(__settings__.getSetting('group%s_brightness' % g))
-      color = __settings__.getSetting('group%s_color_value' % g)
-
-      red = int(color[2:4], 16)
-      green = int(color[4:6], 16)
-      blue = int(color[6:8], 16)
-
       self.controller_thread.on([g])
-      self.controller_thread.color_rgb(red,green,blue,[g])
-      self.controller_thread.brightness(brightness,[g])
+
+      brightness = __settings__.getSetting('group%s_brightness' % g)
+
+      if brightness != None and brightness != '':
+        try:
+          brightness = int(brightness)
+          self.controller_thread.brightness(brightness,[g])
+        except ValueError:
+          self.logger.warning('The brightness level for group %s could not be converted into an int. Current value: \'%s\'' % (g, brightness))
+
+      color = __settings__.getSetting('group%s_color_value' % g)
+      if color != None and color != '':
+        try:
+          red = int(color[2:4], 16)
+          green = int(color[4:6], 16)
+          blue = int(color[6:8], 16)
+
+          self.controller_thread.color_rgb(red,green,blue,[g])
+        except ValueError:
+          self.logger.warning('There was an error converting the color for group %s. Current value: \'%s\'' % (g, color))
 
 
 """
