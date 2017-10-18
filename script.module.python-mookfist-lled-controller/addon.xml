@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon id="script.module.python-mookfist-lled-controller" version="0.0.16" name="python-mookfist-lled-controller" provider-name="mookfist">
+<addon id="script.module.python-mookfist-lled-controller" version="0.1.1" name="python-mookfist-lled-controller" provider-name="mookfist">
   <requires>
     <import addon="xbmc.python" version="2.14.0" />
   </requires>
   <extension point="xbmc.python.module" library="lib" />
   <extension point="xbmc.addon.metadata">
     <summary lang="en">A python library for communicating with LimitlessLED/Milight/Easybulb compatible wifi bridges.</summary>
-    <description lang="en">UNKNOWN</description>
+    <description lang="en"></description>
     <disclaimer>This addon is just a wrapper around the original module found at PyPI</disclaimer>
     <language>en</language>
     <platform>all</platform>

@@ -1,22 +1,47 @@
-"""Stuff for the CLI"""
+"""CLI Module
+
+This module helps enable the CLI."""
 import sys
 import logging
 import traceback
-from docopt import docopt
+import time, datetime
+from colorama import Fore
+
+from mookfist_lled_controller import scan_bridges
+from mookfist_lled_controller import create_bridge
+
 from mookfist_lled_controller import logger
-from mookfist_lled_controller import WifiBridge
-from mookfist_lled_controller import get_bridges
-from mookfist_lled_controller import transition_brightness
-from mookfist_lled_controller import transition_color
-from mookfist_lled_controller import set_color
-from mookfist_lled_controller import set_brightness
-from mookfist_lled_controller import turn_on
-from mookfist_lled_controller import turn_off
-from mookfist_lled_controller import white
-from mookfist_lled_controller import color_rgb
 from mookfist_lled_controller.exceptions import UnsupportedVersion
 from mookfist_lled_controller.exceptions import InvalidGroup
 from mookfist_lled_controller.exceptions import NoBridgeFound
+
+LVL_NAMES = {
+    'DEBUG': Fore.CYAN,
+    'INFO': Fore.GREEN,
+    'WARNING': Fore.YELLOW,
+    'ERROR': Fore.RED,
+    'CRTICIAL': Fore.MAGENTA
+}
+
+
+class ColoredFormatter(logging.Formatter):
+    """Colord log formatter"""
+    def __init__(self, *args, **kwargs):
+        logging.Formatter.__init__(self, *args, **kwargs)
+        self.timer = datetime.datetime.now()
+
+    def format(self, record):
+        lvlname_color = LVL_NAMES[record.levelname]
+
+        lvlname = record.levelname.ljust(8)
+
+        timestamp = datetime.datetime.now() - self.timer
+
+        lvl = '%s[%s%s%s]' % (Fore.WHITE, lvlname_color, lvlname, Fore.WHITE)
+        msg = '%s %s %s%s' % (timestamp, lvl, Fore.RESET, record.msg)
+        return msg
+
+
 def configure_logger(debug=False):
     """Configure a logger with colored output"""
 
@@ -39,7 +64,7 @@ class Main(object):
     """the application"""
 
     def __init__(self, arguments):
-        
+
         if arguments['fade']:
             self.action = 'fade'
         elif arguments['fadec']:
@@ -65,7 +90,7 @@ class Main(object):
         elif arguments['--bridge-version'] == '6':
             self.bridge_version = 6
         elif arguments['--bridge-version'] != None:
-            raise UnsupportedVersion 
+            raise UnsupportedVersion
         else:
             self.bridge_version = 4
 
@@ -77,38 +102,54 @@ class Main(object):
         start = int(self.arguments['<start>'])
         end   = int(self.arguments['<end>'])
 
+        if (start > end):
+            steps = -1
+        else:
+            steps = 1
+
+
         self.log.info('Transitioning brightness from %s%% to %s%%' % (start, end))
-        transition_brightness(self.bridge, self.arguments['--group'], start, end)
+
+        self.bridge.on(self.arguments['--group'])
+
+        for brightness in range(start, end, steps):
+            self.bridge.brightness(brightness, self.arguments['--group'])
 
     def action_fadec(self):
         start = int(self.arguments['<start>'])
         end   = int(self.arguments['<end>'])
 
+        if (start > end):
+            steps = -1
+        else:
+            steps = 1
+
         self.log.info('Transitioning color from %s to %s' % (start, end))
-        transition_color(self.bridge, self.arguments['--group'], start, end)
+
+        for color in range(start,end,steps):
+            self.bridge.color(color, self.arguments['--group'])
 
     def action_color(self):
         color = int(self.arguments['<color>'])
-
         self.log.info('Setting color to %s' % color)
-        set_color(self.bridge, self.arguments['--group'], color)
+        self.bridge.color(color, self.arguments['--group'])
 
     def action_white(self):
         self.log.info('Setting color to white')
-        white(self.bridge, self.arguments['--group'])
+        self.bridge.white(self.arguments['--group'])
 
     def action_brightness(self):
         brightness = int(self.arguments['<brightness>'])
         self.log.info('Setting brightness to %s%%' % brightness)
-        set_brightness(self.bridge, self.arguments['--group'], brightness)
+        self.bridge.brightness(self.arguments['--group'])
 
     def action_on(self):
         self.log.info('Turning lights on')
-        turn_on(self.bridge, self.arguments['--group'])
+        self.bridge.on(self.arguments['--group'])
 
     def action_off(self):
         self.log.info('Turning lights off')
-        turn_off(self.bridge, self.arguments['--group'])
+        self.bridge.off(self.arguments['--group'])
 
     def action_rgb(self):
         r = int(self.arguments['<r>'])
@@ -116,7 +157,8 @@ class Main(object):
         b = int(self.arguments['<b>'])
 
         self.log.info('Setting color to rgb(%s, %s, %s)' % (r, g, b))
-        color_rgb(self.bridge, self.arguments['--group'], r, g, b)
+        self.bridge.color_rgb(r, g, b, self.arguments['--group'])
+
 
     def action_colorcycle(self):
         for x in range(0,256):
@@ -125,7 +167,7 @@ class Main(object):
             elif x > 255:
                 x = x - 255
             self.log.info('Setting color to %s' % x)
-            set_color(self.bridge, self.arguments['--group'], x)
+            self.bridge.color(x, self.arguments['--group'])
 
 
     def route_action(self):
@@ -155,22 +197,22 @@ class Main(object):
                 host = self.arguments['--bridge-ip']
             else:
                 self.log.info('Scanning for bridge...')
-                bridges = get_bridges(self.bridge_version)
+                bridges = scan_bridges(self.bridge_version)
                 self.log.info('Found %s bridge(s)' % len(bridges))
-                
+
                 if len(bridges) > 1:
                     self.log.warning('Multiple bridges have been found. I will choose the first one I saw')
                     self.log.warning('If you really don\'t want me to do that, then use the --bridge-ip (and --bridge-port if needed) flags when using this tool')
-                   
+
                     self.log.info('--- Available Bridges')
                     for bridge in bridges:
                         self.log.info('    %s - %s' % (bridge[0], bridge[1]))
                 elif len(bridges) == 0:
                     raise NoBridgeFound
-                
+
                 host = bridges[0][0]
 
-            
+
             rc = 1
             if self.arguments['--repeat']:
                 rc = int(self.arguments['--repeat'])
@@ -198,8 +240,8 @@ class Main(object):
             self.log.debug('Pause: %sms' % pause)
             self.log.debug('Command Repeat: %s' % rc)
 
-            self.bridge = WifiBridge(host, port, version, pause, rc)
-    
+            self.bridge = create_bridge(version, host, port, pause, rc)
+
             self.route_action()
         except UnsupportedVersion:
             self.log.error('The chosen bridge version is unsupported')

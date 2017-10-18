@@ -1,5 +1,7 @@
 import logging
 from colorama import Fore
+import time
+import datetime
 
 LVL_NAMES = {
     'DEBUG': Fore.CYAN,
@@ -11,13 +13,19 @@ LVL_NAMES = {
 
 class ColoredFormatter(logging.Formatter):
 
+    def __init__(self, *args, **kwargs):
+        logging.Formatter.__init__(self, *args, **kwargs)
+        self.timer = datetime.datetime.now()
+
     def format(self, record):
         lvlname_color = LVL_NAMES[record.levelname]
 
         lvlname = record.levelname.ljust(8)
 
+        timestamp = datetime.datetime.now() - self.timer
+
         lvl = '%s[%s%s%s]' % (Fore.WHITE, lvlname_color, lvlname, Fore.WHITE)
-        msg = '%s %s%s' % (lvl, Fore.RESET, record.msg)
+        msg = '%s %s %s%s' % (timestamp, lvl, Fore.RESET, record.msg)
         return msg
 
 def get_logger(name, level=logging.INFO):

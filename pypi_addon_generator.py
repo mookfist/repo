@@ -46,6 +46,10 @@ ADDON_XML = """<?xml version="1.0" encoding="utf-8"?>
   </extension>
 </addon>"""
 
+if len(sys.argv) < 3:
+  print('usage: pypi_addon_generator.py <repopath> <modname>')
+  sys.exit(1)
+
 BASE_PATH = os.path.realpath(sys.argv[1])
 
 mod = sys.argv[2]
