@@ -1,11 +1,13 @@
 import xbmc, xbmcaddon
 import time, math
 import simplejson as json
-import threading
 
-from lib.controller import Controller
 from lib.utils import Logger
 from lib.utils import initialize_logger
+from lib.masterController import MasterControllerThread
+from lib.group import Group
+
+from mookfist_lled_controller.colors import color_from_html
 
 __scriptname__ = "Mookfist Milights"
 __author__     = "Mookfist"
@@ -13,7 +15,9 @@ __url__        = "https://github.com/mookfist/repo"
 __settings__   = xbmcaddon.Addon(id='script.service.mookfist-milights')
 __version__    = __settings__.getAddonInfo('version')
 
+
 class ServiceMonitor(xbmc.Monitor):
+
   def __init__(self, controller_thread):
     xbmc.Monitor.__init__(self)
     self.logger = Logger('mookfist-milights', 'service')
@@ -23,9 +27,12 @@ class ServiceMonitor(xbmc.Monitor):
 
     self.pay_attention = False
 
-    for grp in [1,2,3,4]:
-      if __settings__.getSetting('enable_group%s' % grp) == 'true':
-        self._enabled_groups.append(grp)
+    if __settings__.getSetting('enable_group_all') == 'true':
+      self._enabled_groups.append('all')
+    else:
+      for grp in [1,2,3,4]:
+        if __settings__.getSetting('enable_group_%s' % grp) == 'true':
+          self._enabled_groups.append(grp)
 
   def dispatch_bridge_command(self, method, data):
 
@@ -34,12 +41,12 @@ class ServiceMonitor(xbmc.Monitor):
     if method == 'white':
       self.controller_thread.white(data['groups'])
     elif method == 'fade-out':
-      self.controller_thread.fade_out(data['groups'])
+      self.controller_thread.fade(0, data['groups'])
     elif method == 'fade-in':
-      self.controller_thread.fade_in(data['groups'])
+      self.controller_thread.fade(100, data['groups'])
     elif method == 'fade-outin':
-      self.controller_thread.fade_out(data['groups'], starting_brightness=100)
-      self.controller_thread.fade_in(data['groups'], starting_brightness=0)
+      self.controller_thread.fade(0, data['groups'], 100)
+      self.controller_thread.fade(100, data['groups'], 0)
     elif method == 'brightness':
       self.controller_thread.brightness(data['brightness'], data['groups'])
     elif method == 'color-rgb':
@@ -92,23 +99,26 @@ class ServiceMonitor(xbmc.Monitor):
     elif bridge_version == 2:
       bridge_version = 6
 
-    self.controller_thread.initialize_bridge(
-        bridge_ip=bridge_ip,
-        bridge_port=bridge_port,
-        bridge_version=bridge_version,
-        repeat=repeat,
-        pause=pause
-    )
+    self.controller_thread.setVersion(bridge_version)
+    self.controller_thread.setHost(bridge_ip)
+    self.controller_thread.setPort(bridge_port)
+    self.controller_thread.setPause(pause)
+    self.controller_thread.setRepeat(repeat)
 
-    while self.controller_thread.isBridgeAvailable() == False:
+    self.controller_thread.reinitializeBridge()
+
+    while self.controller_thread.isBridgeInitializing() == True:
       time.sleep(0.01)
 
     groups = []
 
-    for x in range(1,5):
+    for x in ['all', 1, 2, 3, 4]:
 
-      brightness = int(__settings__.getSetting('group%s_brightness' % x))
-      color = __settings__.getSetting('group%s_color_value' % x)
+      brightness = __settings__.getSetting('group_%s_brightness' % x)
+      color = __settings__.getSetting('group_%s_color_value' % x)
+
+      if brightness != '':
+        brightness = int(brightness)
 
       if color != '':
 
@@ -126,16 +136,16 @@ class ServiceMonitor(xbmc.Monitor):
           else:
             color[1] = '0'
 
-          print color
           color = ''.join(color)
-          __settings__.setSetting('group%s_color_value' % x, color)
+          __settings__.setSetting('group_%s_color_value' % x, color)
           return
 
 
-      if __settings__.getSetting('enable_group%s' % x) == 'true':
+      if __settings__.getSetting('enable_group_%s' % x) == 'true':
         groups.append(x)
 
-
+    if len(groups) is 1:
+      groups = (groups[0],)
 
     for x in range(0,3):
       self.controller_thread.on(groups)
@@ -144,18 +154,18 @@ class ServiceMonitor(xbmc.Monitor):
       time.sleep(0.2)
 
     for g in groups:
-      self.controller_thread.on([g])
+      self.controller_thread.on([g,])
 
-      brightness = __settings__.getSetting('group%s_brightness' % g)
+      brightness = __settings__.getSetting('group_%s_brightness' % g)
 
       if brightness != None and brightness != '':
         try:
           brightness = int(brightness)
-          self.controller_thread.brightness(brightness,[g])
+          self.controller_thread.brightness(brightness,[g,])
         except ValueError:
           self.logger.warning('The brightness level for group %s could not be converted into an int. Current value: \'%s\'' % (g, brightness))
 
-      color = __settings__.getSetting('group%s_color_value' % g)
+      color = __settings__.getSetting('group_%s_color_value' % g)
       if color != None and color != '':
         try:
           red = int(color[2:4], 16)
@@ -167,203 +177,38 @@ class ServiceMonitor(xbmc.Monitor):
           self.logger.warning('There was an error converting the color for group %s. Current value: \'%s\'' % (g, color))
 
 
-"""
-class MyMonitor(xbmc.Monitor):
+def setup_groups():
+  groups = []
 
-  def __init__(self):
-    xbmc.Monitor.__init__(self)
-    self.lights = None
-    self.paused = False
+  speeds = ['slow','medium','fast']
 
-  def _getPlayerType(self, data):
-    if data['item']['type'] == 'episode':
-      return 'tv'
-    elif data['item']['type'] == 'movie':
-      return 'movie'
-    else:
-      return None
+  for grp in ['all', 1, 2, 3, 4]:
 
+    grpobj = Group(grp)
 
-  def _onPlay(self, data):
-    playerType = self._getPlayerType(data)
+    grp_steps_str = __settings__.getSetting('group_%s_fade_speed' % grp)
+    grp_steps = int(__settings__.getSetting('%s_speed_interval' % speeds[int(grp_steps_str)]))
 
-    useCustomPauseSpeed = __settings__.getSetting('global_enable_pause_speed')
+    grpobj.fadeSteps = grp_steps
+    grpobj.enabled = __settings__.getSetting('enable_group_%s' % grp) == 'true'
+    grpobj.color_control = __settings__.getSetting('enable_color_control_group_%s' % grp) == 'true'
+    grpobj.brightness = int(__settings__.getSetting('group_%s_brightness' % grp))
 
-    if self.paused == False:
-      useCustomPauseSpeed = False
+    colorhex = __settings__.getSetting('group_%s_color_value' % grp)
 
-    self.paused = False
+    if colorhex:
+      grpobj.color = color_from_html(colorhex[0:6])
 
-    if playerType == None:
-      log('Could not determine player type: %s' % data)
-      return
+    groups.append(grpobj)
 
-    tvEnabled = __settings__.getSetting('tv_enabled')
-    movieEnabled = __settings__.getSetting('movie_enabled')
+  return groups
 
-    if (playerType == 'tv' and tvEnabled == 'true') or (playerType == 'movie' and movieEnabled == 'true'):
-
-      for i in range(1,5):
-        if (useCustomPauseSpeed == True or useCustomPauseSpeed == "true"):
-          stepSpeed = getPauseStepSpeed(i)
-        else:
-          stepSpeed = getMainStepSpeed(i)
-
-        if stepSpeed == None or self.lights.brightness(i) == None:
-          self.lights.brightness(i, getMinBrightness(i))
-        else:
-          self.lights.fade(i, getMinBrightness(i), stepSpeed)
-
-
-  def _onStop(self, data):
-    playerType = self._getPlayerType(data)
-    self.paused = False
-
-    if playerType == None:
-      log('Coult not determine player type: %s' % data, xbmc.LOGWARNING)
-      return
-
-    if (playerType == 'tv' and __settings__.getSetting('tv_enabled') == 'true') or (playerType == 'movie' and __settings__.getSetting('movie_enabled') == 'true'):
-
-      for i in range(1,5):
-        stepSpeed = getMainStepSpeed(i)
-        if stepSpeed == None or self.lights.brightness(i) == None:
-          self.lights.brightness(i, getMaxBrightness(i))
-        else:
-          self.lights.fade(i, getMaxBrightness(i), stepSpeed)
-
-
-  ef _onPause(self, data):
-
-    self.paused = True
-
-    useCustomPauseSpeed = __settings__.getSetting('global_enable_pause_speed')
-    pauseDelay          = int(__settings__.getSetting('global_pause_delay'))
-
-    log('_onPause() - pause speed enabled: %s' % useCustomPauseSpeed)
-
-    for i in range(1,5):
-      # we need to spread out pauseDelay because otherwise
-      # it seems not all groups will be affected
-      if useCustomPauseSpeed == True or useCustomPauseSpeed == "true":
-        stepSpeed = getPauseStepSpeed(i)
-      else:
-        stepSpeed = getMainStepSpeed(i)
-
-      if stepSpeed == None or self.lights.brightness(i) == None:
-
-        if pauseDelay > 0:
-          t = threading.Timer(pauseDelay, self.lights.brightness, [i, getMaxBrightness(i)], {})
-          t.start()
-        else:
-          self.lights.brightness(i, getMaxBrightness(i))
-      else:
-        if pauseDelay > 0:
-          t = threading.Timer(pauseDelay, self.lights.fade, [i, getMaxBrightness(i), stepSpeed], {})
-          t.start()
-        else:
-          self.lights.fade(i, getMaxBrightness(i), stepSpeed)
-
-      # we need to spread out pauseDelay because otherwise
-      # it seems not all groups will be affected
-      pauseDelay = pauseDelay + 0.25
-
-
-
-  def onSettingsChanged(self):
-
-    host = __settings__.getSetting('light_host')
-    port = __settings__.getSetting('light_port')
-    # @TODO This needs to change so different groups can have different bulb types
-    bulbtype = getBulbType(1)
-    wait_duration = int(__settings__.getSetting('command_delay'))
-
-    try:
-      port = int(port)
-    except ValueError:
-      port = 8899
-
-    if self.lights == None:
-      self.lights = Lights(host, port, bulbtype, wait_duration)
-    else:
-      self.lights.stopFadeThread()
-      self.lights.setHost(host, port)
-      self.lights.setBulbType(bulbtype)
-      self.lights.setWaitDuration(wait_duration)
-
-
-    for group in range(1,5):
-
-      if groupEnabled(group):
-        self.lights.setGroupLight(group, maxBrightness=getMaxBrightness(group), minBrightness=getMinBrightness(group), color=getRgbColor(group))
-
-        if doInitBrightness(group):
-          self.lights.brightness(group, getMaxBrightness(group))
-
-        if doInitColor(group):
-          self.lights.color(group, getRgbColor(group))
-      else:
-        self.lights.removeGroupLight(group)
-
-  def onFadeOut(self, data):
-
-    log('data: %s' % data)
-
-    group = data['group']
-    if group == 'all':
-      groups = range(1, 5)
-    else:
-      groups = [group]
-
-    if data['brightness'] > -1:
-      brightness = data['brightness']
-    else:
-      brightness = getMinBrightness(group)
-
-    for group in groups:
-      self.lights.fade(group, brightness, getMainStepSpeed(group))
-
-  def onFadeIn(self, data):
-    group = data['group']
-    if group == 'all':
-      groups = range(1,5)
-    else:
-      groups[group]
-
-    for group in groups:
-      self.lights.fade(group, getMaxBrightness(group), getMainStepSpeed(group))
-
-
-
-
-
-
-  def onNotification(self, sender, method, data):
-
-    log("SENDER: %s --- METHOD %s --- DATA %s" % (sender, method, data))
-
-    data = json.loads(data)
-
-    if str(sender) == 'mookfist-milights':
-        if str(method) == 'Other.fade_out':
-          self.onFadeOut(data)
-        elif str(method) == 'Other.fade_in':
-          self.onFadeIn(data)
-
-    elif str(sender) == "xbmc" and str(method) == "Player.OnPlay":
-      self._onPlay(data)
-    elif str(sender) == "xbmc" and str(method) == "Player.OnStop":
-      self._onStop(data)
-    elif str(sender) == "xbmc" and str(method) == "Player.OnPause":
-      self._onPause(data)
-"""
 
 if __name__ == "__main__":
 
   initialize_logger()
-  controller = Controller(settings=__settings__)
+  controller = MasterControllerThread()
   monitor    = ServiceMonitor(controller)
-  controller.start()
 
   bridge_ip = __settings__.getSetting('bridge_ip')
   bridge_port = __settings__.getSetting('bridge_port')
@@ -382,7 +227,23 @@ if __name__ == "__main__":
     elif bridge_version == 2:
       bridge_version = 6
 
-    monitor.onSettingsChanged()
+    controller.setHost(bridge_ip)
+    controller.setPort(bridge_port)
+    controller.setVersion(bridge_version)
+    controller.setPause(pause)
+    controller.setRepeat(repeat)
+    controller.setGroups(setup_groups())
+
+    controller.start()
+    controller.reinitializeBridge()
+
+    while controller.isBridgeInitializing() != False:
+      time.sleep(0.01)
+
+    for i in range(0,3):
+      controller.off()
+      time.sleep(0.3)
+      controller.on()
 
   while not monitor.abortRequested():
     if monitor.waitForAbort(10):

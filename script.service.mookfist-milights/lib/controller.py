@@ -1,10 +1,19 @@
 import threading
 from utils import Logger
-from mookfist_lled_controller import WifiBridge
+from mookfist_lled_controller import create_bridge
 from collections import deque
 import socket
 import time
 import itertools
+
+class CommandQueueItem():
+
+  def __init__(self, name, group, args):
+    self.group = group
+    self.args = args
+    self.name
+
+
 
 class Controller(threading.Thread):
 
@@ -27,11 +36,11 @@ class Controller(threading.Thread):
 
     self._group_states = {}
 
-    for grp in (1,2,3,4):
+    for grp in (1,2,3,4,'all'):
 
-      if self._settings.getSetting('enable_group%s' % grp) == 'true':
+      if self._settings.getSetting('enable_group_%s' % grp) == 'true':
 
-        color = self._settings.getSetting('group%s_color_value' % grp)
+        color = self._settings.getSetting('group_%s_color_value' % grp)
 
         if color == '':
           color = '00000000'
@@ -41,7 +50,7 @@ class Controller(threading.Thread):
         b = int(color[6:8], 16)
 
         self._group_states[grp] = {
-            'brightness': int(self._settings.getSetting('group%s_brightness' % grp)),
+            'brightness': int(self._settings.getSetting('group_%s_brightness' % grp)),
             'color': {
               'r': r,
               'b': b,
@@ -89,10 +98,12 @@ class Controller(threading.Thread):
 
     fade_cmds = []
 
+    self.logger.debug('Controller Thread - performing fade out on groups: %s' % groups)
+
     for grp in groups:
       grp_fade_cmds = []
 
-      interval_str = self._settings.getSetting('group%s_fade_speed' % grp)
+      interval_str = self._settings.getSetting('group_%s_fade_speed' % grp)
       interval = int(self._settings.getSetting('%s_speed_interval' % speeds[int(interval_str)]))
 
       if starting_brightness == None:
@@ -109,7 +120,7 @@ class Controller(threading.Thread):
     for cmds in merged_cmds:
       grp_idx = 0
       for brightness in cmds:
-        grp = int(groups[grp_idx])
+        grp = groups[grp_idx]
 
         if brightness != None:
           self.brightness(brightness, (grp,))
@@ -124,13 +135,13 @@ class Controller(threading.Thread):
 
     for grp in groups:
       grp_fade_cmds = []
-      interval_str = self._settings.getSetting('group%s_fade_speed' % grp)
+      interval_str = self._settings.getSetting('group_%s_fade_speed' % grp)
       interval = int(self._settings.getSetting('%s_speed_interval' % speeds[int(interval_str)]))
 
       if starting_brightness == None:
         starting_brightness = self._group_states[grp]['brightness']
 
-      ending_brightness = int(self._settings.getSetting('group%s_brightness' % grp))
+      ending_brightness = int(self._settings.getSetting('group_%s_brightness' % grp))
 
       self.logger.debug('Fading in group %s at speed %s (%s steps)' % (grp, interval_str, interval))
 
@@ -141,7 +152,7 @@ class Controller(threading.Thread):
     for cmds in merged_cmds:
       grp_idx = 0
       for brightness in cmds:
-        grp = int(groups[grp_idx])
+        grp = groups[grp_idx]
 
         if brightness != None:
           self.brightness(brightness, (grp,))
@@ -226,11 +237,13 @@ class Controller(threading.Thread):
     while self.isRunning():
 
       if self._bridge_ip == None or self._bridge_port == None or self._bridge_version == None:
+        self.logger.debug('Bridge not configured: %s:%s v%s' % (self._bridge_ip, self._bridge_port, self._bridge_version))
         time.sleep(0.01)
         continue
 
       if self._init_bridge == True:
-        self._bridge = WifiBridge(self._bridge_ip, self._bridge_port, self._bridge_version, self._pause, self._repeat)
+        self.logger.info('Initializing bridge at %s:%s - version %s' % (self._bridge_ip, self._bridge_port, self._bridge_version))
+        self._bridge = create_bridge(self._bridge_version, self._bridge_ip, self._bridge_port, self._pause, self._repeat)
         self._init_bridge = False
 
       if len(self._queue) > 0:
@@ -238,30 +251,39 @@ class Controller(threading.Thread):
         try:
           self.logger.debug('cmd: %s -- args: %s' % (cmd.__name__, args))
 
+          try:
+            group = int(args[-1])
+          except ValueError:
+            if args[-1] != 'all':
+              raise Exception('Invalid group for command: %s' % args[-1])
+            group = args[-1]
+
+          cmdargs = args[:-1]
+
           if cmd.__name__ == 'brightness':
-            self._group_states[args[1]]['brightness'] = args[0]
+            self._group_states[group]['brightness'] = cmdargs[0]
           elif cmd.__name__ == 'color_rgb':
-            self._group_states[args[3]]['color'] = {
-                'r': args[0],
-                'b': args[1],
-                'g': args[2]
+            self._group_states[group]['color'] = {
+                'r': cmdargs[0],
+                'b': cmdargs[1],
+                'g': cmdargs[2]
             }
           elif cmd.__name__ == 'color':
-            self._group_states[args[1]]['color'] = args[0]
+            self._group_states[group]['color'] = cmdargs[0]
           elif cmd.__name__ == 'white':
-            self._group_states[args[0]]['color'] = {
+            self._group_states[group]['color'] = {
                 'r': 255,
                 'g': 255,
                 'b': 255
             }
           elif cmd.__name__ == 'off':
-            self._group_states[args[0]]['off'] = True
-            self._group_states[args[0]]['on'] = False
+            self._group_states[group]['off'] = True
+            self._group_states[group]['on'] = False
           elif cmd.__name__ == 'on':
-            self._group_states[args[0]]['off'] = False
-            self._group_states[args[0]]['on']  = True
+            self._group_states[group]['off'] = False
+            self._group_states[group]['on']  = True
 
-          cmd(*args)
+          cmd(*cmdargs, group=group)
         except socket.timeout:
           pass
       else:

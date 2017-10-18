@@ -146,40 +146,56 @@ msgctxt "#32314"
 msgid "Set brightness of all lights to 100%"
 msgstr ""
 
+msgctxt "#32315"
+msgid "Fade In/Out Enabled Groups"
+msgstr ""
+
 ### GROUPS ###
 msgctxt "#32400"
-msgid "Groups"
+msgid "All Groups"
 msgstr ""
 
 msgctxt "#32401"
-msgid "Enable Group 1"
+msgid "Enable All Groups"
 msgstr ""
 
 msgctxt "#32402"
-msgid "Enable Group 2"
+msgid "Color Control"
 msgstr ""
 
 msgctxt "#32403"
-msgid "Enable Group 3"
+msgid "Set to White"
 msgstr ""
 
 msgctxt "#32404"
-msgid "Enable Group 4"
+msgid "Color Picker"
 msgstr ""
 
 msgctxt "#32405"
-msgid "Group 1"
+msgid "Brightness"
 msgstr ""
 
 msgctxt "#32406"
-msgid "Group 2"
+msgid "Fading Speed"
 msgstr ""
 
 msgctxt "#32407"
-msgid "Group 3"
+msgid "Enter Color Manually"
 msgstr ""
 
 msgctxt "#32408"
+msgid "Group 1"
+msgstr ""
+
+msgctxt "#32409"
+msgid "Group 2"
+msgstr ""
+
+msgctxt "#32410"
+msgid "Group 3"
+msgstr ""
+
+msgctxt "#32411"
 msgid "Group 4"
 msgstr ""
 

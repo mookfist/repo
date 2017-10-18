@@ -33,9 +33,7 @@ class KodiLogFormatter(logging.Formatter):
     self.counter = 0
 
   def format(self, record):
-
     msg = record.msg.replace('\00', '00')
-
     msg = '[%s] %s' % (record.name, msg)
     return msg
 
@@ -76,5 +74,3 @@ class Logger():
 
   def fatal(self, msg):
     xbmc.log(self.format_msg(msg), xbmc.FATAL)
-
-
