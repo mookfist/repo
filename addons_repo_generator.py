@@ -73,6 +73,8 @@ class Generator:
             if not os.path.exists(addonZipDir):
               os.makedirs(addonZipDir)
 
+            print("addon zip dir: %s" % addonZipDir)
+
             version = xml.etree.ElementTree.parse(addonFile).getroot().attrib['version']
             addonZipName = addon + "-" + version
 

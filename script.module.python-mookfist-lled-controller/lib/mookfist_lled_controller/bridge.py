@@ -121,6 +121,8 @@ class BaseBridge():
                 groups = iter(group)
         except TypeError:
             groups = (group,)
+
+        return [int(i) for i in groups]
         return groups
 
 
@@ -206,6 +208,7 @@ class BaseBridge():
 
         groups = self._ensure_group_array(group)
         for group in groups:
+            group = int(group)
             self.logger.debug('Setting brightness to %s for group %s' % (brightness, group))
             g = self._init_group(group)
             self._send(g.brightness(brightness))
@@ -279,6 +282,22 @@ class Command(object):
     def checksum(self):
         """Calculate sum of bytes"""
         return sum(bytearray(self._cmd))
+
+    def __eq__(self, cmd):
+        cmpMsg = cmd.message()
+        origMsg = self.message()
+
+        if len(origMsg) != len(cmpMsg):
+            return False
+
+        for idx, b in enumerate(origMsg):
+            if cmpMsg[idx] != b:
+                return False
+        return True
+
+    def __ne__(self, cmd):
+        return not cmd == self
+
 
     def message(self):
         """Get bytearray of command"""

@@ -141,7 +141,7 @@ class Main(object):
     def action_brightness(self):
         brightness = int(self.arguments['<brightness>'])
         self.log.info('Setting brightness to %s%%' % brightness)
-        self.bridge.brightness(self.arguments['--group'])
+        self.bridge.brightness(brightness, self.arguments['--group'])
 
     def action_on(self):
         self.log.info('Turning lights on')

@@ -11,6 +11,7 @@ __author__     =  "Mookfist"
 __url__        =  "https://github.com/mookfist/repo"
 __settings__   = xbmcaddon.Addon(id='script.service.mookfist-milights')
 __version__    = __settings__.getAddonInfo('version')
+__kodi_version__ = xbmc.getInfoLabel('System.BuildVersion')
 
 class CustomColorPicker(ColorPicker):
   def __init__(self, *args, **kwargs):
@@ -19,8 +20,8 @@ class CustomColorPicker(ColorPicker):
 
   def save_color_setting(self, restoreprevious=False):
     if restoreprevious:
-      colorname = __settings__.getSetting('group_%s_color_name' % self.bridge_group)
-      colorstring = __settings__.getSetting('group_%s_color_value' % self.bridge_group)
+      colorname = __settings__.getSetting('group%s_color_name' % self.bridge_group)
+      colorstring = __settings__.getSetting('group%s_color_value' % self.bridge_group)
     else:
       colorname = self.current_window.getProperty('colorname')
       colorstring = self.current_window.getProperty('colorstring')
@@ -33,15 +34,19 @@ class CustomColorPicker(ColorPicker):
 
     brightness_percent = int(math.ceil(brightness_percent))
 
-    __settings__.setSetting('group_%s_color_value' % self.bridge_group, colorstring)
-    __settings__.setSetting('group_%s_brightness' % self.bridge_group, str(brightness_percent))
-    __settings__.setSetting('group_%s_enable_startup' % self.bridge_group, 'true')
+    __settings__.setSetting('group%s_color_value' % self.bridge_group, colorstring)
+    __settings__.setSetting('group%s_brightness_value' % self.bridge_group, str(brightness_percent))
+    __settings__.setSetting('group%s_enable_startup' % self.bridge_group, 'true')
 
 
 def cmd_scan_bridges():
 
-    busy_dialog = xbmcgui.DialogBusy()
-    busy_dialog.create()
+    utils.log('Kodi version: %s' % __kodi_version__)
+
+    xbmc.executebuiltin('ActivateWindow(busydialognocancel)')
+
+#    busy_dialog = xbmcgui.DialogNoCancel()
+#    busy_dialog.create()
 
     v4_bridges = scan_bridges(version=4)
     v6_bridges = scan_bridges(version=6)
@@ -55,7 +60,8 @@ def cmd_scan_bridges():
       bridges.append('Version: 6 - IP: %s' % bridge[0])
 
 
-    busy_dialog.close()
+    xbmc.executebuiltin('Dialog.Close(busydialognocancel)')
+#    busy_dialog.close()
 
     bridge_version, bridge_ip = bridges[xbmcgui.Dialog().select('Bridges', bridges)].split(' - ')
 
@@ -95,9 +101,9 @@ def cmd_colorpicker(args):
   color_picker.doModal()
 
 def cmd_set_to_white(args):
-  __settings__.setSetting('group_%s_enable_startup' % args['group'], 'true')
-  __settings__.setSetting('group_%s_color_value' % args['group'], 'ffffffff')
-  __settings__.setSetting('group_%s_brightness' % args['group'], '100')
+  __settings__.setSetting('group%s_enable_startup', 'true')
+  __settings__.setSetting('group%s_color_value' % args['group'], 'ffffffff')
+  __settings__.setSetting('group%s_brightness' % args['group'], '100')
 
 def cmd_brightness(args):
   group = args['groups']
@@ -168,13 +174,13 @@ def cmd_color_rgb(args):
 def cmd_fade_out(args):
   group = args['groups']
   if group == 'all':
-    group = ('all',)
+    group = (1,2,3,4)
   elif ',' in group:
     group = [int(grp) for grp in group.split(',')]
   else:
     group = (group,)
 
-  enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group_%s' % grp) == 'true']
+  enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group%s' % grp) == 'true']
 
   cmd = {
       'groups': enabled_groups
@@ -186,13 +192,13 @@ def cmd_fade_in(args):
 
   group = args['groups']
   if group == 'all':
-    group =('all',)
+    group = (1,2,3,4)
   elif ',' in group:
     group = [int(grp) for grp in group.split(',')]
   else:
     group = (group,)
 
-  enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group_%s' % grp) == 'true']
+  enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group%s' % grp) == 'true']
 
   cmd = {
       'groups': enabled_groups
@@ -206,21 +212,18 @@ def cmd_fade_in(args):
   xbmc.executebuiltin('NotifyAll(mookfist-milights, fade-in, "' + simplejson.dumps(cmd) + '")')
 
 def cmd_fade_outin(args):
-  if 'groups' in args:
-    group = args['groups']
-    if group == 'all':
-      group = ('all',)
-    elif ',' in group:
-      group = group.split(',')
-    else:
-      group = (group,)
+  group = args['groups']
+  if group == 'all':
+    group = (1,2,3,4)
+  elif ',' in group:
+    group = group.split(',')
   else:
-    group = None
+    group = (group,)
 
-  # enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group_%s' % grp) == 'true']
+  enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group%s' % grp) == 'true']
 
   cmd = {
-      'groups': group
+      'groups': enabled_groups
   }
 
   if 'speed' in args:

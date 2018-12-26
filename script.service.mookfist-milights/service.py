@@ -178,6 +178,9 @@ class ServiceMonitor(xbmc.Monitor):
 
 
 def setup_groups():
+
+  logger = Logger('mookfist-milights', 'setup_groups')
+
   groups = []
 
   speeds = ['slow','medium','fast']
@@ -196,7 +199,12 @@ def setup_groups():
 
     colorhex = __settings__.getSetting('group_%s_color_value' % grp)
 
-    if colorhex:
+    logger.debug('COLOR HEX:%s' % colorhex)
+
+    if colorhex and colorhex is not '0':
+      htmlcolor = color_from_html(colorhex[0:6])
+      logger.info('HTML Color is: %s' % htmlcolor)
+
       grpobj.color = color_from_html(colorhex[0:6])
 
     groups.append(grpobj)

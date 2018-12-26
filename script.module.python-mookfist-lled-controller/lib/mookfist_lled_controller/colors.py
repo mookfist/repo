@@ -1,5 +1,6 @@
 from colorsys import rgb_to_hls
 from math import floor
+import struct
 """
 Color functions
 
@@ -36,7 +37,8 @@ def color_from_html(hexvalue):
     try:
         unhexed = bytes.fromhex(hexvalue)
     except:
-        unhexed = binascii.unhexlify(value)
+
+        import binascii
+        unhexed = binascii.unhexlify(hexvalue)
 
     return color_from_rgb(*struct.unpack('BBB', unhexed))
-

@@ -11,14 +11,14 @@
 
   <!-- Group ALL -->
   <category label="32400">
-    <setting label="32401" type="bool" id="enable_group_all" default="true" />
+    <setting label="32401" type="bool" id="enable_group_0" default="true" />
     <setting type="sep" />
-    <setting label="32402" type="bool" id="enable_color_control_group_all" default="false" />
-    <setting label="32403" type="action" action="RunScript(script.service.mookfist-milights, set_to_white, group=all)" enable="eq(-1,true)"/>
-    <setting label="32404" type="action" action="RunScript(script.service.mookfist-milights, colorpicker, group=all)" enable="eq(-2,true)"/>
-    <setting label="32407" type="number" id="group_all_color_value" enable="eq(-3,true)"/>
-    <setting label="32405" type="number" id="group_all_brightness" default="100" enable="eq(-6,true)" />
-    <setting label="32406" type="select" id="group_all_fade_speed" lvalues="32601|32602|32603|32604" enable="eq(-7,true)" default="1" />
+    <setting label="32402" type="bool" id="enable_color_control_group_0" default="false" />
+    <setting label="32403" type="action" action="RunScript(script.service.mookfist-milights, set_to_white, group=0)" enable="eq(-1,true)"/>
+    <setting label="32404" type="action" action="RunScript(script.service.mookfist-milights, colorpicker, group=0)" enable="eq(-2,true)"/>
+    <setting label="32407" type="number" id="group_0_color_value" enable="eq(-3,true)"/>
+    <setting label="32405" type="number" id="group_0_brightness" default="100" enable="eq(-6,true)" />
+    <setting label="32406" type="select" id="group_0_fade_speed" lvalues="32601|32602|32603|32604" enable="eq(-7,true)" default="1" />
   </category>
 
   <!-- Group 1 -->
@@ -73,21 +73,21 @@
   <!-- TEST ACTIONS -->
   <category label="32300">
     <setting label="32315" type="action" action="RunScript(script.service.mookfist-milights, fade_outin)" />
-    <setting label="32301" type="action" action="RunScript(script.service.mookfist-milights, fade_outin, groups=all)" />
+    <setting label="32301" type="action" action="RunScript(script.service.mookfist-milights, fade_outin, groups=0)" />
     <setting label="32303" type="action" action="RunScript(script.service.mookfist-milights, fade_outin, groups=1)" />
     <setting label="32304" type="action" action="RunScript(script.service.mookfist-milights, fade_outin, groups=2)" />
     <setting label="32305" type="action" action="RunScript(script.service.mookfist-milights, fade_outin, groups=3)" />
     <setting label="32306" type="action" action="RunScript(script.service.mookfist-milights, fade_outin, groups=4)" />
     <setting type="sep" />
-    <setting label="32307" type="action" action="RunScript(script.service.mookfist-milights, white, groups=all)" />
+    <setting label="32307" type="action" action="RunScript(script.service.mookfist-milights, white, groups=0)" />
     <setting label="32308" type="action" action="RunScript(script.service.mookfist-milights, white, groups=1)" />
     <setting label="32309" type="action" action="RunScript(script.service.mookfist-milights, white, groups=2)" />
     <setting label="32310" type="action" action="RunScript(script.service.mookfist-milights, white, groups=3)" />
     <setting label="32311" type="action" action="RunScript(script.service.mookfist-milights, white, groups=4)" />
     <setting type="sep" />
-    <setting label="32312" type="action" action="RunScript(script.service.mookfist-milights, color_rgb, groups=all, r=255, g=0, b=0)" />
-    <setting label="32313" type="action" action="RunScript(script.service.mookfist-milights, brightness, groups=all, brightness=50)" />
-    <setting label="32314" type="action" action="RunScript(script.service.mookfist-milights, brightness, groups=all, brightness=100)" />
+    <setting label="32312" type="action" action="RunScript(script.service.mookfist-milights, color_rgb, groups=0, r=255, g=0, b=0)" />
+    <setting label="32313" type="action" action="RunScript(script.service.mookfist-milights, brightness, groups=0, brightness=50)" />
+    <setting label="32314" type="action" action="RunScript(script.service.mookfist-milights, brightness, groups=0, brightness=100)" />
   </category>
 
   <!-- TWEAKING -->

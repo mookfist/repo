@@ -9,7 +9,7 @@ from mookfist_lled_controller.colors import color_from_rgb
 from mookfist_lled_controller.bridge import BaseBridge, BaseGroup, Command
 import six
 
-GROUPS = (1, 2, 3, 4, 'all')
+GROUPS = (0, 1, 2, 3, 4, 'all')
 
 def format_hex(i):
     if i < 16:

@@ -9,7 +9,7 @@ from mookfist_lled_controller.exceptions import InvalidGroup
 from mookfist_lled_controller.colors import color_from_rgb
 from mookfist_lled_controller.bridge import BaseBridge, BaseGroup, Command
 
-GROUPS = (1, 2, 3, 4, 'all')
+GROUPS = (0, 1, 2, 3, 4, 'all')
 
 
 class Bridge(BaseBridge):
@@ -94,7 +94,7 @@ class Group(BaseGroup):
             cmd[0] = 0x49
         elif self.group == 4:
             cmd[0] = 0x4B
-        elif self.group == 'all':
+        elif self.group == 'all' or self.group == 0:
             cmd[0] = 0x42
         else:
             raise InvalidGroup()
@@ -115,7 +115,7 @@ class Group(BaseGroup):
             cmd[0] = 0x4A
         elif self.group == 4:
             cmd[0] = 0x4C
-        elif self.group == 'all':
+        elif self.group == 'all' or self.group == 0:
             cmd[0] = 0x41
         else:
             raise InvalidGroup()
@@ -170,7 +170,7 @@ class Group(BaseGroup):
         elif self.group == 4:
             cmd[0] = 0x4b
             cmd2[0] = 0xcb
-        elif self.group == 'all':
+        elif self.group == 'all' or self.group == 0:
             cmd[0] = 0x42
             cmd2[0] = 0xc2
 
