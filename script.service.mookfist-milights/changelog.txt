@@ -1,3 +1,7 @@
+2018-12-26 v0.2.0~beta5
+ - Update mookfist-lled-controller to v0.1.3
+ - Kodi 18 fixes
+
 2017-04-25 v0.2.0~beta4
  - Update description
  - New Logo
