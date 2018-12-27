@@ -101,7 +101,7 @@ def cmd_colorpicker(args):
 
   utils.log('Color picker: %s' % args)
 
-  colorpicker_path = xbmcaddon.Addon("script.module.colorpicker").getAddonInfo('path').decode('utf-8')
+  colorpicker_path = xbmcaddon.Addon("script.module.mooked-colorpicker").getAddonInfo('path').decode('utf-8')
   addon_path = xbmcaddon.Addon('script.service.mookfist-milights').getAddonInfo('path').decode('utf-8')
 
   color_picker = CustomColorPicker('script-skin_helper_service-ColorPicker.xml', colorpicker_path, 'Default', '1080i',

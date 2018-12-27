@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon id="script.module.python-mookfist-lled-controller" version="0.1.4" name="python-mookfist-lled-controller" provider-name="mookfist">
+<addon id="script.module.python-mookfist-lled-controller" version="0.1.5" name="python-mookfist-lled-controller" provider-name="mookfist">
   <requires>
     <import addon="xbmc.python" version="2.25.0" />
-      <import addon="script.module.six"/>
   </requires>
   <extension point="xbmc.python.module" library="lib" />
   <extension point="xbmc.addon.metadata">

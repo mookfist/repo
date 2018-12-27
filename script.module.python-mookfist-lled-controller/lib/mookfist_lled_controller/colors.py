@@ -18,8 +18,16 @@ def color_from_hls(hue, light, sat, offset=0.0):
 
 def color_from_rgb(red, green, blue, offset=0.0):
     r = min(red, 255)
+    if r != 0 and floor(r) != 0:
+        r = r / 255.0
+
     g = min(green, 255)
+    if g != 0 and floor(g) != 0:
+        g = g / 255.0
+
     b = min(blue, 255)
+    if b != 0 and floor(b) != 0:
+        b = b / 255.0
 
     if r > 1 or g > 1 or b > 1:
         r = r / 255.0
@@ -30,7 +38,7 @@ def color_from_rgb(red, green, blue, offset=0.0):
 
     return color_from_hls(h,l,s,offset)
 
-def color_from_html(hexvalue):
+def color_from_html(hexvalue, offset=0.0):
     if '#' in hexvalue:
         hexvalue = hexvalue[1:]
 

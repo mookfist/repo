@@ -143,10 +143,7 @@ class Group(BaseGroup):
             brightness = int(math.ceil((r / 255.0) * 100.0))
             cmd = (self.white(), self.brightness(brightness))
         else:
-            color = color_from_rgb(r, g, b)
-            color = color + 171
-            if color > 255:
-                color = color - 255
+            color = color_from_rgb(r, b, g, 1.0/3.0)
             cmd = self.color(color)
 
         return cmd
