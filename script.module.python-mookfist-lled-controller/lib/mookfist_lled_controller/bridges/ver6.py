@@ -8,6 +8,7 @@ import time
 from mookfist_lled_controller.colors import color_from_rgb
 from mookfist_lled_controller.bridge import BaseBridge, BaseGroup, Command
 import six
+import binascii
 
 GROUPS = (0, 1, 2, 3, 4, 'all')
 
@@ -108,20 +109,14 @@ class Bridge(BaseBridge):
         cmd[25] = 0x00
         cmd[26] = 0x1e
 
-        self._send_raw(cmd)
+        db = self._send_raw(cmd)
 
-        data = self._sock.recv(1024)
-
-        if data:
-
-            db = bytearray(data)
-            self.logger.debug('Response: %s' % db)
-
+        if db:
+            self.logger.debug('Response: %s' % [binascii.hexlify(db[i:i+1]) for i in range(0, len(db), 1)])
             self._wb1 = db[19]
             self._wb2 = db[20]
 
-            self.logger.debug('Session WB1: %s - Session WB2: %s' % (format_hex(self._wb1), format_hex(self._wb2)))
-
+            self.logger.debug('Session ID: %s %s' % (format_hex(self._wb1), format_hex(self._wb2)))
             self._confirm_init()
 
     def _confirm_init(self):
@@ -152,10 +147,7 @@ class Bridge(BaseBridge):
         cmd[22] = 0x33
 
         self.logger.debug('Confirming initialization')
-        self._send_raw(cmd)
-
-        data = self._sock.recv(1024)
-        self.logger.debug('Response: %s' % bytearray(data))
+        data = self._send_raw(cmd)
 
     def _get_group(self, group):
         if group not in self._group_cache:
@@ -163,10 +155,16 @@ class Bridge(BaseBridge):
         return self._group_cache[group]
 
     def _send_raw(self, cmd):
-        self.logger.debug('Sending command: %s' % cmd.message())
+        self.logger.debug('Sending command: %s' % cmd.message_str())
         self._sock.sendto(cmd.message(), (self.ip, self.port))
+
+        data = bytearray(self._sock.recv(1024))
+        self.logger.debug('Response: %s' % [binascii.hexlify(data[i:i+1]) for i in range(0, len(data), 1)])
+
         self._cmd_counter = (self._cmd_counter + 1) % 255
         time.sleep(self.pause)
+
+        return data
 
     def _send(self, cmd, group=1):
 

@@ -101,7 +101,7 @@ class BaseBridge():
     def __init__(self, ip, port=None, pause=100, repeat=1, timeout=2, **kwargs):
         self.ip = ip
         self.port = port
-        self.pause = pause / 1000
+        self.pause = float(pause) / 1000.0
         self.repeat = repeat
         self.timeout = timeout
 
