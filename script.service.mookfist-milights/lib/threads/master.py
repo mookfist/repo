@@ -5,6 +5,7 @@ import mookfist_lled_controller as lled
 import mookfist_lled_controller.colors as lled_colors
 from ..utils import Logger
 import time
+import socket
 
 speeds = ['slow','medium','fast']
 bridge_versions = [4,4,6]
@@ -247,7 +248,7 @@ class GroupSettings():
     self.group = group
     self.enabled = settings.getSetting('enable_group_%s' % self.group)
     self.enable_color_control = settings.getSetting('enable_color_control_group_%s' % self.group)
-    self.start_color_value = settings.getSetting('group_%s_color_value' % self.group)
+    self.start_color_value = int(settings.getSetting('group_%s_color_value' % self.group))
     self.start_brightness = int(settings.getSetting('group_%s_brightness' % self.group))
     self.color = self.start_color_value
     self.brightness = self.start_brightness
@@ -257,6 +258,8 @@ class GroupSettings():
     grp_steps = int(self.settings.getSetting('%s_speed_interval' % speeds[int(grp_steps_str)]))
 
     self.fade_speed = grp_steps
+
+    self.logger = Logger('mookfist-milights', 'Group%s' % self.group)
 
 
 class MasterThread(threading.Thread):
@@ -442,6 +445,17 @@ class MasterThread(threading.Thread):
     time.sleep(0.10)
     self.on()
     time.sleep(0.10)
+
+    for group in self.enabled_groups():
+      self.brightness(self.groups[group].start_brightness, group)
+
+      if self.groups[group].enable_color_control == 'true':
+        self.logger.debug('Group %s wants starting color %s' % (group, self.groups[group].start_color_value))
+
+        self.color(self.groups[group].start_color_value, group)
+
+
+
 
     self.logger.debug('Reloaded thread')
     self._reloading = False

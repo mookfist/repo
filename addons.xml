@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addons>
+	<addon id="script.module.mooked-colorpicker" name="ColorPicker Dialog Class" version="1.0.13mooked" provider-name="marcelveldt">
+	<requires>
+		<import addon="xbmc.python" version="2.24.0"/>
+		<import addon="xbmc.addon" version="12.0.0"/>
+		<import addon="script.module.pil" version="1.1.7"/>
+  </requires>
+  <extension point="xbmc.python.module" library="resources/lib" />
+  <extension point="xbmc.python.library" library="default.py" />
+	<extension point="xbmc.addon.metadata">
+    <summary lang="en">Colorpicker Dialog Class. Based off of Skin Helper Suite's Colorpicker by marcelveldt</summary>
+    <description>Colorpicker Dialog Class. Based off of Skin Helper Suite's Colorpicker by marcelveldt. The original source code can be found at https://github.com/marcelveldt/script.skin.helper.colorpicker</description>
+		<language></language>
+		<platform>all</platform>
+		<license>GPL v2.0</license>
+		<forum>http://forum.kodi.tv/showthread.php?tid=235676</forum>
+		<website></website>
+		<source>https://github.com/marcelveldt/script.skin.helper.colorpicker</source>
+	</extension>
+</addon>
+
 <addon id="repository.mookfist-local" name="Mookfist Local Repo" version="2.2" provider-name="Mookfist">
     <extension point="xbmc.addon.repository" name="Mookfist Local Repository">
       <info compressed="false">http://127.0.0.1:8181/addons.xml</info>
@@ -29,26 +49,6 @@
     <email>mookfist@gmail.com</email>
     <website>https://pypi.org/project/mookfist-lled-controller/</website>
   </extension>
-</addon>
-
-	<addon id="script.module.colorpicker" name="ColorPicker Dialog Class" version="1.0.13mooked" provider-name="marcelveldt">
-	<requires>
-		<import addon="xbmc.python" version="2.24.0"/>
-		<import addon="xbmc.addon" version="12.0.0"/>
-		<import addon="script.module.pil" version="1.1.7"/>
-  </requires>
-  <extension point="xbmc.python.module" library="resources/lib" />
-  <extension point="xbmc.python.library" library="default.py" />
-	<extension point="xbmc.addon.metadata">
-    <summary lang="en">Colorpicker Dialog Class. Based off of Skin Helper Suite's Colorpicker by marcelveldt</summary>
-    <description>Colorpicker Dialog Class. Based off of Skin Helper Suite's Colorpicker by marcelveldt. The original source code can be found at https://github.com/marcelveldt/script.skin.helper.colorpicker</description>
-		<language></language>
-		<platform>all</platform>
-		<license>GPL v2.0</license>
-		<forum>http://forum.kodi.tv/showthread.php?tid=235676</forum>
-		<website></website>
-		<source>https://github.com/marcelveldt/script.skin.helper.colorpicker</source>
-	</extension>
 </addon>
 
 <addon id="weather.environment-canada-unofficial" name="Unofficial Environment Canada" version="1.0.0" provider-name="mookfist">
@@ -163,12 +163,12 @@ is not maintained, and should only be used as a last resort.
     </extension>
 </addon>
 
-<addon id="script.service.mookfist-milights" version="0.2.0~beta8" name="Mookfist Milights" provider-name="Mookfist">
+<addon id="script.service.mookfist-milights" version="0.2.0~beta9" name="Mookfist Milights" provider-name="Mookfist">
   <requires>
     <import addon="xbmc.python" version="2.25.0" />
     <import addon="script.module.python-simplejson" version="2.14.0" />
     <import addon="script.module.python-mookfist-lled-controller" version="0.1.4"/>
-    <import addon="script.module.colorpicker" version="1.0.11mooked" />
+    <import addon="script.module.mooked-colorpicker" version="1.0.13mooked" />
     <import addon="script.context-menu.mookfist-milights" version="0.2.0~beta1" />
     <import addon="script.module.kodi-six"/>
   </requires>

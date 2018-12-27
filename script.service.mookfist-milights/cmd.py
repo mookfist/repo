@@ -2,6 +2,7 @@ import utils
 import sys, simplejson
 import xbmc, xbmcaddon, xbmcgui
 from mookfist_lled_controller import scan_bridges
+from mookfist_lled_controller.colors import color_from_rgb
 from ColorPicker import ColorPicker
 import math
 
@@ -25,17 +26,23 @@ class CustomColorPicker(ColorPicker):
       colorname = self.current_window.getProperty('colorname')
       colorstring = self.current_window.getProperty('colorstring')
 
+    utils.log('save_color_setting: %s %s %s %s' % (
+      colorstring,
+      type(colorstring),
+      colorstring[0:2],
+      colorstring[2:2]
+    ))
+
     self.create_color_swatch_image(colorstring)
 
-    brightness = int(colorstring[:2], 16)
+    r = int(colorstring[0:2], 16)
+    g = int(colorstring[2:4], 16)
+    b = int(colorstring[4:6], 16)
 
-    brightness_percent = (brightness / 255.0) * 100.0
+    color = color_from_rgb(r,g,b)
 
-    brightness_percent = int(math.ceil(brightness_percent))
+    __settings__.setSetting('group_%s_color_value' % self.bridge_group, str(color))
 
-    __settings__.setSetting('group_%s_color_value' % self.bridge_group, colorstring)
-    __settings__.setSetting('group_%s_brightness_value' % self.bridge_group, str(brightness_percent))
-    __settings__.setSetting('group_%s_enable_startup' % self.bridge_group, 'true')
 
 
 def cmd_scan_bridges():
@@ -92,10 +99,10 @@ def cmd_scan_bridges():
 
 def cmd_colorpicker(args):
 
+  utils.log('Color picker: %s' % args)
+
   colorpicker_path = xbmcaddon.Addon("script.module.colorpicker").getAddonInfo('path').decode('utf-8')
   addon_path = xbmcaddon.Addon('script.service.mookfist-milights').getAddonInfo('path').decode('utf-8')
-
-  utils.log('Addon Path: %s' % addon_path)
 
   color_picker = CustomColorPicker('script-skin_helper_service-ColorPicker.xml', colorpicker_path, 'Default', '1080i',
       skin_color_file = addon_path + '/resources/colors/colors.xml',
