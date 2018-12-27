@@ -20,8 +20,8 @@ class CustomColorPicker(ColorPicker):
 
   def save_color_setting(self, restoreprevious=False):
     if restoreprevious:
-      colorname = __settings__.getSetting('group%s_color_name' % self.bridge_group)
-      colorstring = __settings__.getSetting('group%s_color_value' % self.bridge_group)
+      colorname = __settings__.getSetting('group_%s_color_name' % self.bridge_group)
+      colorstring = __settings__.getSetting('group_%s_color_value' % self.bridge_group)
     else:
       colorname = self.current_window.getProperty('colorname')
       colorstring = self.current_window.getProperty('colorstring')
@@ -34,9 +34,9 @@ class CustomColorPicker(ColorPicker):
 
     brightness_percent = int(math.ceil(brightness_percent))
 
-    __settings__.setSetting('group%s_color_value' % self.bridge_group, colorstring)
-    __settings__.setSetting('group%s_brightness_value' % self.bridge_group, str(brightness_percent))
-    __settings__.setSetting('group%s_enable_startup' % self.bridge_group, 'true')
+    __settings__.setSetting('group_%s_color_value' % self.bridge_group, colorstring)
+    __settings__.setSetting('group_%s_brightness_value' % self.bridge_group, str(brightness_percent))
+    __settings__.setSetting('group_%s_enable_startup' % self.bridge_group, 'true')
 
 
 def cmd_scan_bridges():
@@ -101,9 +101,9 @@ def cmd_colorpicker(args):
   color_picker.doModal()
 
 def cmd_set_to_white(args):
-  __settings__.setSetting('group%s_enable_startup', 'true')
-  __settings__.setSetting('group%s_color_value' % args['group'], 'ffffffff')
-  __settings__.setSetting('group%s_brightness' % args['group'], '100')
+  __settings__.setSetting('group_%s_enable_startup', 'true')
+  __settings__.setSetting('group_%s_color_value' % args['group'], 'ffffffff')
+  __settings__.setSetting('group_%s_brightness' % args['group'], '100')
 
 def cmd_brightness(args):
   group = args['groups']
@@ -114,7 +114,7 @@ def cmd_brightness(args):
   else:
     group = (group,)
 
-  enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group%s' % grp) == 'true']
+  enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group_%s' % grp) == 'true']
 
   cmd = {
       'groups': enabled_groups,
@@ -127,14 +127,12 @@ def cmd_brightness(args):
 
 def cmd_white(args):
   group = args['groups']
-  if group == 'all':
-    group = (1,2,3,4)
-  elif ',' in group:
+  if ',' in group:
     group = group.split(',')
   else:
     group = (group,)
 
-  enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group%s' % grp) == 'true']
+  enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group_%s' % grp) == 'true']
 
   cmd = {
     'groups': enabled_groups,
@@ -152,14 +150,12 @@ def cmd_color_rgb(args):
   g = args['g']
   b = args['b']
 
-  if group == 'all':
-    group = (1,2,3,4)
-  elif ',' in group:
+  if ',' in group:
     group = group.split(',')
   else:
     group = (group,)
 
-  enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group%s' % grp) == 'true']
+  enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group_%s' % grp) == 'true']
 
   cmd = {
       'r': int(r),
@@ -173,32 +169,29 @@ def cmd_color_rgb(args):
 
 def cmd_fade_out(args):
   group = args['groups']
-  if group == 'all':
-    group = (1,2,3,4)
-  elif ',' in group:
+  if ',' in group:
     group = [int(grp) for grp in group.split(',')]
   else:
     group = (group,)
 
-  enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group%s' % grp) == 'true']
+  enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group_%s' % grp) == 'true']
 
   cmd = {
       'groups': enabled_groups
   }
 
+  utils.log('Notify fade-out: %s' % cmd)
   xbmc.executebuiltin('NotifyAll(mookfist-milights, fade-out, "' + simplejson.dumps(cmd) + '")')
 
 def cmd_fade_in(args):
 
   group = args['groups']
-  if group == 'all':
-    group = (1,2,3,4)
-  elif ',' in group:
+  if ',' in group:
     group = [int(grp) for grp in group.split(',')]
   else:
     group = (group,)
 
-  enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group%s' % grp) == 'true']
+  enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group_%s' % grp) == 'true']
 
   cmd = {
       'groups': enabled_groups
@@ -213,14 +206,12 @@ def cmd_fade_in(args):
 
 def cmd_fade_outin(args):
   group = args['groups']
-  if group == 'all':
-    group = (1,2,3,4)
-  elif ',' in group:
+  if ',' in group:
     group = group.split(',')
   else:
     group = (group,)
 
-  enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group%s' % grp) == 'true']
+  enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group_%s' % grp) == 'true']
 
   cmd = {
       'groups': enabled_groups
@@ -230,6 +221,8 @@ def cmd_fade_outin(args):
     cmd['speed'] = args['speed']
   else:
     cmd['speed'] = None
+
+  utils.log('Notify fade-outin %s' % cmd)
 
   xbmc.executebuiltin('NotifyAll(mookfist-milights, fade-outin, "' + simplejson.dumps(cmd) + '")')
 
