@@ -16,7 +16,7 @@ def loggingEnabled():
 
 
 def groupEnabled(group):
-  return __settings__.getSetting('enable_group%s' % group) == 'true'
+  return __settings__.getSetting('enable_group_%s' % group) == 'true'
 
 
 def doInitBrightness(group):

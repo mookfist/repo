@@ -48,8 +48,13 @@ def cmd_scan_bridges():
 #    busy_dialog = xbmcgui.DialogNoCancel()
 #    busy_dialog.create()
 
+    utils.log('Scanning for version 4 bridges')
     v4_bridges = scan_bridges(version=4)
+    utils.log('Found %s v4 bridges: %s' % (len(v4_bridges), v4_bridges))
+
+    utils.log('Scanning for version 6 bridges')
     v6_bridges = scan_bridges(version=6)
+    utils.log('Found %s v6 bridges: %s' % (len(v6_bridges), v6_bridges))
 
     bridges = []
 
@@ -205,11 +210,12 @@ def cmd_fade_in(args):
   xbmc.executebuiltin('NotifyAll(mookfist-milights, fade-in, "' + simplejson.dumps(cmd) + '")')
 
 def cmd_fade_outin(args):
-  group = args['groups']
-  if ',' in group:
-    group = group.split(',')
+  if 'groups' not in args:
+    group = [0,1,2,3,4]
+  elif ',' in args['groups']:
+    group = args['groups'].split(',')
   else:
-    group = (group,)
+    group = (args['groups'],)
 
   enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group_%s' % grp) == 'true']
 

@@ -6,6 +6,7 @@ from lib.utils import Logger
 from lib.utils import initialize_logger
 from lib.masterController import MasterControllerThread
 from lib.group import Group
+from lib.threads.master import MasterThread
 
 from mookfist_lled_controller.colors import color_from_html
 
@@ -27,12 +28,9 @@ class ServiceMonitor(xbmc.Monitor):
 
     self.pay_attention = False
 
-    if __settings__.getSetting('enable_group_all') == 'true':
-      self._enabled_groups.append('all')
-    else:
-      for grp in [1,2,3,4]:
-        if __settings__.getSetting('enable_group_%s' % grp) == 'true':
-          self._enabled_groups.append(grp)
+    for grp in [0,1,2,3,4]:
+      if __settings__.getSetting('enable_group_%s' % grp) == 'true':
+        self._enabled_groups.append(grp)
 
   def dispatch_bridge_command(self, method, data):
 
@@ -41,12 +39,12 @@ class ServiceMonitor(xbmc.Monitor):
     if method == 'white':
       self.controller_thread.white(data['groups'])
     elif method == 'fade-out':
-      self.controller_thread.fade(0, data['groups'])
+      self.controller_thread.fade_out(data['groups'])
     elif method == 'fade-in':
-      self.controller_thread.fade(100, data['groups'])
+      self.controller_thread.fade_in(data['groups'])
     elif method == 'fade-outin':
-      self.controller_thread.fade(0, data['groups'], 100)
-      self.controller_thread.fade(100, data['groups'], 0)
+      self.controller_thread.fade_out(data['groups'], True)
+      self.controller_thread.fade_in(data['groups'], True)
     elif method == 'brightness':
       self.controller_thread.brightness(data['brightness'], data['groups'])
     elif method == 'color-rgb':
@@ -83,7 +81,8 @@ class ServiceMonitor(xbmc.Monitor):
   def onSettingsChanged(self):
 
     self.logger.debug('Plugin settings have changed')
-
+    self.controller_thread.reload()
+"""
     self.controller_thread.reset_queue()
 
     bridge_ip = __settings__.getSetting('bridge_ip')
@@ -112,7 +111,7 @@ class ServiceMonitor(xbmc.Monitor):
 
     groups = []
 
-    for x in ['all', 1, 2, 3, 4]:
+    for x in [0, 1, 2, 3, 4]:
 
       brightness = __settings__.getSetting('group_%s_brightness' % x)
       color = __settings__.getSetting('group_%s_color_value' % x)
@@ -175,6 +174,7 @@ class ServiceMonitor(xbmc.Monitor):
           self.controller_thread.color_rgb(red,green,blue,[g])
         except ValueError:
           self.logger.warning('There was an error converting the color for group %s. Current value: \'%s\'' % (g, color))
+  """
 
 
 def setup_groups():
@@ -185,7 +185,7 @@ def setup_groups():
 
   speeds = ['slow','medium','fast']
 
-  for grp in ['all', 1, 2, 3, 4]:
+  for grp in [0, 1, 2, 3, 4]:
 
     grpobj = Group(grp)
 
@@ -209,15 +209,18 @@ def setup_groups():
 
     groups.append(grpobj)
 
+  logger.debug('setup_groups(): %s' % groups)
+
   return groups
 
 
 if __name__ == "__main__":
 
   initialize_logger()
-  controller = MasterControllerThread()
+  controller = MasterThread(__settings__)
   monitor    = ServiceMonitor(controller)
 
+  """
   bridge_ip = __settings__.getSetting('bridge_ip')
   bridge_port = __settings__.getSetting('bridge_port')
   bridge_version = __settings__.getSetting('bridge_version')
@@ -242,28 +245,12 @@ if __name__ == "__main__":
     controller.setRepeat(repeat)
     controller.setGroups(setup_groups())
 
-    controller.start()
-    controller.reinitializeBridge()
+  """
 
-    while controller.isBridgeInitializing() != False:
-      time.sleep(0.01)
-
-    for i in range(0,3):
-      controller.off()
-      time.sleep(0.3)
-      controller.on()
+  controller.start()
+    # controller.reinitializeBridge()
 
   while not monitor.abortRequested():
     if monitor.waitForAbort(10):
       controller.stop()
 
-"""
-  monitor = MyMonitor()
-  monitor.onSettingsChanged()
-
-  while not monitor.abortRequested():
-    if monitor.waitForAbort(10):
-      if monitor.lights:
-        monitor.lights.stopFadeThread()
-      break
-"""

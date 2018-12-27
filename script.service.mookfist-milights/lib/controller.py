@@ -36,7 +36,7 @@ class Controller(threading.Thread):
 
     self._group_states = {}
 
-    for grp in (1,2,3,4,'all'):
+    for grp in (0,1,2,3,4):
 
       if self._settings.getSetting('enable_group_%s' % grp) == 'true':
 
@@ -254,9 +254,7 @@ class Controller(threading.Thread):
           try:
             group = int(args[-1])
           except ValueError:
-            if args[-1] != 'all':
               raise Exception('Invalid group for command: %s' % args[-1])
-            group = args[-1]
 
           cmdargs = args[:-1]
 

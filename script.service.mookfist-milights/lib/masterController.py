@@ -29,6 +29,9 @@ class MasterControllerThread(threading.Thread):
     self.setGroups(grps)
 
   def setGroups(self, groups):
+
+    self.logger.debug('Groups: %s' % groups)
+
     for grp in groups:
       self._groups[grp.group] = grp
 
@@ -83,6 +86,7 @@ class MasterControllerThread(threading.Thread):
     else:
       groups = self._fix_groups(group)
 
+    self.logger.info('MasterController says: %s -> %s' % (group, groups))
 
 
     if isinstance(target, int):
@@ -171,23 +175,27 @@ class MasterControllerThread(threading.Thread):
     self._is_bridge_initializing = True
 
   def _fix_groups(self, group):
+
+    self.logger.debug('Fixing groups: %s' % group)
+
     try:
       if isinstance(group, basestring):
-        if group == 'all':
-          return (self._groups[group],)
-        elif group.isdigit():
+        self.logger.debug('Group is a basestring: %s' % group)
+        if group.isdigit():
+          self.logger.debug('But group is also a digit: %s' % group)
           return (self._groups[int(group)],)
       else:
+        self.logger.debug('Group is not a basestring: %s' % group)
         iter(group)
 
         ret = []
 
         for grp in group:
           if isinstance(grp, basestring):
-            if grp == 'all':
-              ret.append(self._groups['all'])
-            elif grp.isdigit():
+            if grp.isdigit():
               ret.append(self._groups[int(grp)])
+          elif isinstance(grp, int):
+            ret.append(self._groups[grp])
 
         return ret
 
