@@ -1,3 +1,7 @@
+2018-12-27 v0.2.0~beta8
+ - Clean up dead code
+ - If read timeout, reload the bridge
+
 2018-12-27 v0.2.0~beta7
  - Fix import issue
 

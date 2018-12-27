@@ -182,6 +182,17 @@ class V6GroupThread(threading.Thread):
 
   def reload(self):
     self.reset_queue()
+    self.reload_bridge()
+
+
+  def reload_bridge(self):
+
+    self.logger.debug('Reloading bridge')
+    self.logger.debug('Bridge IP: %s' % self.settings.getSetting('bridge_ip'))
+    self.logger.debug('Bridge Port: %s' % self.settings.getSetting('bridge_port'))
+    self.logger.debug('Pause: %sms' % self.settings.getSetting('pause'))
+    self.logger.debug('Command Repeat: %s' % self.settings.getSetting('repeat_count'))
+
     self._bridge = lled.create_bridge(
       6,
       self.settings.getSetting('bridge_ip'),
@@ -189,6 +200,7 @@ class V6GroupThread(threading.Thread):
       int(self.settings.getSetting('pause')),
       int(self.settings.getSetting('repeat_count'))
     )
+
 
   def add_command(self, cmd):
     self._cmd_queue.append(cmd)
@@ -207,11 +219,18 @@ class V6GroupThread(threading.Thread):
       if (len(self._cmd_queue) > 0) :
         cmdName, group, args = self._cmd_queue.popleft()
 
-        if cmdName == 'white' or cmdName == 'on' or cmdName == 'off':
-          getattr(self._bridge, cmdName)(group)
-        elif cmdName == 'brightness' or cmdName == 'color':
-          setattr(self.group_settings, cmdName, args[0])
-          getattr(self._bridge, cmdName)(args[0], group)
+        self.logger.debug('Executing command: %s :: group: %s :: args: %s' % (cmdName, group, args))
+
+        try:
+
+          if cmdName == 'white' or cmdName == 'on' or cmdName == 'off':
+            getattr(self._bridge, cmdName)(group)
+          elif cmdName == 'brightness' or cmdName == 'color':
+            setattr(self.group_settings, cmdName, args[0])
+            getattr(self._bridge, cmdName)(args[0], group)
+        except socket.timeout as e:
+          self.logger.warning('Timeout executing command')
+          self.reload_bridge()
       else:
         time.sleep(0.01)
 
@@ -279,7 +298,6 @@ class MasterThread(threading.Thread):
     else:
       groups = group
 
-    self.logger.debug('_group_arg(): %s' % groups)
     return groups
 
 

@@ -1,5 +1,4 @@
 import utils
-from lib import scanner
 import sys, simplejson
 import xbmc, xbmcaddon, xbmcgui
 from mookfist_lled_controller import scan_bridges
@@ -113,7 +112,7 @@ def cmd_set_to_white(args):
 def cmd_brightness(args):
   group = args['groups']
   if group == 'all':
-    group = (1,2,3,4)
+    group = (0,)
   elif ',' in group:
     group = group.split(',')
   else:
