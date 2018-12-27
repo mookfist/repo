@@ -1,18 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<addon id="script.module.python-simplejson" version="3.8.1" name="python-simplejson" provider-name="Bob Ippolito">
+<addon id="script.module.python-simplejson" version="3.16.0" name="python-simplejson" provider-name="Bob Ippolito">
   <requires>
-    <import addon="xbmc.python" version="2.14.0" />
+    <import addon="xbmc.python" version="2.25.0" />
   </requires>
   <extension point="xbmc.python.module" library="lib" />
   <extension point="xbmc.addon.metadata">
     <summary lang="en">Simple, fast, extensible JSON encoder/decoder for Python</summary>
-    <description lang="en">simplejson is a simple, fast, complete, correct and extensible
+    <description lang="en">simplejson
+----------
+
+.. image:: https://travis-ci.org/simplejson/simplejson.svg?branch=master
+    :target: https://travis-ci.org/simplejson/simplejson
+
+simplejson is a simple, fast, complete, correct and extensible
 JSON &lt;http://json.org&gt; encoder and decoder for Python 2.5+
 and Python 3.3+.  It is pure Python code with no dependencies,
 but includes an optional C extension for a serious speed boost.
 
 The latest documentation for simplejson can be read online here:
-http://simplejson.readthedocs.org/
+https://simplejson.readthedocs.io/
 
 simplejson is the externally maintained development version of the
 json library included with Python 2.6 and Python 3.0, but maintains
@@ -34,12 +40,15 @@ very old fork of simplejson in the `python2.2`_ branch that supports
 Python 2.2. This is based off of a very old version of simplejson,
 is not maintained, and should only be used as a last resort.
 
-.. _python2.2: https://github.com/simplejson/simplejson/tree/python2.2</description>
+.. _python2.2: https://github.com/simplejson/simplejson/tree/python2.2
+
+
+</description>
     <disclaimer>This addon is just a wrapper around the original module found at PyPI</disclaimer>
     <language>en</language>
-    <platform>all</platform> 
-    <source>http://pypi.python.org/pypi/simplejson</source>
+    <platform>all</platform>
+    <source>https://pypi.org/project/simplejson/</source>
     <email>bob@redivi.com</email>
-    <website>http://pypi.python.org/pypi/simplejson</website>
+    <website>https://pypi.org/project/simplejson/</website>
   </extension>
 </addon>

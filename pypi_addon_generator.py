@@ -26,7 +26,7 @@ from xml.sax.saxutils import escape
 pp = pprint.PrettyPrinter(indent=2)
 
 PROVIDER_NAME = "Mookfist"
-XBMC_PYTHON_VER = "2.14.0"
+XBMC_PYTHON_VER = "2.25.0"
 
 ADDON_XML = """<?xml version="1.0" encoding="utf-8"?>
 <addon id="script.module.python-%(modname)s" version="%(version)s" name="python-%(modname)s" provider-name="%(modauthor)s">
