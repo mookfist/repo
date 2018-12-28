@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+	<addon id="script.module.mooked-colorpicker" name="Mookfist's Remixed ColorPicker Dialog Class" version="1.0.14" provider-name="mookfist">
+	<requires>
+		<import addon="xbmc.python" version="2.24.0"/>
+		<import addon="xbmc.addon" version="12.0.0"/>
+		<import addon="script.module.pil" version="1.1.7"/>
+  </requires>
+  <extension point="xbmc.python.module" library="resources/lib" />
+  <extension point="xbmc.python.library" library="default.py" />
+	<extension point="xbmc.addon.metadata">
+    <summary lang="en">Fork of marcelveldt's colorpicker dialog class.</summary>
+    <description>Colorpicker Dialog Class. Based off of Skin Helper Suite's Colorpicker by marcelveldt. The original source code can be found at https://github.com/marcelveldt/script.skin.helper.colorpicker</description>
+		<language></language>
+		<platform>all</platform>
+		<license>GPL v2.0</license>
+		<website></website>
+    <source>https://github.com/mookfist/repo</source>
+	</extension>
+</addon>

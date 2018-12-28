@@ -35,11 +35,11 @@ class CustomColorPicker(ColorPicker):
 
     self.create_color_swatch_image(colorstring)
 
-    r = int(colorstring[0:2], 16)
-    g = int(colorstring[2:4], 16)
-    b = int(colorstring[4:6], 16)
+    r = int(colorstring[2:4], 16)
+    g = int(colorstring[4:6], 16)
+    b = int(colorstring[6:8], 16)
 
-    color = color_from_rgb(r,g,b)
+    color = color_from_rgb(r,b,g,0.3/3.0)
 
     __settings__.setSetting('group_%s_color_value' % self.bridge_group, str(color))
 
