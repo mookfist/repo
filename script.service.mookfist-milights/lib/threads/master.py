@@ -93,6 +93,7 @@ class V6Thread(threading.Thread):
     self.logger = Logger('mookfist-milights', 'V6Thread')
     self._cmd_queue = deque([])
     self._running = False
+    self._started = False
     self._group_threads = (
       V6GroupThread(settings, 0),
       V6GroupThread(settings, 1),
@@ -138,6 +139,12 @@ class V6Thread(threading.Thread):
     return self._running
 
 
+  def groupThreadsRunning(self):
+    running_groups = [grp for grp in self._group_threads if grp.isRunning()]
+
+    return len(running_groups) == len(self._group_threads)
+
+
   def add_command(self, cmd):
     grp = cmd[1]
     self._group_threads[grp].add_command(cmd)
@@ -152,17 +159,32 @@ class V6Thread(threading.Thread):
     for grp in self._group_threads:
       grp.start()
 
-    self._running = True
+    while self.groupThreadsRunning():
+      time.sleep(0.1)
 
-    while self._running == True:
+    self._running = True
+    self._started = True
+
+    while self._started == True:
       time.sleep(1)
+
+    self.logger.debug('V6Thread stopped')
+
+    self._running = False
+
+  def stop(self):
+
+    self.logger.debug('Stopping all group threads')
 
     for grp in self._group_threads:
       grp.stop()
 
+    while self.groupThreadsRunning() == True:
+      time.sleep(0.1)
 
-  def stop(self):
-    self._running = False
+    self.logger.debug('Group threads stopped')
+
+    self._started = False
 
 
 class V6GroupThread(threading.Thread):
@@ -172,6 +194,7 @@ class V6GroupThread(threading.Thread):
     self.group = group
     self.settings = settings
     self._running = False
+    self._started = False
     self._bridge = None
     self._cmd_queue = deque([])
     self.group_settings = GroupSettings(group, settings)
@@ -215,8 +238,9 @@ class V6GroupThread(threading.Thread):
     self.reload()
 
     self._running = True
+    self._started = True
 
-    while self._running == True:
+    while self._started == True:
       if (len(self._cmd_queue) > 0) :
         cmdName, group, args = self._cmd_queue.popleft()
 
@@ -237,9 +261,10 @@ class V6GroupThread(threading.Thread):
 
 
     self.logger.warning('Thread stopped')
+    self._running = False
 
   def stop(self):
-    self._running = False
+    self._started = False
 
 
 class GroupSettings():
@@ -248,7 +273,7 @@ class GroupSettings():
     self.group = group
     self.enabled = settings.getSetting('enable_group_%s' % self.group)
     self.enable_color_control = settings.getSetting('enable_color_control_group_%s' % self.group)
-    self.start_color_value = int(settings.getSetting('group_%s_color_value' % self.group))
+    self.start_color_value = settings.getSetting('group_%s_color_value' % self.group)
     self.start_brightness = int(settings.getSetting('group_%s_brightness' % self.group))
     self.color = self.start_color_value
     self.brightness = self.start_brightness
@@ -321,14 +346,20 @@ class MasterThread(threading.Thread):
 
 
   def color_rgb(self, r, g, b, group=None):
-    self.color(color_from_rgb(r,g,b), group)
+
+    self.logger.debug('color_rgb: %s %s %s %s' % (r,g,b,group))
+
+    if r is 255 and g is 255 and b is 255:
+      self.white(group)
+    else:
+      self.color(lled_colors.color_from_rgb(r,b,g,0.3/3.0), group)
 
 
   def white(self, group=None):
     groups = self._group_arg(group)
 
     for group in groups:
-      self.add_comand('white', group)
+      self.add_command('white', group)
 
 
   def on(self, group=None):
@@ -412,6 +443,7 @@ class MasterThread(threading.Thread):
     self.logger.debug('Reloading...')
 
     self.groups = [GroupSettings(grp, self.settings) for grp in [0,1,2,3,4]]
+    enabled_groups = self.enabled_groups()
 
     if self._bridge_thread != None:
       self.logger.debug('Stopping bridge thread')
@@ -419,7 +451,8 @@ class MasterThread(threading.Thread):
       self._bridge_thread.stop()
 
       while self._bridge_thread.isRunning() == True:
-        time.sleep(0.01)
+        self.logger.debug('Waiting for bridge thread to stop')
+        time.sleep(0.1)
 
       self.logger.debug('Bridge thread confirmed stopped')
 
@@ -437,24 +470,27 @@ class MasterThread(threading.Thread):
     self._bridge_thread.start()
 
     while self._bridge_thread.isRunning() == False:
-      time.sleep(0.01)
+      self.logger.debug('Waiting for bridge thread to start')
+      time.sleep(0.1)
 
-    self.on()
-    time.sleep(0.10)
-    self.off()
-    time.sleep(0.10)
-    self.on()
-    time.sleep(0.10)
+    self.logger.debug('Bridge thread is running')
 
-    for group in self.enabled_groups():
+    for group in enabled_groups:
+      self.on(grp)
+      time.sleep(0.1)
+      self.brightness(50, group)
+      time.sleep(0.1)
+
       self.brightness(self.groups[group].start_brightness, group)
 
       if self.groups[group].enable_color_control == 'true':
+        color = self.groups[group].start_color_value
         self.logger.debug('Group %s wants starting color %s' % (group, self.groups[group].start_color_value))
 
-        self.color(self.groups[group].start_color_value, group)
+        color = self.groups[group].start_color_value
 
-
+        self.color_rgb(int(color[0:2], 16), int(color[2:4], 16), int(color[4:6], 16), group)
+        time.sleep(0.50)
 
 
     self.logger.debug('Reloaded thread')

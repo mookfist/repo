@@ -156,47 +156,59 @@ msgid "All Groups"
 msgstr ""
 
 msgctxt "#32401"
-msgid "Enable All Groups"
-msgstr ""
-
-msgctxt "#32402"
-msgid "Color Control"
-msgstr ""
-
-msgctxt "#32403"
-msgid "Set to White"
-msgstr ""
-
-msgctxt "#32404"
-msgid "Color Picker"
-msgstr ""
-
-msgctxt "#32405"
-msgid "Brightness"
-msgstr ""
-
-msgctxt "#32406"
-msgid "Fading Speed"
-msgstr ""
-
-msgctxt "#32407"
-msgid "Enter Color Manually"
-msgstr ""
-
-msgctxt "#32408"
 msgid "Group 1"
 msgstr ""
 
-msgctxt "#32409"
+msgctxt "#32402"
 msgid "Group 2"
 msgstr ""
 
-msgctxt "#32410"
+msgctxt "#32403"
 msgid "Group 3"
 msgstr ""
 
-msgctxt "#32411"
+msgctxt "#32404"
 msgid "Group 4"
+msgstr ""
+
+msgctxt "#32410"
+msgid "Enable All Groups"
+msgstr ""
+
+msgctxt "#32411"
+msgid "Enable Group 1"
+msgstr ""
+
+msgctxt "#32412"
+msgid "Enable Group 2"
+msgstr ""
+
+msgctxt "#32413"
+msgid "Enable Group 3"
+msgstr ""
+
+msgctxt "#32414"
+msgid "Enable Group 4"
+msgstr ""
+
+msgctxt "#32420"
+msgid "Set Color to White"
+msgstr ""
+
+msgctxt "#32421"
+msgid "Set Custom Color"
+msgstr ""
+
+msgctxt "#32422"
+msgid "Color Picker"
+msgstr ""
+
+msgctxt "#32423"
+msgid "Color Value"
+msgstr ""
+
+msgctxt "#32430"
+msgid "Brightness"
 msgstr ""
 
 ### TWEAKING ###

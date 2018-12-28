@@ -39,9 +39,9 @@ class CustomColorPicker(ColorPicker):
     g = int(colorstring[4:6], 16)
     b = int(colorstring[6:8], 16)
 
-    color = color_from_rgb(r,b,g,0.3/3.0)
+#    color = color_from_rgb(r,b,g,0.3/3.0)
 
-    __settings__.setSetting('group_%s_color_value' % self.bridge_group, str(color))
+    __settings__.setSetting('group_%s_color_value' % self.bridge_group, '%s%s%s' % (colorstring[2:4], colorstring[4:6], colorstring[6:8]))
 
 
 
@@ -111,10 +111,6 @@ def cmd_colorpicker(args):
 
   color_picker.doModal()
 
-def cmd_set_to_white(args):
-  __settings__.setSetting('group_%s_enable_startup', 'true')
-  __settings__.setSetting('group_%s_color_value' % args['group'], 'ffffffff')
-  __settings__.setSetting('group_%s_brightness' % args['group'], '100')
 
 def cmd_brightness(args):
   group = args['groups']
@@ -136,24 +132,6 @@ def cmd_brightness(args):
 
   xbmc.executebuiltin('NotifyAll(mookfist-milights, brightness, "' + json + '")')
 
-def cmd_white(args):
-  group = args['groups']
-  if ',' in group:
-    group = group.split(',')
-  else:
-    group = (group,)
-
-  enabled_groups = [int(grp) for grp in group if __settings__.getSetting('enable_group_%s' % grp) == 'true']
-
-  cmd = {
-    'groups': enabled_groups,
-    'brightness': 100
-  }
-
-  json = simplejson.dumps(cmd)
-
-  xbmc.executebuiltin('NotifyAll(mookfist-milights, white, "' + json + '")')
-  xbmc.executebuiltin('NotifyAll(mookfist-milights, brightness, "' + json + '")')
 
 def cmd_color_rgb(args):
   group = args['groups']
@@ -265,16 +243,12 @@ def main(argv):
     cmd_colorpicker(args)
   elif cmd == 'scan':
     cmd_scan_bridges()
-  elif cmd == 'set_to_white':
-    cmd_set_to_white(args)
   elif cmd == 'fade_in':
     cmd_fade_in(args)
   elif cmd == 'fade_out':
     cmd_fade_out(args)
   elif cmd == 'fade_outin':
     cmd_fade_outin(args)
-  elif cmd == 'white':
-    cmd_white(args)
   elif cmd == 'color_rgb':
     cmd_color_rgb(args)
   elif cmd == 'brightness':

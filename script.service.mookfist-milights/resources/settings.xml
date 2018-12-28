@@ -7,68 +7,58 @@
     <setting label="32103" type="text" id="bridge_ip" enable="eq(-1,true)"/>
     <setting label="32104" type="number" id="bridge_port" enable="eq(-2,true)" />
     <setting label="32105" type="select" id="bridge_version" lvalues="32106|32107|32108" default="1" enable="eq(-3,true)" />
+    <setting type="sep" />
+    <setting label="32410" type="bool" id="enable_group_0" default="true" />
+    <setting label="32411" type="bool" id="enable_group_1" default="false" />
+    <setting label="32412" type="bool" id="enable_group_2" default="false" />
+    <setting label="32413" type="bool" id="enable_group_3" default="false" />
+    <setting label="32414" type="bool" id="enable_group_4" default="false" />
   </category>
 
-  <!-- Group ALL -->
+  <!-- Group ALL (0) -->
   <category label="32400">
-    <setting label="32401" type="bool" id="enable_group_0" default="true" />
-    <setting type="sep" />
-    <setting label="32402" type="bool" id="enable_color_control_group_0" default="false" />
-    <setting label="32403" type="action" action="RunScript(script.service.mookfist-milights, set_to_white, group=0)" enable="eq(-1,true)"/>
-    <setting label="32404" type="action" action="RunScript(script.service.mookfist-milights, colorpicker, group=0)" enable="eq(-2,true)"/>
-    <setting label="32407" type="number" id="group_0_color_value" enable="eq(-3,true)"/>
-    <setting label="32405" type="number" id="group_0_brightness" default="100" enable="eq(-6,true)" />
-    <setting label="32406" type="select" id="group_0_fade_speed" lvalues="32601|32602|32603|32604" enable="eq(-7,true)" default="1" />
+    <setting label="32421" type="bool" id="enable_color_control_group_0" default="false" />
+    <setting label="32422" type="action" action="RunScript(script.service.mookfist-milights, colorpicker, group=0)" enable="eq(-1,true)"/>
+    <setting label="32423" type="text" id="group_0_color_value" enable="false"/>
+    <setting label="32430" type="number" id="group_0_brightness" default="100" />
+    <setting label="32604" type="select" id="group_0_fade_speed" lvalues="32601|32602|32603|32604" default="1" />
   </category>
 
   <!-- Group 1 -->
-  <category label="32408">
-    <setting label="32401" type="bool" id="enable_group_1" default="true" />
-    <setting type="sep" />
-    <setting label="32402" type="bool" id="enable_color_control_group_1" default="false" />
-    <setting label="32403" type="action" action="RunScript(script.service.mookfist-milights, set_to_white, group=1)" enable="eq(-1,true)"/>
-    <setting label="32404" type="action" action="RunScript(script.service.mookfist-milights, colorpicker, group=1)" enable="eq(-2,true)"/>
-    <setting label="32407" type="number" id="group_1_color_value" enable="eq(-3,true)"/>
-    <setting label="32405" type="number" id="group_1_brightness" default="100" enable="eq(-6,true)" />
-    <setting label="32406" type="select" id="group_1_fade_speed" lvalues="32601|32602|32603|32604" enable="eq(-7,true)" default="1" />
+  <category label="32401">
+    <setting label="32421" type="bool" id="enable_color_control_group_1" default="false" />
+    <setting label="32422" type="action" action="RunScript(script.service.mookfist-milights, colorpicker, group=1)" enable="eq(-1,true)"/>
+    <setting label="32423" type="text" id="group_1_color_value" enable="false"/>
+    <setting label="32430" type="number" id="group_1_brightness" default="100" />
+    <setting label="32604" type="select" id="group_1_fade_speed" lvalues="32601|32602|32603|32604" default="1" />
   </category>
 
   <!-- Group 2 -->
-  <category label="32409">
-    <setting label="32401" type="bool" id="enable_group_2" default="true" />
-    <setting type="sep" />
-    <setting label="32402" type="bool" id="enable_color_control_group_2" default="false" />
-    <setting label="32403" type="action" action="RunScript(script.service.mookfist-milights, set_to_white, group=2)" enable="eq(-1,true)"/>
-    <setting label="32404" type="action" action="RunScript(script.service.mookfist-milights, colorpicker, group=2)" enable="eq(-2,true)"/>
-    <setting label="32407" type="number" id="group_2_color_value" enable="eq(-3,true)"/>
-    <setting label="32405" type="number" id="group_2_brightness" default="100" enable="eq(-6,true)" />
-    <setting label="32406" type="select" id="group_2_fade_speed" lvalues="32601|32602|32603|32604" enable="eq(-7,true)" default="1" />
+  <category label="32402">
+    <setting label="32421" type="bool" id="enable_color_control_group_2" default="false" />
+    <setting label="32422" type="action" action="RunScript(script.service.mookfist-milights, colorpicker, group=2)" enable="eq(-1,true)"/>
+    <setting label="32423" type="text" id="group_2_color_value" enable="false"/>
+    <setting label="32430" type="number" id="group_2_brightness" default="100" />
+    <setting label="32604" type="select" id="group_2_fade_speed" lvalues="32601|32602|32603|32604" default="1" />
   </category>
 
   <!-- Group 3 -->
-  <category label="32410">
-    <setting label="32401" type="bool" id="enable_group_3" default="true" />
-    <setting type="sep" />
-    <setting label="32402" type="bool" id="enable_color_control_group_3" default="false" />
-    <setting label="32403" type="action" action="RunScript(script.service.mookfist-milights, set_to_white, group=3)" enable="eq(-1,true)"/>
-    <setting label="32404" type="action" action="RunScript(script.service.mookfist-milights, colorpicker, group=3)" enable="eq(-2,true)"/>
-    <setting label="32407" type="number" id="group_3_color_value" enable="eq(-3,true)"/>
-    <setting label="32405" type="number" id="group_3_brightness" default="100" enable="eq(-6,true)" />
-    <setting label="32406" type="select" id="group_3_fade_speed" lvalues="32601|32602|32603|32604" enable="eq(-7,true)" default="1" />
+  <category label="32403">
+    <setting label="32421" type="bool" id="enable_color_control_group_3" default="false" />
+    <setting label="32422" type="action" action="RunScript(script.service.mookfist-milights, colorpicker, group=3)" enable="eq(-1,true)"/>
+    <setting label="32423" type="text" id="group_3_color_value" enable="false"/>
+    <setting label="32430" type="number" id="group_3_brightness" default="100" />
+    <setting label="32604" type="select" id="group_3_fade_speed" lvalues="32601|32602|32603|32604" default="1" />
   </category>
 
   <!-- Group 4 -->
-  <category label="32411">
-    <setting label="32401" type="bool" id="enable_group_4" default="true" />
-    <setting type="sep" />
-    <setting label="32402" type="bool" id="enable_color_control_group_4" default="false" />
-    <setting label="32403" type="action" action="RunScript(script.service.mookfist-milights, set_to_white, group=4)" enable="eq(-1,true)"/>
-    <setting label="32404" type="action" action="RunScript(script.service.mookfist-milights, colorpicker, group=4)" enable="eq(-2,true)"/>
-    <setting label="32407" type="number" id="group_4_color_value" enable="eq(-3,true)"/>
-    <setting label="32405" type="number" id="group_4_brightness" default="100" enable="eq(-6,true)" />
-    <setting label="32406" type="select" id="group_4_fade_speed" lvalues="32601|32602|32603|32604" enable="eq(-7,true)" default="1" />
+  <category label="32404">
+    <setting label="32421" type="bool" id="enable_color_control_group_4" default="false" />
+    <setting label="32422" type="action" action="RunScript(script.service.mookfist-milights, colorpicker, group=4)" enable="eq(-1,true)"/>
+    <setting label="32423" type="text" id="group_4_color_value" enable="false"/>
+    <setting label="32430" type="number" id="group_4_brightness" default="100" />
+    <setting label="32604" type="select" id="group_4_fade_speed" lvalues="32601|32602|32603|32604" default="1" />
   </category>
-
 
   <!-- TEST ACTIONS -->
   <category label="32300">
@@ -103,47 +93,4 @@
     <setting label="32603" type="number" id="fast_speed_interval" default="10" />
   </category>
 
-  <!--
-    <setting type="sep" />
-    <setting label="30020" type="bool" id="enable_group1" default="true" />
-    <setting label="30021" type="bool" id="enable_group2" default="false" />
-    <setting label="30022" type="bool" id="enable_group3" default="false" />
-    <setting label="30023" type="bool" id="enable_group4" default="false" />
-  </category>
-  <category label="30018">
-    <setting type="sep"/>
-    <setting label="30012" type="bool" id="global_set_brightness_at_start" />
-
-    <setting label="30014" type="select" id="global_fade_speed" lvalues="30015|30016|30017|30019" default="1" />
-    <setting label="30013" type="number" id="global_max_brightness" default="100" />
-    <setting label="30004" type="number" id="global_min_brightness" default="0" />
-    <setting label="30013" type="slider" id="global_max_brightness" range="0,1,100" default="100" option="int" />
-    <setting label="30004" type="slider" id="global_min_brightness" range="0,1,100" default="10" option="int" />
-    <setting type="sep"/>
-    <setting label="30008" type="bool" id="global_enable_color" />
-    <setting label="30009" visible="eq(-1,true)" type="number" id="global_red_value" />
-    <setting label="30010" visible="eq(-2,true)" type="number" id="global_green_value" />
-    <setting label="30011" visible="eq(-3,true)" type="number" id="global_blue_value" />
-    <setting label="30009" visible="eq(-1,true)" type="slider" id="global_red_value" range="0,1,255" default="255" option="int" />
-    <setting label="30010" visible="eq(-2,true)" type="slider" id="global_green_value" range="0,1,255" default="255" option="int"/>
-    <setting label="30011" visible="eq(-3,true)" type="slider" id="global_blue_value" range="0,1,255" default="255" option="int"/>
-    <setting type="lsep" label="Pause Settings" />
-    <setting label="30030" type="bool" id="global_enable_pause_speed" default="false" />
-    <setting label="30014" type="select" id="global_pause_fade_speed" lvalues="30015|30016|30017|30019" default="1" />
-    <setting label="30031" type="slider" id="global_pause_delay" range="0,1,10" default="0" option="int" />
-
-  </category>
-
-  <category label="30034">
-    <setting label="30035" type="action" action="RunScript(special://home/addons/script.service.mookfist-milights/cmd.py, fade_out)"/>
-    <setting label="30036" type="action" action="RunScript(special://home/addons/script.service.mookfist-milights/cmd.py, fade_in)" />
-  </category>
-
-  <category label="30005">
-    <setting label="30007" type="bool" id="movie_enabled" />
-  </category>
-  <category label="30006">
-    <setting label="30007" type="bool" id="tv_enabled" />
-  </category>
--->
 </settings>

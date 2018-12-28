@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <colors>
-  <palette name="milight">
+    <palette name="milight">
+    <color name="">ffffffff</color>
     <color name="">ffff0000</color>
     <color name="">ffff0000</color>
     <color name="">ffff2000</color>
