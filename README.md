@@ -24,7 +24,7 @@ These addons provide additional functionality to Kodi
 
 ### Python Libraries
 
-These addons expose various python libraries for use by the plugins
+These addons expose various python libraries for use by the plugins.
 
 * [python-requests](https://github.com/mookfist/repo/tree/master/script.module.python-requests) -  [Requests](http://docs.python-requests.org/en/latest/) library for a simpler HTTP API
 * [python-qbittorent](https://github.com/mookfist/repo/tree/master/script.module.python-qbittorrent ) - A [python library](https://pypi.python.org/pypi/qbittorrent) for controlling the [QBittorrent](http://www.qbittorrent.org) client
@@ -42,4 +42,4 @@ These python scripts make managing the repo a bit easier and could be of use to 
 
 ## Contributing
 
-Feel free to submit issues and pull requests.
+ Feel free to submit issues and pull requests. 
